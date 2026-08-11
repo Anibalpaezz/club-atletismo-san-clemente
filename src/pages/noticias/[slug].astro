@@ -1,0 +1,90 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Icon from '../../components/Icon.astro';
+import { getNoticiaBySlug, getNoticiasPublicadas } from '../../lib/db';
+import { formatFecha } from '../../lib/formato';
+
+export const prerender = false;
+export const revalidate = 60;
+
+const { slug } = Astro.params;
+
+const noticia = await getNoticiaBySlug(slug!);
+
+if (!noticia) {
+	return Astro.redirect('/noticias/');
+}
+
+const recientes = (await getNoticiasPublicadas(3)).filter((n) => n.id !== noticia.id).slice(0, 3);
+
+const parrafos = (noticia.cuerpo ?? '').split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean);
+const fecha = formatFecha(noticia.fecha_publicacion ?? noticia.created_at);
+---
+
+<Layout
+	title={noticia.titulo}
+	description={noticia.resumen ?? noticia.titulo}
+	image={noticia.imagen_url ?? undefined}
+>
+	<article class="bg-hueso">
+		<div class="mx-auto max-w-3xl px-4 py-16 sm:px-6">
+			<a href="/noticias/" class="inline-flex items-center gap-1.5 text-sm font-semibold text-albero-600 hover:text-nocturno">
+				<Icon name="arrow-right" class="h-4 w-4 rotate-180" />
+				Todas las noticias
+			</a>
+
+			<h1 class="mt-4 font-display text-3xl font-bold leading-tight text-nocturno sm:text-4xl">
+				{noticia.titulo}
+			</h1>
+
+			{fecha && (
+				<p class="mt-3 text-sm font-semibold uppercase tracking-wider text-tinta/50">{fecha}</p>
+			)}
+
+			{noticia.imagen_url && (
+				<img
+					src={noticia.imagen_url}
+					alt={noticia.titulo}
+					class="mt-8 aspect-[16/9] w-full rounded-xl object-cover shadow-md"
+				/>
+			)}
+
+			{noticia.resumen && (
+				<p class="mt-8 border-l-4 border-albero pl-4 text-lg italic leading-relaxed text-nocturno/80">
+					{noticia.resumen}
+				</p>
+			)}
+
+			<div class="mt-6 space-y-4 text-base leading-relaxed text-tinta/80">
+				{parrafos.length > 0 ? (
+					parrafos.map((p) => <p>{p}</p>)
+				) : (
+					<p>{noticia.resumen ?? noticia.titulo}</p>
+				)}
+			</div>
+		</div>
+	</article>
+
+	{recientes.length > 0 && (
+		<section class="border-t border-slate-200 bg-white py-16">
+			<div class="mx-auto max-w-6xl px-4 sm:px-6">
+				<h2 class="font-display text-2xl font-bold text-nocturno">Noticias recientes</h2>
+				<div class="mt-8 grid gap-6 md:grid-cols-3">
+					{recientes.map((n) => (
+						<a
+							href={`/noticias/${n.id}/`}
+							class="rounded-xl border border-slate-200 bg-hueso p-6 transition hover:shadow-md"
+						>
+							{formatFecha(n.fecha_publicacion ?? n.created_at) && (
+								<p class="text-xs font-semibold uppercase tracking-wider text-albero-600">
+									{formatFecha(n.fecha_publicacion ?? n.created_at)}
+								</p>
+							)}
+							<h3 class="mt-2 font-display text-lg font-bold leading-snug text-nocturno">{n.titulo}</h3>
+						</a>
+					))}
+				</div>
+			</div>
+		</section>
+	)}
+</Layout>

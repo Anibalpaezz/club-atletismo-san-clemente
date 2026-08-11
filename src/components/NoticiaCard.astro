@@ -1,0 +1,42 @@
+---
+import type { Noticia } from '../lib/supabase';
+import { formatFecha } from '../lib/formato';
+import Icon from './Icon.astro';
+
+interface Props {
+	noticia: Noticia;
+}
+const { noticia } = Astro.props;
+const fecha = formatFecha(noticia.fecha_publicacion ?? noticia.created_at);
+---
+
+<a
+	href={`/noticias/${noticia.id}/`}
+	class="group flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+>
+	<div class="aspect-[16/9] overflow-hidden bg-hueso">
+		{noticia.imagen_url ? (
+			<img
+				src={noticia.imagen_url}
+				alt={noticia.titulo}
+				class="h-full w-full object-cover transition duration-300 group-hover:scale-[1.03]"
+				loading="lazy"
+			/>
+		) : (
+			<div class="flex h-full w-full items-center justify-center bg-nocturno/5">
+				<Icon name="flag" class="h-10 w-10 text-albero" />
+			</div>
+		)}
+	</div>
+	<div class="flex flex-1 flex-col gap-2 p-5">
+		{fecha && <p class="text-xs font-semibold uppercase tracking-wider text-albero-600">{fecha}</p>}
+		<h3 class="font-display text-lg font-bold leading-snug text-nocturno group-hover:text-nocturno-600">
+			{noticia.titulo}
+		</h3>
+		{noticia.resumen && <p class="line-clamp-3 text-sm leading-relaxed text-tinta/70">{noticia.resumen}</p>}
+		<span class="mt-auto inline-flex items-center gap-1.5 pt-2 text-sm font-semibold text-albero-600">
+			Leer más
+			<Icon name="arrow-right" class="h-4 w-4 transition group-hover:translate-x-0.5" />
+		</span>
+	</div>
+</a>

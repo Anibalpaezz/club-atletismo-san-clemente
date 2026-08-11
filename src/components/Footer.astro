@@ -1,0 +1,76 @@
+---
+import { SITE, REDES } from '../lib/site';
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import Sponsors from './Sponsors';
+---
+
+<footer class="bg-nocturno text-white">
+	<div class="mx-auto grid max-w-6xl gap-10 px-4 py-14 sm:px-6 md:grid-cols-3">
+		<div>
+			<a href="/" class="flex items-center gap-2.5">
+				<Logo class="h-10 w-10 text-albero" />
+				<span class="flex flex-col leading-tight">
+					<span class="text-sm font-bold">Club Atletismo</span>
+					<span class="text-xs font-semibold uppercase tracking-wider text-albero">San Clemente</span>
+				</span>
+			</a>
+			<p class="mt-4 max-w-xs text-sm leading-relaxed text-white/70">{SITE.lema}.</p>
+			<p class="mt-2 text-sm text-white/70">
+				Atletismo popular desde San Clemente (Cuenca), la Joya del Renacimiento Manchego.
+			</p>
+		</div>
+
+		<div>
+			<p class="mb-4 text-xs font-semibold uppercase tracking-widest text-white/50">Contacto</p>
+			<a
+				href={`mailto:${SITE.email}`}
+				class="inline-flex items-center gap-2 text-sm text-white/80 transition hover:text-white"
+			>
+				<Icon name="mail" class="h-4 w-4 shrink-0 text-albero" />
+				{SITE.email}
+			</a>
+			<p class="mt-5 mb-4 text-xs font-semibold uppercase tracking-widest text-white/50">
+				Nuestro blog histórico
+			</p>
+			<a
+				href={SITE.blogspot}
+				target="_blank"
+				rel="noreferrer noopener"
+				class="inline-flex items-center gap-2 text-sm text-white/80 transition hover:text-white"
+			>
+				<Icon name="blogspot" class="h-4 w-4 shrink-0 text-albero" />
+				clubatletismosanclemente.blogspot.com
+			</a>
+			<p class="mt-5 mb-4 text-xs font-semibold uppercase tracking-widest text-white/50">Síguenos</p>
+			<ul class="flex items-center gap-3">
+				{REDES.map((red) => (
+					<li>
+						<a
+							href={red.href}
+							target="_blank"
+							rel="noreferrer noopener"
+							aria-label={`${red.nombre}${red.placeholder ? ' (pendiente de configurar)' : ''}`}
+							class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white/80 transition hover:bg-albero hover:text-nocturno"
+						>
+							<Icon name={red.icono as 'facebook' | 'instagram' | 'blogspot'} class="h-5 w-5" />
+						</a>
+					</li>
+				))}
+			</ul>
+		</div>
+
+		<div>
+			<Sponsors client:visible />
+		</div>
+	</div>
+
+	<div class="border-t border-white/10">
+		<div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-2 px-4 py-5 text-xs text-white/50 sm:flex-row sm:px-6">
+			<p>
+				© {new Date().getFullYear()} {SITE.name} · San Clemente (Cuenca)
+			</p>
+			<p class="italic text-white/40">{SITE.lema}</p>
+		</div>
+	</div>
+</footer>

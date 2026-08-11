@@ -1,0 +1,25 @@
+---
+interface Props {
+	title: string;
+	eyebrow?: string;
+	description?: string;
+}
+const { title, eyebrow, description } = Astro.props;
+---
+
+<section class="relative overflow-hidden bg-nocturno text-white">
+	<img
+		src="/images/hero-plaza-nocturna.svg"
+		alt=""
+		aria-hidden="true"
+		class="absolute inset-0 h-full w-full object-cover opacity-40"
+	/>
+	<div class="absolute inset-0 bg-gradient-to-b from-nocturno/70 to-nocturno" />
+	<div class="relative mx-auto max-w-6xl px-4 py-20 sm:px-6 md:py-28">
+		{eyebrow && (
+			<p class="text-xs font-bold uppercase tracking-[0.2em] text-albero">{eyebrow}</p>
+		)}
+		<h1 class="mt-3 font-display text-4xl font-bold sm:text-5xl">{title}</h1>
+		{description && <p class="mt-5 max-w-2xl text-lg leading-relaxed text-white/80">{description}</p>}
+	</div>
+</section>

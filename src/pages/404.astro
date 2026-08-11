@@ -1,0 +1,24 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Icon from '../components/Icon.astro';
+---
+
+<Layout title="Página no encontrada">
+	<section class="bg-nocturno py-32 text-white">
+		<div class="mx-auto max-w-2xl px-4 text-center sm:px-6">
+			<p class="text-xs font-bold uppercase tracking-[0.3em] text-albero">Error 404</p>
+			<h1 class="mt-4 font-display text-4xl font-bold sm:text-5xl">Página no encontrada</h1>
+			<p class="mt-5 text-white/80">
+				La página que buscas no existe o ha cambiado de dirección. Vuelve al inicio para seguir
+				corriendo con nosotros.
+			</p>
+			<a
+				href="/"
+				class="mt-8 inline-flex items-center gap-2 rounded-md bg-albero px-6 py-3 text-sm font-bold text-nocturno transition hover:bg-albero-100"
+			>
+				Volver al inicio
+				<Icon name="arrow-right" class="h-4 w-4" />
+			</a>
+		</div>
+	</section>
+</Layout>

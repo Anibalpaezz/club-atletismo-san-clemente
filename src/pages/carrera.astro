@@ -1,0 +1,173 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import CarreraBanner from '../components/CarreraBanner.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import Icon from '../components/Icon.astro';
+import { getCollection, render } from 'astro:content';
+import { getCarreraConfig } from '../lib/db';
+import { SITE } from '../lib/site';
+
+export const prerender = false;
+export const revalidate = 60;
+
+const carrera = await getCarreraConfig();
+
+const entradas = await getCollection('carrera', ({ data }) => data.orden);
+const renderizados = await Promise.all(
+	entradas.map(async (entrada) => ({
+		...entrada,
+		html: (await render(entrada)).Content,
+	})),
+);
+
+const reglamentos = renderizados.filter((e) => e.data.categoria === '10k' || e.data.categoria === '5k');
+const recorrido = renderizados.filter((e) => e.data.categoria === 'general');
+
+const servicios = [
+	{
+		icono: 'trophy' as const,
+		titulo: 'Cronometraje y clasificaciones',
+		texto: 'Gestionados por Cronomancha/Timingsys, con resultado oficial y chip.',
+	},
+	{
+		icono: 'check' as const,
+		titulo: 'Bolsa del corredor',
+		texto: 'Todos los inscritos reciben su bolsa del corredor.',
+	},
+	{
+		icono: 'users' as const,
+		titulo: 'Fisioterapia',
+		texto: 'Servicio gratuito de fisioterapia al finalizar la prueba.',
+	},
+	{
+		icono: 'route' as const,
+		titulo: 'Avituallamiento',
+		texto: 'Avituallamiento en el recorrido y en la llegada.',
+	},
+];
+---
+
+<Layout
+	title="La Carrera · 10K Nocturna"
+	description="Carrera Popular 10K Nocturna Villa de San Clemente: recorrido, reglamento, inscripción y clasificaciones. Puntuable para el Circuito Provincial de Cuenca."
+>
+	<PageHeader
+		eyebrow="La Carrera"
+		title="10K Nocturna Villa de San Clemente"
+		description="La prueba reina del club: 10K nocturnos por el casco histórico iluminado de la Joya del Renacimiento Manchego, con su 5K de iniciación."
+	/>
+
+	<section class="bg-nocturno pb-16">
+		<div class="mx-auto max-w-6xl px-4 sm:px-6">
+			{carrera ? (
+				<CarreraBanner carrera={carrera} />
+			) : (
+				<div class="rounded-2xl border border-albero/30 bg-nocturno-700 p-8 text-center text-white/80">
+					La información de la edición vigente se publicará próximamente. Consultas a {SITE.email}.
+				</div>
+			)}
+		</div>
+	</section>
+
+	<section id="ficha" class="bg-white py-20">
+		<div class="mx-auto max-w-6xl px-4 sm:px-6">
+			<SectionHeading
+				eyebrow="Ficha técnica"
+				title="Servicios para el corredor"
+				description="Salida a las 22:00 h desde la Plaza Mayor, junto al Antiguo Ayuntamiento renacentista, y una organización pensada para que solo tengas que correr."
+			/>
+			<div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+				{servicios.map((s) => (
+					<div class="rounded-xl border border-slate-200 bg-hueso p-7">
+						<span class="flex h-12 w-12 items-center justify-center rounded-full bg-nocturno/5 text-nocturno-600">
+							<Icon name={s.icono} class="h-6 w-6" />
+						</span>
+						<h3 class="mt-5 font-display text-lg font-bold text-nocturno">{s.titulo}</h3>
+						<p class="mt-2 text-sm leading-relaxed text-tinta/70">{s.texto}</p>
+					</div>
+				))}
+			</div>
+		</div>
+	</section>
+
+	{recorrido.length > 0 && (
+		<section id="recorrido" class="scroll-mt-20 bg-hueso py-20">
+			<div class="mx-auto max-w-4xl px-4 sm:px-6">
+				<SectionHeading
+					eyebrow="Recorrido"
+					title="Un circuito por el corazón del Renacimiento"
+					description="Urbano y llano: Plaza Mayor, Torre Vieja e Iglesia de Santiago Apóstol, con salida y meta junto al Antiguo Ayuntamiento."
+				/>
+				<div class="mt-10 space-y-8">
+					{recorrido.map((entrada) => (
+						<article class="rounded-xl border border-slate-200 bg-white p-8 shadow-sm">
+							<h3 class="font-display text-2xl font-bold text-nocturno">{entrada.data.titulo}</h3>
+							<div class="prose prose-nocturno mt-4 max-w-none text-tinta/80">
+								<entrada.html />
+							</div>
+						</article>
+					))}
+				</div>
+			</div>
+		</section>
+	)}
+
+	{reglamentos.length > 0 && (
+		<section id="reglamento" class="scroll-mt-20 bg-white py-20">
+			<div class="mx-auto max-w-4xl px-4 sm:px-6">
+				<SectionHeading
+					eyebrow="Reglamento"
+					title="Bases de la prueba"
+					description="Normativa de la 10K y de la 5K de iniciación de la edición vigente."
+				/>
+				<div class="mt-10 grid gap-8 md:grid-cols-2">
+					{reglamentos.map((entrada) => (
+						<article class="rounded-xl border border-slate-200 bg-hueso p-8">
+							<span class="inline-flex rounded-full bg-nocturno px-3 py-1 text-xs font-bold uppercase tracking-wider text-white">
+								{entrada.data.categoria === '10k' ? '10K' : '5K de iniciación'}
+							</span>
+							<h3 class="mt-4 font-display text-2xl font-bold text-nocturno">{entrada.data.titulo}</h3>
+							<div class="prose prose-sm prose-nocturno mt-4 max-w-none text-tinta/80">
+								<entrada.html />
+							</div>
+						</article>
+					))}
+				</div>
+			</div>
+		</section>
+	)}
+
+	<section class="bg-nocturno py-16 text-white">
+		<div class="mx-auto max-w-3xl px-4 text-center sm:px-6">
+			<h2 class="font-display text-3xl font-bold">¿Te lo vas a perder?</h2>
+			<p class="mt-3 text-white/80">
+				Vive una noche de running bajo las estrellas de San Clemente. Plaza Mayor, 22:00 h.
+			</p>
+			<div class="mt-7 flex flex-wrap justify-center gap-3">
+				{carrera?.enlace_inscripcion && (
+					<a
+						href={carrera.enlace_inscripcion}
+						target="_blank"
+						rel="noreferrer noopener"
+						class="inline-flex items-center gap-2 rounded-md bg-albero px-6 py-3 text-sm font-bold text-nocturno transition hover:bg-albero-100"
+					>
+						{carrera.texto_cta ?? 'Inscríbete'}
+						<Icon name="external" class="h-4 w-4" />
+					</a>
+				)}
+				{carrera?.enlace_clasificaciones && (
+					<a
+						href={carrera.enlace_clasificaciones}
+						target="_blank"
+						rel="noreferrer noopener"
+						class="inline-flex items-center gap-2 rounded-md border border-white/30 px-6 py-3 text-sm font-bold text-white transition hover:border-albero hover:text-albero"
+					>
+						Ver clasificaciones
+						<Icon name="external" class="h-4 w-4" />
+					</a>
+				)}
+			</div>
+		</div>
+	</section>
+</Layout>

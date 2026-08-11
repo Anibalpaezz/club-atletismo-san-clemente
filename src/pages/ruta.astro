@@ -1,0 +1,119 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import Icon from '../components/Icon.astro';
+
+export const prerender = true;
+---
+
+<Layout
+	title="San Clemente en Ruta"
+	description="Turismo y patrimonio para corredores visitantes: Plaza Mayor, Paraje de Rus y gastronomía manchega en San Clemente (Cuenca)."
+>
+	<PageHeader
+		eyebrow="San Clemente en Ruta"
+		title="La Joya del Renacimiento Manchego"
+		description="Vienes a correr, pero te vas a quedar con ganas de más: patrimonio, naturaleza y gastronomía de la tierra."
+	/>
+
+	<section class="bg-hueso py-20">
+		<div class="mx-auto max-w-6xl px-4 sm:px-6">
+			<div class="grid gap-10 lg:grid-cols-2">
+				<div>
+					<SectionHeading
+						align="left"
+						eyebrow="Patrimonio"
+						title="Una villa con historia"
+						description="San Clemente (Cuenca) presume de ser la Joya del Renacimiento Manchego. Su casco histórico, declarado Bien de Interés Cultural, es uno de los conjuntos urbanos más destacados de Castilla-La Mancha."
+					/>
+					<ul class="mt-8 space-y-5">
+						<li class="flex gap-4">
+							<span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-nocturno text-albero">
+								<Icon name="map-pin" class="h-5 w-5" />
+							</span>
+							<div>
+								<h3 class="font-display text-lg font-bold text-nocturno">Plaza Mayor y Antiguo Ayuntamiento</h3>
+								<p class="mt-1 text-sm leading-relaxed text-tinta/70">
+									Conjunto renacentista del siglo XVI y salida y meta de la 10K Nocturna.
+								</p>
+							</div>
+						</li>
+						<li class="flex gap-4">
+							<span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-nocturno text-albero">
+								<Icon name="map-pin" class="h-5 w-5" />
+							</span>
+							<div>
+								<h3 class="font-display text-lg font-bold text-nocturno">Torre Vieja</h3>
+								<p class="mt-1 text-sm leading-relaxed text-tinta/70">
+									Restos del castillo medieval, símbolo de la villa, al que el recorrido rinde homenaje.
+								</p>
+							</div>
+						</li>
+						<li class="flex gap-4">
+							<span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-nocturno text-albero">
+								<Icon name="map-pin" class="h-5 w-5" />
+							</span>
+							<div>
+								<h3 class="font-display text-lg font-bold text-nocturno">Iglesia de Santiago Apóstol</h3>
+								<p class="mt-1 text-sm leading-relaxed text-tinta/70">
+									Templo gótico-renacentista del siglo XVI que ilumina los primeros metros de la carrera.
+								</p>
+							</div>
+						</li>
+					</ul>
+				</div>
+
+				<div>
+					<SectionHeading
+						align="left"
+						eyebrow="Naturaleza"
+						title="Paraje de Rus y alrededores"
+						description="A un paso del casco urbano, el Paraje de Rus ofrece rutas entre viñedos, olivos y monte mediterráneo, un terreno ideal para entrenar o estirar las piernas después de la carrera."
+					/>
+					<div class="mt-8 rounded-xl border border-slate-200 bg-white p-8 shadow-sm">
+						<h3 class="font-display text-lg font-bold text-nocturno">Consejos del club</h3>
+						<ul class="mt-4 space-y-3 text-sm text-tinta/70">
+							<li class="flex gap-3">
+								<Icon name="check" class="mt-0.5 h-4 w-4 shrink-0 text-albero-600" />
+								Llega con tiempo el día de la carrera: el centro se corta al tráfico horas antes.
+							</li>
+							<li class="flex gap-3">
+								<Icon name="check" class="mt-0.5 h-4 w-4 shrink-0 text-albero-600" />
+								Las noches de agosto refrescan: trae ropa de abrigo para después de la meta.
+							</li>
+							<li class="flex gap-3">
+								<Icon name="check" class="mt-0.5 h-4 w-4 shrink-0 text-albero-600" />
+								Aprovecha la estancia para visitar la villa con calma: se te quedará corta.
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="bg-nocturno py-16 text-white">
+		<div class="mx-auto max-w-4xl px-4 sm:px-6">
+			<SectionHeading
+				eyebrow="Gastronomía"
+				title="Manchega, castiza y reconfortante"
+				description="La mejor recompensa tras el esfuerzo de la carrera: la cocina de la tierra."
+			/>
+			<div class="mt-10 grid gap-6 sm:grid-cols-3">
+				<div class="rounded-xl bg-white/5 p-6 text-center ring-1 ring-white/10">
+					<h3 class="font-display text-xl font-bold text-albero">Morteruelo</h3>
+					<p class="mt-2 text-sm text-white/70">El plato señero de la cocina conquense, ideal para reponer fuerzas.</p>
+				</div>
+				<div class="rounded-xl bg-white/5 p-6 text-center ring-1 ring-white/10">
+					<h3 class="font-display text-xl font-bold text-albero">Migas</h3>
+					<p class="mt-2 text-sm text-white/70">De pan, ajo y pimentón, con uvas y torreznos: la tradición en la mesa.</p>
+				</div>
+				<div class="rounded-xl bg-white/5 p-6 text-center ring-1 ring-white/10">
+					<h3 class="font-display text-xl font-bold text-albero">Vino de la tierra</h3>
+					<p class="mt-2 text-sm text-white/70">San Clemente está en plena tierra del vino de Castilla-La Mancha: brinda por la carrera.</p>
+				</div>
+			</div>
+		</div>
+	</section>
+</Layout>

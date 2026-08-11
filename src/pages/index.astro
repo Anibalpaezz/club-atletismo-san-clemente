@@ -1,0 +1,205 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import CarreraBanner from '../components/CarreraBanner.astro';
+import NoticiaCard from '../components/NoticiaCard.astro';
+import Icon from '../components/Icon.astro';
+import { getCarreraConfig, getNoticiasPublicadas, getPatrocinadores } from '../lib/db';
+import { SITE } from '../lib/site';
+
+export const prerender = false;
+export const revalidate = 60;
+
+const carrera = await getCarreraConfig();
+const noticias = await getNoticiasPublicadas(3);
+const patrocinadores = await getPatrocinadores();
+
+const valoresClub = [
+	{
+		icono: 'users' as const,
+		titulo: 'Un club para todos',
+		texto: 'Del que se estrena al más rápido: todos los niveles tienen hueco en el atletismo popular.',
+	},
+	{
+		icono: 'route' as const,
+		titulo: 'Presencia en el circuito',
+		texto: 'Participamos en el Circuito Provincial de Carreras Populares de la Diputación de Cuenca.',
+	},
+	{
+		icono: 'flag' as const,
+		titulo: 'Organizamos la 10K Nocturna',
+		texto: 'La prueba que cada año pone a San Clemente en el mapa del atletismo popular.',
+	},
+];
+
+const lugaresRuta = [
+	{
+		titulo: 'Plaza Mayor',
+		texto: 'Salida y meta de la carrera. Junto al Antiguo Ayuntamiento renacentista del siglo XVI, es el corazón monumental de la villa.',
+	},
+	{
+		titulo: 'Paraje de Rus',
+		texto: 'Suelo privilegiado de entrenamiento a un paso del casco urbano, entre viñedos y naturaleza manchega.',
+	},
+	{
+		titulo: 'Gastronomía manchega',
+		texto: 'Morteruelo, migas y vino de la tierra: la mejor recompensa después de correr por la Joya del Renacimiento Manchego.',
+	},
+];
+---
+
+<Layout title={SITE.name} description={SITE.descripcion}>
+	<Hero />
+
+	<section class="bg-hueso py-20">
+		<div class="mx-auto max-w-6xl px-4 sm:px-6">
+			<SectionHeading
+				eyebrow="El Club"
+				title="Atletismo popular con raíces manchegas"
+				description="Nacimos de un grupo de amigos que corría por los caminos de San Clemente y hoy somos un club de referencia en el atletismo popular conquense."
+			/>
+
+			<div class="mt-12 grid gap-6 md:grid-cols-3">
+				{valoresClub.map((v) => (
+					<div class="rounded-xl border border-slate-200 bg-white p-7 shadow-sm">
+						<span class="flex h-12 w-12 items-center justify-center rounded-full bg-nocturno/5 text-nocturno-600">
+							<Icon name={v.icono} class="h-6 w-6" />
+						</span>
+						<h3 class="mt-5 font-display text-xl font-bold text-nocturno">{v.titulo}</h3>
+						<p class="mt-2 text-sm leading-relaxed text-tinta/70">{v.texto}</p>
+					</div>
+				))}
+			</div>
+
+			<div class="mt-10 flex justify-center">
+				<a
+					href="/el-club/"
+					class="inline-flex items-center gap-2 rounded-md border-2 border-nocturno px-6 py-3 text-sm font-bold text-nocturno transition hover:bg-nocturno hover:text-white"
+				>
+					Conoce el club
+					<Icon name="arrow-right" class="h-4 w-4" />
+				</a>
+			</div>
+		</div>
+	</section>
+
+	<section class="bg-nocturno py-20 text-white">
+		<div class="mx-auto max-w-6xl px-4 sm:px-6">
+			<SectionHeading
+				eyebrow="La Carrera"
+				title="10K Nocturna Villa de San Clemente"
+				description="Una carrera nocturna única por el casco histórico iluminado, puntuable para el Circuito Provincial de Carreras Populares de la Diputación de Cuenca."
+			/>
+			<div class="mt-12">
+				{carrera ? (
+					<CarreraBanner carrera={carrera} />
+				) : (
+					<p class="text-center text-white/70">
+						La información de la edición se publicará próximamente. Escríbenos a {SITE.email} para
+						consultas.
+					</p>
+				)}
+			</div>
+		</div>
+	</section>
+
+	<section class="bg-hueso py-20">
+		<div class="mx-auto max-w-6xl px-4 sm:px-6">
+			<SectionHeading
+				eyebrow="San Clemente en Ruta"
+				title="Ven a correr, quédate a conocer la Joya"
+				description="San Clemente (Cuenca), la Joya del Renacimiento Manchego, es mucho más que una salida y una meta."
+			/>
+
+			<div class="mt-12 grid gap-6 md:grid-cols-3">
+				{lugaresRuta.map((lugar, i) => (
+					<div class="rounded-xl border border-slate-200 bg-white p-7 shadow-sm">
+						<span class="text-sm font-bold text-albero-600">0{i + 1}</span>
+						<h3 class="mt-2 font-display text-xl font-bold text-nocturno">{lugar.titulo}</h3>
+						<p class="mt-2 text-sm leading-relaxed text-tinta/70">{lugar.texto}</p>
+					</div>
+				))}
+			</div>
+
+			<div class="mt-10 flex justify-center">
+				<a
+					href="/ruta/"
+					class="inline-flex items-center gap-2 rounded-md border-2 border-nocturno px-6 py-3 text-sm font-bold text-nocturno transition hover:bg-nocturno hover:text-white"
+				>
+					Descubre San Clemente
+					<Icon name="arrow-right" class="h-4 w-4" />
+				</a>
+			</div>
+		</div>
+	</section>
+
+	<section class="bg-white py-20">
+		<div class="mx-auto max-w-6xl px-4 sm:px-6">
+			<div class="flex flex-wrap items-end justify-between gap-4">
+				<SectionHeading
+					align="left"
+					eyebrow="Noticias"
+					title="Últimas del club y del circuito"
+					description="Resultados, inscripciones, entrenamientos y carreras del Circuito Provincial de Cuenca."
+				/>
+				<a
+					href="/noticias/"
+					class="inline-flex items-center gap-2 rounded-md border-2 border-nocturno px-5 py-2.5 text-sm font-bold text-nocturno transition hover:bg-nocturno hover:text-white"
+				>
+					Todas las noticias
+					<Icon name="arrow-right" class="h-4 w-4" />
+				</a>
+			</div>
+
+			{noticias.length > 0 ? (
+				<div class="mt-10 grid gap-6 md:grid-cols-3">
+					{noticias.map((n) => (
+						<NoticiaCard noticia={n} />
+					))}
+				</div>
+			) : (
+				<div class="mt-10 rounded-xl border border-dashed border-slate-300 bg-hueso p-10 text-center">
+					<p class="text-sm text-tinta/60">
+						Las noticias del club se publicarán aquí en cuanto se configuren en Supabase.
+					</p>
+				</div>
+			)}
+		</div>
+	</section>
+
+	<section class="border-t border-slate-200 bg-hueso py-16">
+		<div class="mx-auto max-w-6xl px-4 sm:px-6">
+			<div class="flex flex-wrap items-center justify-center gap-x-12 gap-y-6">
+				{patrocinadores.length > 0 ? (
+					patrocinadores.map((p) =>
+						p.url_web ? (
+							<a
+								href={p.url_web}
+								target="_blank"
+								rel="noreferrer noopener"
+								class="text-lg font-bold text-tinta/50 transition hover:text-nocturno"
+							>
+								{p.logo_url ? (
+									<img src={p.logo_url} alt={p.nombre} class="h-10 w-auto max-w-40 object-contain" loading="lazy" />
+								) : (
+									p.nombre
+								)}
+							</a>
+						) : (
+							<span class="text-lg font-bold text-tinta/50">
+								{p.logo_url ? (
+									<img src={p.logo_url} alt={p.nombre} class="h-10 w-auto max-w-40 object-contain" loading="lazy" />
+								) : (
+									p.nombre
+								)}
+							</span>
+						),
+					)
+				) : (
+					<p class="text-sm text-tinta/50">Colaboran: Ayuntamiento de San Clemente · Diputación de Cuenca · Cronomancha</p>
+				)}
+			</div>
+		</div>
+	</section>
+</Layout>

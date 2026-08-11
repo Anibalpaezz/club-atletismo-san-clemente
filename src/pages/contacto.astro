@@ -1,0 +1,85 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import Icon from '../components/Icon.astro';
+import { SITE } from '../lib/site';
+
+export const prerender = true;
+
+const tarjetas = [
+	{
+		icono: 'mail' as const,
+		titulo: 'Correo oficial',
+		lineas: [SITE.email],
+		href: `mailto:${SITE.email}`,
+		cta: 'Escribir un correo',
+	},
+	{
+		icono: 'flag' as const,
+		titulo: 'La carrera',
+		lineas: ['Carrera Popular 10K Nocturna', 'Villa de San Clemente · Plaza Mayor'],
+		href: '/carrera/',
+		cta: 'Ver la carrera',
+	},
+	{
+		icono: 'users' as const,
+		titulo: 'Hazte socio',
+		lineas: ['Abierto a todos los niveles', 'Escríbenos y te contamos todo'],
+		href: `/mailto:${SITE.email}?subject=Alta%20de%20socio%20Club%20Atletismo%20San%20Clemente`,
+		cta: 'Solicitar información',
+	},
+];
+---
+
+<Layout
+	title="Contacto"
+	description="Contacta con el Club Atletismo San Clemente: correo oficial, información de la 10K Nocturna y cómo hacerte socio."
+>
+	<PageHeader
+		eyebrow="Contacto"
+		title="Hablemos"
+		description="Un correo basta para resolver dudas, apuntarte al club o colaborar con la 10K Nocturna."
+	/>
+
+	<section class="bg-hueso py-20">
+		<div class="mx-auto max-w-6xl px-4 sm:px-6">
+			<div class="grid gap-6 md:grid-cols-3">
+				{tarjetas.map((tarjeta) => (
+					<a
+						href={tarjeta.href}
+						class="group rounded-xl border border-slate-200 bg-white p-8 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+					>
+						<span class="flex h-12 w-12 items-center justify-center rounded-full bg-nocturno/5 text-nocturno-600">
+							<Icon name={tarjeta.icono} class="h-6 w-6" />
+						</span>
+						<h2 class="mt-5 font-display text-xl font-bold text-nocturno">{tarjeta.titulo}</h2>
+						<ul class="mt-2 space-y-1 text-sm text-tinta/70">
+							{tarjeta.lineas.map((linea) => (
+								<li>{linea}</li>
+							))}
+						</ul>
+						<span class="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-albero-600">
+							{tarjeta.cta}
+							<Icon name="arrow-right" class="h-4 w-4 transition group-hover:translate-x-0.5" />
+						</span>
+					</a>
+				))}
+			</div>
+
+			<div class="mx-auto mt-16 max-w-2xl rounded-2xl bg-nocturno p-10 text-center text-white">
+				<h2 class="font-display text-2xl font-bold">Colaboradores y patrocinadores</h2>
+				<p class="mt-3 text-white/80">
+					¿Quieres colaborar con el club o patrocinar la 10K Nocturna? Cuéntanos tu propuesta por
+					correo: la carrera y el club necesitan a gente como tú.
+				</p>
+				<a
+					href={`mailto:${SITE.email}?subject=Colaboraci%C3%B3n%20con%20el%20Club%20Atletismo%20San%20Clemente`}
+					class="mt-6 inline-flex items-center gap-2 rounded-md bg-albero px-6 py-3 text-sm font-bold text-nocturno transition hover:bg-albero-100"
+				>
+					<Icon name="mail" class="h-4 w-4" />
+					Propón tu colaboración
+				</a>
+			</div>
+		</div>
+	</section>
+</Layout>

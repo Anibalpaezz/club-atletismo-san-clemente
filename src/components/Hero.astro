@@ -1,0 +1,68 @@
+---
+import { SITE } from '../lib/site';
+import { getCarreraConfig } from '../lib/db';
+import Icon from './Icon.astro';
+
+const carrera = await getCarreraConfig();
+const heroImage =
+	(import.meta.env.PUBLIC_HERO_IMAGE_URL as string | undefined) ?? '/images/hero-plaza-nocturna.svg';
+
+const enlaces = [
+	{
+		href: carrera?.enlace_inscripcion ?? '/carrera/#inscripcion',
+		label: 'Inscripción',
+		destacado: true,
+		externo: Boolean(carrera?.enlace_inscripcion?.startsWith('http')),
+	},
+	{ href: '/carrera/#reglamento', label: 'Reglamento', destacado: false, externo: false },
+	{ href: '/carrera/#recorrido', label: 'Recorrido', destacado: false, externo: false },
+];
+---
+
+<section class="relative overflow-hidden bg-nocturno text-white">
+	<img
+		src={heroImage}
+		alt="Plaza Mayor de San Clemente de noche, escenario de la 10K Nocturna"
+		class="absolute inset-0 h-full w-full object-cover"
+		fetchpriority="high"
+	/>
+	<div class="absolute inset-0 bg-gradient-to-b from-nocturno/80 via-nocturno/60 to-nocturno" />
+
+	<div class="relative mx-auto flex max-w-6xl flex-col justify-end px-4 pb-16 pt-32 sm:px-6 md:min-h-[70vh] md:pb-24">
+		<p class="mb-4 inline-flex w-fit items-center gap-2 rounded-full border border-albero/50 bg-nocturno/60 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-albero backdrop-blur">
+			<Icon name="trophy" class="h-4 w-4" />
+			Club de atletismo popular · San Clemente (Cuenca)
+		</p>
+
+		<h1 class="max-w-3xl font-display text-4xl font-bold leading-tight sm:text-5xl md:text-6xl">
+			Club Atletismo <span class="text-albero">San Clemente</span>
+		</h1>
+
+		<p class="mt-5 max-w-2xl text-lg italic text-white/90 sm:text-xl">
+			“{SITE.lema}”
+		</p>
+
+		<div class="mt-9 flex flex-wrap gap-3">
+			{enlaces.map((enlace) =>
+				enlace.destacado ? (
+					<a
+						href={enlace.href}
+						target={enlace.externo ? '_blank' : undefined}
+						rel={enlace.externo ? 'noreferrer noopener' : undefined}
+						class="inline-flex items-center gap-2 rounded-md bg-albero px-6 py-3 text-sm font-bold text-nocturno shadow-lg shadow-nocturno/40 transition hover:bg-albero-100"
+					>
+						{enlace.label}
+						{enlace.externo && <Icon name="external" class="h-4 w-4" />}
+					</a>
+				) : (
+					<a
+						href={enlace.href}
+						class="inline-flex items-center gap-2 rounded-md border border-white/30 bg-white/5 px-6 py-3 text-sm font-bold text-white backdrop-blur transition hover:border-albero hover:text-albero"
+					>
+						{enlace.label}
+					</a>
+				),
+			)}
+		</div>
+	</div>
+</section>
