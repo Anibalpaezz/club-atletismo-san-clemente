@@ -22,7 +22,11 @@ acompañan a los corredores en los primeros y últimos metros de la prueba.
 
 ### Un circuito urbano y llano
 
-El trazado transcurre íntegramente por el casco histórico, en superficie llana y con el firme
-urbano habitual, lo que lo convierte en un recorrido rápido y muy popular entre los corredores del
-circuito provincial. El mapa detallado y el perfil de cada edición se publican próximamente en este
-apartado.
+El trazado consta de **10.000 metros en dos vueltas de 5.000 metros cada una**, totalmente urbano,
+sobre asfalto y con un perfil prácticamente llano, con salida y meta en la Plaza Mayor. Los puntos
+kilométricos están marcados y el circuito cuenta con al menos dos zonas de avituallamiento por
+vuelta. La prueba de **5K «Iniciación al deporte saludable»** consiste en una sola vuelta al mismo
+circuito, coincidiendo con la primera vuelta de la carrera de los 10K.
+
+Puedes seguir el trazado sobre el mapa interactivo de esta página, con la salida/meta y los puntos
+de avituallamiento señalizados.
