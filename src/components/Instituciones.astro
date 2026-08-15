@@ -1,0 +1,35 @@
+---
+const instituciones = [
+	{
+		nombre: 'Ayuntamiento de San Clemente',
+		imagen: '/images/instituciones/Escudo_de_San_Clemente.webp',
+	},
+	{
+		nombre: 'Diputación Provincial de Cuenca',
+		imagen: '/images/instituciones/Escudo_de_la_Provincia_de_Cuenca.svg',
+	},
+	{
+		nombre: 'Junta de Comunidades de Castilla-La Mancha',
+		imagen: '/images/instituciones/Escudo_de_la_Junta_de_Comunidades_de_Castilla-La_Mancha.webp',
+	},
+];
+---
+
+<section class="border-b border-slate-200 bg-hueso" aria-label="Instituciones que colaboran y organizan">
+	<div class="mx-auto flex max-w-6xl flex-col items-center gap-3 px-4 py-4 sm:px-6 md:flex-row md:justify-center md:gap-8">
+		<p class="text-xs font-bold uppercase tracking-[0.2em] text-tinta/50">Organizan y colaboran</p>
+		<ul class="flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
+			{instituciones.map((institucion) => (
+				<li>
+					<img
+						src={institucion.imagen}
+						alt={institucion.nombre}
+						title={institucion.nombre}
+						class="h-12 w-auto object-contain sm:h-14"
+						loading="lazy"
+					/>
+				</li>
+			))}
+		</ul>
+	</div>
+</section>
