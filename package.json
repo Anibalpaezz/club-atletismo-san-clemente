@@ -17,6 +17,7 @@
     "@astrojs/vercel": "^11.0.5",
     "@supabase/supabase-js": "^2.112.3",
     "@tailwindcss/vite": "^4.3.3",
+    "@vercel/speed-insights": "^2.0.0",
     "astro": "^7.2.0",
     "leaflet": "^1.9.4",
     "react": "^19.2.8",

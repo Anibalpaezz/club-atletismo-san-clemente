@@ -1,0 +1,105 @@
+---
+import type { ClubAmigo } from '../lib/clubes';
+import SectionHeading from './SectionHeading.astro';
+import Icon from './Icon.astro';
+
+interface Props {
+	clubes: ClubAmigo[];
+}
+const { clubes } = Astro.props;
+
+const filtros = [
+	{ id: 'todos', etiqueta: 'Todos' },
+	{ id: 'clubes', etiqueta: 'Clubes de Cuenca' },
+	{ id: 'circuitos', etiqueta: 'Circuitos Oficiales' },
+];
+---
+
+<section id="clubes-amigos" class="border-t border-slate-200 bg-hueso py-20">
+	<div class="mx-auto max-w-6xl px-4 sm:px-6">
+		<SectionHeading
+			eyebrow="Hermanamiento deportivo"
+			title="Clubes Amigos y Comunidad Runner"
+			description="La relación de colaboración que el Club Atletismo San Clemente mantiene con otros clubes de la provincia de Cuenca y zonas limítrofes, dentro del calendario del Circuito de Carreras Populares."
+		/>
+
+		<div class="mt-10 flex flex-wrap justify-center gap-2">
+			{filtros.map((filtro, i) => (
+				<button
+					type="button"
+					data-filtro={filtro.id}
+					class:list={[
+						'rounded-full border px-5 py-2 text-sm font-semibold transition',
+						i === 0
+							? 'border-nocturno bg-nocturno text-white'
+							: 'border-slate-300 bg-white text-tinta/70 hover:border-albero-600 hover:text-nocturno',
+					]}
+					aria-pressed={i === 0}
+				>
+					{filtro.etiqueta}
+				</button>
+			))}
+		</div>
+
+		<div class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3" data-clubes>
+			{clubes.map((club) => (
+				<article
+					data-categoria={club.categoria}
+					class="flex flex-col rounded-xl border border-slate-200 bg-white p-6 transition duration-300 hover:-translate-y-1 hover:scale-[1.02] hover:shadow-lg"
+				>
+					<div class="flex items-center justify-between gap-3">
+						<span class="rounded-full bg-albero/15 px-3 py-1 text-xs font-bold uppercase tracking-wider text-albero-700">
+							{club.tag}
+						</span>
+					</div>
+
+					<h3 class="mt-4 font-display text-lg font-bold leading-snug text-nocturno">{club.nombre}</h3>
+
+					<p class="mt-2 flex items-start gap-2 text-sm font-medium text-tinta/70">
+						<Icon name="map-pin" class="mt-0.5 h-4 w-4 shrink-0 text-albero-600" />
+						<span>{club.localidad}</span>
+					</p>
+
+					<p class="mt-3 text-sm leading-relaxed text-tinta/70">{club.descripcion}</p>
+
+					<a
+						href={club.web}
+						target="_blank"
+						rel="noopener noreferrer"
+						class="mt-auto inline-flex items-center gap-2 pt-5 text-sm font-semibold text-albero-600 transition hover:text-nocturno"
+					>
+						Visitar web
+						<Icon name="external" class="h-4 w-4" />
+					</a>
+				</article>
+			))}
+		</div>
+	</div>
+</section>
+
+<script>
+	function aplicarHistorial(activo: string) {
+		document.querySelectorAll<HTMLButtonElement>('[data-filtro]').forEach((boton) => {
+			const esActivo = boton.dataset.filtro === activo;
+			boton.setAttribute('aria-pressed', String(esActivo));
+			boton.className = esActivo
+				? 'rounded-full border border-nocturno bg-nocturno px-5 py-2 text-sm font-semibold text-white transition'
+				: 'rounded-full border border-slate-300 bg-white px-5 py-2 text-sm font-semibold text-tinta/70 transition hover:border-albero-600 hover:text-nocturno';
+		});
+
+		document.querySelectorAll<HTMLElement>('[data-categoria]').forEach((tarjeta) => {
+			const visible =
+				activo === 'todos' || tarjeta.dataset.categoria === (activo === 'clubes' ? 'club' : 'circuito');
+			tarjeta.hidden = !visible;
+		});
+	}
+
+	document.querySelectorAll<HTMLButtonElement>('[data-filtro]').forEach((boton) => {
+		boton.addEventListener('click', () => {
+			const activo = boton.dataset.filtro ?? 'todos';
+			aplicarHistorial(activo);
+		});
+	});
+
+	aplicarHistorial('todos');
+</script>
