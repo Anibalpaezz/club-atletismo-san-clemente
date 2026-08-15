@@ -2,11 +2,12 @@ export const SITE = {
 	name: 'Club Atletismo San Clemente',
 	nombreCorto: 'Atletismo San Clemente',
 	lema: 'Corriendo por la Joya del Renacimiento Manchego',
+	url: 'https://club-atletismo-san-clemente.vercel.app',
 	email: 'losquevanacorrertesaludan@hotmail.com',
 	blogspot: 'https://clubatletismosanclemente.blogspot.com',
 	municipio: 'San Clemente (Cuenca)',
 	descripcion:
-		'Club de atletismo popular de San Clemente (Cuenca), organizador de la Carrera Popular 10K Nocturna Villa de San Clemente.',
+		'Web oficial del Club Atletismo San Clemente. Escuela deportiva, competiciones, inscripciones, horarios y eventos de atletismo en San Clemente (Cuenca).',
 };
 
 export const NAV = [

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://club-atletismo-san-clemente.vercel.app/sitemap.xml
