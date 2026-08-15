@@ -3,6 +3,7 @@ import Layout from '../../layouts/Layout.astro';
 import Icon from '../../components/Icon.astro';
 import { getNoticiaBySlug, getNoticiasPublicadas } from '../../lib/db';
 import { formatFecha } from '../../lib/formato';
+import { getCollection, render } from 'astro:content';
 
 export const prerender = false;
 export const revalidate = 60;
@@ -16,6 +17,12 @@ if (!noticia) {
 }
 
 const recientes = (await getNoticiasPublicadas(3)).filter((n) => n.id !== noticia.id).slice(0, 3);
+
+const entradaEstatica = (await getCollection('noticias')).find((e) => e.id === slug);
+let ContentEstatica: any;
+if (entradaEstatica) {
+	({ Content: ContentEstatica } = await render(entradaEstatica));
+}
 
 const parrafos = (noticia.cuerpo ?? '').split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean);
 const fecha = formatFecha(noticia.fecha_publicacion ?? noticia.created_at);
@@ -55,13 +62,19 @@ const fecha = formatFecha(noticia.fecha_publicacion ?? noticia.created_at);
 				</p>
 			)}
 
-			<div class="mt-6 space-y-4 text-base leading-relaxed text-tinta/80">
-				{parrafos.length > 0 ? (
-					parrafos.map((p) => <p>{p}</p>)
-				) : (
-					<p>{noticia.resumen ?? noticia.titulo}</p>
-				)}
-			</div>
+			{ContentEstatica ? (
+				<div class="prose prose-nocturno mt-6 max-w-none text-tinta/80 [&_h2]:font-display [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:text-nocturno [&_h3]:font-display [&_h3]:text-lg [&_h3]:font-bold [&_h3]:text-nocturno [&_ul]:mt-3 [&_ul]:space-y-1.5 [&_li]:text-[15px] [&_hr]:my-6 [&_em]:italic">
+					<ContentEstatica />
+				</div>
+			) : (
+				<div class="mt-6 space-y-4 text-base leading-relaxed text-tinta/80">
+					{parrafos.length > 0 ? (
+						parrafos.map((p) => <p>{p}</p>)
+					) : (
+						<p>{noticia.resumen ?? noticia.titulo}</p>
+					)}
+				</div>
+			)}
 		</div>
 	</article>
 
