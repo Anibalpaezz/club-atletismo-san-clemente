@@ -14,41 +14,63 @@ const { establecimientos } = Astro.props;
 		<SectionHeading
 			eyebrow="Comercios y servicios locales"
 			title="Establecimientos que nos apoyan"
-			description="Los comercios y negocios de San Clemente que colaboran con el club y con la 10K Nocturna: tiendas, bodegas, bancos y servicios de la villa."
+			description="Los comercios y negocios que colaboran con el club y con la 10K Nocturna: tiendas, bodegas, bancos y servicios de la comarca."
 		/>
-		<div class="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+		<div class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
 			{establecimientos.map((establecimiento) => (
-				<a
-					href={establecimiento.url_web}
-					target={establecimiento.url_web ? '_blank' : undefined}
-					rel={establecimiento.url_web ? 'noreferrer noopener' : undefined}
-					class="group flex flex-col items-center justify-between rounded-xl border border-slate-200 bg-hueso p-5 text-center transition hover:-translate-y-0.5 hover:shadow-md"
-				>
-					<div class="flex h-20 w-full items-center justify-center">
-						{establecimiento.imagen ? (
-							<img
-								src={establecimiento.imagen}
-								alt={`Logo de ${establecimiento.nombre}`}
-								loading="lazy"
-								class="max-h-16 w-auto max-w-full object-contain transition group-hover:scale-[1.03]"
-							/>
-						) : (
-							<span class="font-display text-base font-bold text-nocturno">{establecimiento.nombre}</span>
+				<div class="flex flex-col rounded-xl border border-slate-200 bg-hueso p-5 transition hover:-translate-y-0.5 hover:shadow-md">
+					<div class="flex items-start justify-between gap-3">
+						<div>
+							<h3 class="font-display text-base font-bold leading-snug text-nocturno">
+								{establecimiento.nombre}
+							</h3>
+							{establecimiento.subtitulo && (
+								<p class="mt-1 text-xs leading-relaxed text-tinta/60">{establecimiento.subtitulo}</p>
+							)}
+						</div>
+						{establecimiento.web && (
+							<a
+								href={establecimiento.web}
+								target="_blank"
+								rel="noreferrer noopener"
+								aria-label={`Visitar la web de ${establecimiento.nombre}`}
+								class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-nocturno text-albero transition hover:bg-nocturno-700"
+							>
+								<Icon name="external" class="h-4 w-4" />
+							</a>
 						)}
 					</div>
-					<div class="mt-4">
-						<p class="font-display text-sm font-bold leading-snug text-nocturno">{establecimiento.nombre}</p>
-						{establecimiento.detalle && (
-							<p class="mt-1 text-xs leading-relaxed text-tinta/60">{establecimiento.detalle}</p>
+
+					<ul class="mt-4 space-y-2 text-sm text-tinta/70">
+						<li class="flex items-start gap-2.5">
+							<Icon name="map-pin" class="mt-0.5 h-4 w-4 shrink-0 text-albero-600" />
+							<span>{establecimiento.direccion}</span>
+						</li>
+						{establecimiento.telefono && (
+							<li class="flex items-start gap-2.5">
+								<Icon name="phone" class="mt-0.5 h-4 w-4 shrink-0 text-albero-600" />
+								<a
+									href={`tel:${establecimiento.telefono.replace(/[^+\d]/g, '')}`}
+									class="underline-offset-2 transition hover:text-nocturno hover:underline"
+								>
+									{establecimiento.telefono}
+								</a>
+							</li>
 						)}
-					</div>
-					{establecimiento.url_web && (
-						<span class="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-albero-600">
+					</ul>
+
+					{establecimiento.web && (
+						<a
+							href={establecimiento.web}
+							target="_blank"
+							rel="noreferrer noopener"
+							class="mt-auto inline-flex items-center gap-1 pt-4 text-xs font-semibold text-albero-600 transition hover:text-nocturno"
+						>
 							Visitar
-							<Icon name="external" class="h-3 w-3" />
-						</span>
+							<Icon name="arrow-right" class="h-3 w-3" />
+						</a>
 					)}
-				</a>
+				</div>
 			))}
 		</div>
 	</div>
