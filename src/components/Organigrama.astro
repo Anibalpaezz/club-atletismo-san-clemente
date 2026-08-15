@@ -1,0 +1,79 @@
+---
+import Icon from './Icon.astro';
+import { FECHA_ORGANIGRAMA, JUNTA, VOCALES, SOCIOS } from '../lib/directiva';
+---
+
+<div class="mt-10 rounded-2xl border border-slate-200 bg-white p-8 shadow-sm sm:p-10">
+	<div class="flex items-center justify-between gap-3">
+		<h3 class="font-display text-2xl font-bold text-nocturno">Organigrama</h3>
+		<span class="inline-flex items-center gap-1.5 rounded-full bg-hueso px-3 py-1 text-xs font-semibold text-tinta/60">
+			<Icon name="calendar" class="h-3.5 w-3.5" />
+			a {FECHA_ORGANIGRAMA}
+		</span>
+	</div>
+
+	<p class="mt-2 text-sm text-tinta/60">
+		La Junta Directiva trabaja de forma voluntaria para mantener el club activo todo el año. Toda la
+		directiva se elige en asamblea y el organigrama se actualiza cada temporada.
+	</p>
+
+	<div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+		{JUNTA.map((miembro, i) => (
+			<div
+				class:list={[
+					'rounded-xl border p-5',
+					i === 0
+						? 'border-nocturno bg-nocturno text-white'
+						: 'border-slate-200 bg-hueso',
+				]}
+			>
+				<span
+					class:list={[
+						'text-[11px] font-bold uppercase tracking-[0.15em]',
+						i === 0 ? 'text-albero' : 'text-albero-600',
+					]}
+				>
+					{miembro.cargo}
+				</span>
+				<p class:list={['mt-2 font-display text-base font-bold leading-snug', i === 0 ? 'text-white' : 'text-nocturno']}>
+					{miembro.nombre}
+				</p>
+			</div>
+		))}
+	</div>
+
+	<div class="mt-10">
+		<h4 class="flex items-center gap-2 font-display text-lg font-bold text-nocturno">
+			<Icon name="users" class="h-5 w-5 text-albero-600" />
+			Vocales
+		</h4>
+		<div class="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+			{VOCALES.map((miembro) => (
+				<div class="flex items-start gap-2.5 rounded-lg border border-slate-100 bg-hueso px-4 py-3">
+					<span class="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-albero-600" />
+					<div>
+						<p class="font-semibold text-nocturno">{miembro.nombre}</p>
+						{miembro.funcion && <p class="text-xs text-tinta/55">{miembro.funcion}</p>}
+					</div>
+				</div>
+			))}
+		</div>
+	</div>
+
+	<div class="mt-10">
+		<h4 class="flex items-center gap-2 font-display text-lg font-bold text-nocturno">
+			<Icon name="flag" class="h-5 w-5 text-albero-600" />
+			Socios
+		</h4>
+		<div class="mt-4 flex flex-wrap gap-2.5">
+			{SOCIOS.map((miembro) => (
+				<span class="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-hueso px-3.5 py-1.5 text-sm text-tinta/80">
+					{miembro.nombre}
+					{miembro.funcion && (
+						<span class="text-xs text-albero-600">· {miembro.funcion}</span>
+					)}
+				</span>
+			))}
+		</div>
+	</div>
+</div>

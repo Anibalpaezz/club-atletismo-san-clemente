@@ -162,20 +162,20 @@ const servicios = [
 
 	{reglamentos.length > 0 && (
 		<section id="reglamento" class="scroll-mt-20 bg-white py-20">
-			<div class="mx-auto max-w-4xl px-4 sm:px-6">
+			<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 				<SectionHeading
 					eyebrow="Reglamento"
 					title="Bases de la prueba"
 					description="Normativa de la 10K y de la 5K de iniciación de la edición vigente."
 				/>
-				<div class="mt-10 grid gap-8 md:grid-cols-2">
+				<div class="mt-10 space-y-8">
 					{reglamentos.map((entrada) => (
-						<article class="rounded-xl border border-slate-200 bg-hueso p-8">
+						<article class="rounded-2xl border border-slate-200 bg-hueso p-8 sm:p-10">
 							<span class="inline-flex rounded-full bg-nocturno px-3 py-1 text-xs font-bold uppercase tracking-wider text-white">
 								{entrada.data.categoria === '10k' ? '10K' : '5K de iniciación'}
 							</span>
 							<h3 class="mt-4 font-display text-2xl font-bold text-nocturno">{entrada.data.titulo}</h3>
-							<div class="prose prose-sm prose-nocturno mt-4 max-w-none text-tinta/80">
+							<div class="prose prose-nocturno mt-5 max-w-none text-tinta/80 [&_h3]:text-lg [&_h3]:font-bold [&_h3]:text-nocturno [&_ul]:mt-3 [&_ul]:space-y-1.5 [&_li]:text-[15px]">
 								<entrada.html />
 							</div>
 						</article>

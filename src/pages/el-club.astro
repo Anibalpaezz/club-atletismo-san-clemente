@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import PageHeader from '../components/PageHeader.astro';
 import ClubesAmigos from '../components/ClubesAmigos.astro';
+import Organigrama from '../components/Organigrama.astro';
 import Icon from '../components/Icon.astro';
 import { CLUBES_AMIGOS } from '../lib/clubes';
 import { getCollection, render } from 'astro:content';
@@ -43,6 +44,7 @@ const renderizados = await Promise.all(
 					<div class="prose-h2 prose prose-nocturno mt-5 max-w-none text-tinta/80">
 						<entrada.html />
 					</div>
+					{entrada.data.titulo === 'Directiva' && <Organigrama />}
 				</article>
 			))}
 		</div>
