@@ -33,8 +33,7 @@ export const REDES = [
 	},
 	{
 		nombre: 'Instagram',
-		href: 'https://www.instagram.com/',
+		href: 'https://www.instagram.com/clubatletismosanclemente/',
 		icono: 'instagram',
-		placeholder: true,
 	},
 ];

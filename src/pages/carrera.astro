@@ -4,6 +4,7 @@ import PageHeader from '../components/PageHeader.astro';
 import CarreraBanner from '../components/CarreraBanner.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import Icon from '../components/Icon.astro';
+import MapaRecorrido from '../components/MapaRecorrido.astro';
 import { getCollection, render } from 'astro:content';
 import { getCarreraConfig } from '../lib/db';
 import { SITE } from '../lib/site';
@@ -112,16 +113,9 @@ const servicios = [
 					</div>
 					<div class="lg:sticky lg:top-24 lg:self-start">
 						<div class="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
-							<div class="aspect-[4/3]">
-								<iframe
-									src="https://www.openstreetmap.org/export/embed.html?bbox=-2.4375%2C39.3965%2C-2.4205%2C39.4115&layer=mapnik&marker=39.4040%2C-2.4290"
-									title="Mapa de San Clemente (Cuenca) con la Plaza Mayor, salida y meta de la 10K Nocturna"
-									loading="lazy"
-									class="h-full w-full border-0"
-								></iframe>
-							</div>
+							<MapaRecorrido />
 							<a
-								href="https://www.openstreetmap.org/?mlat=39.4040&mlon=-2.4290#map=15/39.4040/-2.4290"
+								href="https://www.openstreetmap.org/?mlat=39.40387&mlon=-2.42878#map=16/39.40387/-2.42878"
 								target="_blank"
 								rel="noreferrer noopener"
 								class="block bg-white px-4 py-3 text-center text-xs font-semibold text-nocturno transition hover:bg-hueso"

@@ -1,0 +1,210 @@
+---
+---
+
+<div class="h-full w-full">
+	<div
+		id="mapa-recorrido"
+		class="h-80 w-full sm:h-96 lg:h-[28rem]"
+		aria-label="Mapa del circuito urbano de la Carrera Nocturna Villa de San Clemente"
+	></div>
+</div>
+
+<script>
+	import 'leaflet/dist/leaflet.css';
+	import L from 'leaflet';
+	import type { FeatureCollection } from 'geojson';
+
+	document.addEventListener('astro:page-load', () => {
+		const container = document.getElementById('mapa-recorrido');
+		if (!container || container.dataset.mapIniciado === 'true') return;
+
+		const centro = { lat: 39.40387, lng: -2.42878 };
+
+		const recorrido: FeatureCollection = {
+			type: 'FeatureCollection',
+			features: [
+				{
+					type: 'Feature',
+					properties: {
+						id: 'start-finish',
+						name: 'Salida y Meta',
+						category: 'milestone',
+						description: 'Plaza Mayor de San Clemente frente al Ayuntamiento',
+					},
+					geometry: {
+						type: 'Point',
+						coordinates: [-2.42878, 39.40387],
+					},
+				},
+				{
+					type: 'Feature',
+					properties: {
+						id: 'water-station-1',
+						name: 'Punto de Avituallamiento 1',
+						category: 'aid_station',
+						description: 'Avituallamiento km 2.5 (Paso por casco histórico)',
+					},
+					geometry: {
+						type: 'Point',
+						coordinates: [-2.4262, 39.4005],
+					},
+				},
+				{
+					type: 'Feature',
+					properties: {
+						id: 'race-track',
+						name: 'Circuito Urbano 5K / 10K',
+						category: 'track',
+						description:
+							'Recorrido circular por el casco histórico y principales vías urbanas de San Clemente',
+					},
+					geometry: {
+						type: 'LineString',
+						coordinates: [
+							[-2.42878, 39.40387],
+							[-2.4279, 39.4035],
+							[-2.4271, 39.4029],
+							[-2.4264, 39.4018],
+							[-2.4262, 39.4005],
+							[-2.4275, 39.3992],
+							[-2.4298, 39.3985],
+							[-2.4325, 39.3991],
+							[-2.4342, 39.4006],
+							[-2.4338, 39.4023],
+							[-2.4315, 39.4034],
+							[-2.4298, 39.4039],
+							[-2.42878, 39.40387],
+						],
+					},
+				},
+			],
+		};
+
+		const mapa = L.map(container, {
+			center: [centro.lat, centro.lng],
+			zoom: 16,
+			scrollWheelZoom: true,
+		});
+
+		L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+			maxZoom: 19,
+			attribution:
+				'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+		}).addTo(mapa);
+
+		const etiquetaCategoria: Record<string, string> = {
+			milestone: 'Salida y Meta',
+			aid_station: 'Avituallamiento',
+			track: 'Recorrido',
+		};
+
+		const contenidoPopup = (propiedades: {
+			category?: string;
+			name?: string;
+			description?: string;
+		}) => {
+			const categoria = etiquetaCategoria[propiedades.category ?? ''] ?? propiedades.category;
+			return `
+				<div class="popup-recorrido">
+					<span class="popup-recorrido__categoria">${categoria}</span>
+					<strong class="popup-recorrido__titulo">${propiedades.name}</strong>
+					<p class="popup-recorrido__descripcion">${propiedades.description}</p>
+				</div>`;
+		};
+
+		const cargarPunto = (feature: any, latlng: L.LatLng) => {
+			const esSalida = feature.properties.category === 'milestone';
+			const icono = L.divIcon({
+				className: '',
+				html: `<div class="marcador-mapa ${esSalida ? 'marcador-mapa--salida' : 'marcador-mapa--avituallamiento'}" role="img" aria-label="${feature.properties.name}"><span>${esSalida ? '🏁' : '💧'}</span></div>`,
+				iconSize: [38, 44],
+				iconAnchor: [19, 44],
+				popupAnchor: [0, -40],
+			});
+
+			return L.marker(latlng, { icon: icono });
+		};
+
+		L.geoJSON(recorrido, {
+			style: () => ({
+				color: '#e63946',
+				weight: 4,
+				opacity: 0.9,
+			}),
+			pointToLayer: cargarPunto,
+			onEachFeature: (feature, layer) => {
+				layer.bindPopup(contenidoPopup(feature.properties), {
+					minWidth: 220,
+				});
+				if (feature.geometry.type === 'LineString') {
+					layer.on('click', () => layer.openPopup());
+				}
+			},
+		}).addTo(mapa);
+
+		const limites = L.latLngBounds([]);
+		recorrido.features.forEach((feature) => {
+			if (feature.geometry.type === 'LineString') {
+				feature.geometry.coordinates.forEach(([lng, lat]) =>
+					limites.extend([lat, lng]),
+				);
+			} else if (feature.geometry.type === 'Point') {
+				const [lng, lat] = feature.geometry.coordinates;
+				limites.extend([lat, lng]);
+			}
+		});
+		mapa.fitBounds(limites, { padding: [32, 32] });
+
+		container.dataset.mapIniciado = 'true';
+	});
+</script>
+
+<style is:global>
+	.marcador-mapa {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 38px;
+		height: 38px;
+		border-radius: 50% 50% 50% 0;
+		transform: rotate(-45deg);
+		border: 3px solid #ffffff;
+		box-shadow: 0 4px 12px rgba(10, 31, 68, 0.45);
+	}
+	.marcador-mapa span {
+		transform: rotate(45deg);
+		font-size: 18px;
+		line-height: 1;
+	}
+	.marcador-mapa--salida {
+		background: #e63946;
+	}
+	.marcador-mapa--avituallamiento {
+		background: #2a9d8f;
+	}
+	.popup-recorrido {
+		font-family: inherit;
+		padding: 4px 0;
+	}
+	.popup-recorrido__categoria {
+		display: inline-block;
+		font-size: 10px;
+		font-weight: 700;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: #a9853b;
+	}
+	.popup-recorrido__titulo {
+		display: block;
+		margin-top: 2px;
+		font-size: 13px;
+		color: #0a1f44;
+	}
+	.popup-recorrido__descripcion {
+		margin-top: 4px;
+		font-size: 12px;
+		line-height: 1.4;
+		color: #1f2430;
+		opacity: 0.85;
+	}
+</style>
