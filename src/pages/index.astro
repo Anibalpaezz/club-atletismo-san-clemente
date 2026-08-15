@@ -5,7 +5,9 @@ import SectionHeading from '../components/SectionHeading.astro';
 import CarreraBanner from '../components/CarreraBanner.astro';
 import NoticiaCard from '../components/NoticiaCard.astro';
 import Icon from '../components/Icon.astro';
+import Establecimientos from '../components/Establecimientos.astro';
 import { getCarreraConfig, getNoticiasPublicadas, getPatrocinadores } from '../lib/db';
+import { ESTABLECIMIENTOS } from '../lib/comercios';
 import { SITE } from '../lib/site';
 
 export const prerender = false;
@@ -170,6 +172,8 @@ const lugaresRuta = [
 			)}
 		</div>
 	</section>
+
+	<Establecimientos establecimientos={ESTABLECIMIENTOS} />
 
 	<section class="border-t border-slate-200 bg-hueso py-16">
 		<div class="mx-auto max-w-6xl px-4 sm:px-6">

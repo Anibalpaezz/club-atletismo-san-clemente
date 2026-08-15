@@ -93,21 +93,46 @@ const servicios = [
 
 	{recorrido.length > 0 && (
 		<section id="recorrido" class="scroll-mt-20 bg-hueso py-20">
-			<div class="mx-auto max-w-4xl px-4 sm:px-6">
+			<div class="mx-auto max-w-6xl px-4 sm:px-6">
 				<SectionHeading
 					eyebrow="Recorrido"
 					title="Un circuito por el corazón del Renacimiento"
 					description="Urbano y llano: Plaza Mayor, Torre Vieja e Iglesia de Santiago Apóstol, con salida y meta junto al Antiguo Ayuntamiento."
 				/>
-				<div class="mt-10 space-y-8">
-					{recorrido.map((entrada) => (
-						<article class="rounded-xl border border-slate-200 bg-white p-8 shadow-sm">
-							<h3 class="font-display text-2xl font-bold text-nocturno">{entrada.data.titulo}</h3>
-							<div class="prose prose-nocturno mt-4 max-w-none text-tinta/80">
-								<entrada.html />
+				<div class="mt-10 grid gap-8 lg:grid-cols-2">
+					<div class="space-y-8">
+						{recorrido.map((entrada) => (
+							<article class="rounded-xl border border-slate-200 bg-white p-8 shadow-sm">
+								<h3 class="font-display text-2xl font-bold text-nocturno">{entrada.data.titulo}</h3>
+								<div class="prose prose-nocturno mt-4 max-w-none text-tinta/80">
+									<entrada.html />
+								</div>
+							</article>
+						))}
+					</div>
+					<div class="lg:sticky lg:top-24 lg:self-start">
+						<div class="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+							<div class="aspect-[4/3]">
+								<iframe
+									src="https://www.openstreetmap.org/export/embed.html?bbox=-2.4375%2C39.3965%2C-2.4205%2C39.4115&layer=mapnik&marker=39.4040%2C-2.4290"
+									title="Mapa de San Clemente (Cuenca) con la Plaza Mayor, salida y meta de la 10K Nocturna"
+									loading="lazy"
+									class="h-full w-full border-0"
+								></iframe>
 							</div>
-						</article>
-					))}
+							<a
+								href="https://www.openstreetmap.org/?mlat=39.4040&mlon=-2.4290#map=15/39.4040/-2.4290"
+								target="_blank"
+								rel="noreferrer noopener"
+								class="block bg-white px-4 py-3 text-center text-xs font-semibold text-nocturno transition hover:bg-hueso"
+							>
+								Ver mapa más grande
+							</a>
+							<p class="border-t border-slate-200 bg-hueso px-4 py-2 text-center text-[11px] text-tinta/50">
+								Datos del mapa © <a href="https://www.openstreetmap.org/" target="_blank" rel="noreferrer noopener" class="underline underline-offset-2 hover:text-nocturno">OpenStreetMap</a>
+							</p>
+						</div>
+					</div>
 				</div>
 			</div>
 		</section>
