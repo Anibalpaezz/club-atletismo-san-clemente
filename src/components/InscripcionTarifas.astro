@@ -1,0 +1,120 @@
+---
+import Icon from './Icon.astro';
+
+// TODO: confirmar con la junta directiva los precios de la edición vigente.
+// Los valores actuales proceden del reglamento 2026:
+// src/content/carrera/reglamento-10k.md y src/content/carrera/reglamento-5k.md.
+
+interface Props {
+	enlaceInscripcion?: string | null;
+	textoCta?: string | null;
+}
+const { enlaceInscripcion, textoCta } = Astro.props;
+
+const tarifas = [
+	{
+		icono: 'route' as const,
+		prueba: '10K Nocturna',
+		subtitulo: 'Inscritos en el Circuito de la Diputación de Cuenca',
+		precio: '10,00 €',
+		detalle:
+			'Sub-25: 8,00 €. Con bonificaciones por pruebas del circuito 2025: 8,00 / 7,00 / 6,00 € (sub-25: 6,00 / 5,00 / 4,00 €).',
+		destacada: true,
+	},
+	{
+		icono: 'trophy' as const,
+		prueba: '10K Nocturna',
+		subtitulo: 'No inscritos en el Circuito',
+		precio: '15,00 €',
+		detalle: 'Incluye el chip desechable.',
+		destacada: false,
+	},
+	{
+		icono: 'flag' as const,
+		prueba: '5K «Iniciación al deporte saludable»',
+		subtitulo: 'Corredores y caminantes de todas las edades',
+		precio: '15,00 €',
+		detalle: 'Incluye la misma bolsa del corredor que la 10K. Prueba no competitiva.',
+		destacada: false,
+	},
+];
+
+const notas = [
+	'Las inscripciones de la semana de la prueba (del lunes 25 al jueves 28 de mayo) pierden la bonificación: +2,00 €.',
+	'El día de la carrera (hasta 20 plazas): 16,00 € para inscritos en el Circuito y 18,00 € para no inscritos (incluye chip desechable), hasta una hora antes de la salida.',
+	'Pagos: transferencia bancaria hasta el martes 26 de mayo a las 23:59 h; tarjeta bancaria hasta el jueves 28 de mayo a las 24:00 h.',
+];
+---
+
+<div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-10">
+	<div class="grid gap-5 md:grid-cols-3">
+		{tarifas.map((tarifa) => (
+			<div
+				class:list={[
+					'flex flex-col rounded-xl border p-6',
+					tarifa.destacada
+						? 'border-nocturno bg-nocturno text-white'
+						: 'border-slate-200 bg-hueso',
+				]}
+			>
+				<span
+					class:list={[
+						'flex h-11 w-11 items-center justify-center rounded-full',
+						tarifa.destacada ? 'bg-albero/15 text-albero' : 'bg-nocturno/5 text-nocturno-600',
+					]}
+				>
+					<Icon name={tarifa.icono} class="h-5 w-5" />
+				</span>
+				<p
+					class:list={[
+						'mt-4 text-[11px] font-bold uppercase tracking-[0.15em]',
+						tarifa.destacada ? 'text-albero' : 'text-albero-600',
+					]}
+				>
+					{tarifa.prueba}
+				</p>
+				<h4
+					class:list={['mt-1 text-base font-semibold leading-snug', tarifa.destacada ? 'text-white' : 'text-nocturno']}
+				>
+					{tarifa.subtitulo}
+				</h4>
+				<p
+					class:list={[
+						'mt-3 font-display text-3xl font-bold',
+						tarifa.destacada ? 'text-albero' : 'text-nocturno',
+					]}
+				>
+					{tarifa.precio}
+				</p>
+				<p
+					class:list={['mt-2 text-sm leading-relaxed', tarifa.destacada ? 'text-white/70' : 'text-tinta/70']}
+				>
+					{tarifa.detalle}
+				</p>
+			</div>
+		))}
+	</div>
+
+	{enlaceInscripcion && (
+		<div class="mt-8 flex justify-center">
+			<a
+				href={enlaceInscripcion}
+				target="_blank"
+				rel="noreferrer noopener"
+				class="inline-flex items-center gap-2 rounded-md bg-albero px-6 py-3 text-sm font-bold text-nocturno transition hover:bg-albero-100"
+			>
+				{textoCta ?? 'Inscríbete'}
+				<Icon name="external" class="h-4 w-4" />
+			</a>
+		</div>
+	)}
+
+	<ul class="mt-8 space-y-2.5 border-t border-slate-200 pt-6">
+		{notas.map((nota) => (
+			<li class="flex items-start gap-2.5 text-sm text-tinta/70">
+				<Icon name="check" class="mt-0.5 h-4 w-4 shrink-0 text-albero-600" />
+				<span>{nota}</span>
+			</li>
+		))}
+	</ul>
+</div>

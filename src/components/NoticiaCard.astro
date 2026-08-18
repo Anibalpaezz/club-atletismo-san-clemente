@@ -11,7 +11,7 @@ const fecha = formatFecha(noticia.fecha_publicacion ?? noticia.created_at);
 ---
 
 <a
-	href={`/noticias/${noticia.id}/`}
+	href={`/noticias/${noticia.slug ?? noticia.id}/`}
 	class="group flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
 >
 	<div class="aspect-[16/9] overflow-hidden bg-hueso">

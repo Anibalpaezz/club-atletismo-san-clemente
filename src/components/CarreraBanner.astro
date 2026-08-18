@@ -44,6 +44,38 @@ const fichas = [
 		))}
 	</dl>
 
+	{carrera.fecha && (
+		<div
+			class="border-t border-white/10 px-6 py-5 sm:px-8"
+			data-cuenta-atras
+			data-fecha={carrera.fecha}
+			data-hora={carrera.hora ?? '22:00'}
+		>
+			<p class="text-xs font-semibold uppercase tracking-widest text-white/50">Cuenta atrás para la salida</p>
+			<div class="mt-3 grid max-w-md grid-cols-4 gap-3">
+				<div class="rounded-lg bg-white/10 px-2 py-2.5 text-center">
+					<p data-valor class="font-display text-2xl font-bold tabular-nums text-albero">–</p>
+					<p class="mt-0.5 text-[10px] font-semibold uppercase tracking-wider text-white/50">días</p>
+				</div>
+				<div class="rounded-lg bg-white/10 px-2 py-2.5 text-center">
+					<p data-valor class="font-display text-2xl font-bold tabular-nums text-albero">–</p>
+					<p class="mt-0.5 text-[10px] font-semibold uppercase tracking-wider text-white/50">horas</p>
+				</div>
+				<div class="rounded-lg bg-white/10 px-2 py-2.5 text-center">
+					<p data-valor class="font-display text-2xl font-bold tabular-nums text-albero">–</p>
+					<p class="mt-0.5 text-[10px] font-semibold uppercase tracking-wider text-white/50">min</p>
+				</div>
+				<div class="rounded-lg bg-white/10 px-2 py-2.5 text-center">
+					<p data-valor class="font-display text-2xl font-bold tabular-nums text-albero">–</p>
+					<p class="mt-0.5 text-[10px] font-semibold uppercase tracking-wider text-white/50">seg</p>
+				</div>
+			</div>
+			<p class="caja-fin hidden mt-3 text-sm font-semibold text-albero">
+				¡Gracias por correr con nosotros!
+			</p>
+		</div>
+	)}
+
 	<div class="flex flex-wrap gap-3 border-t border-white/10 px-6 py-5 sm:px-8">
 		{carrera.enlace_inscripcion && (
 			<a
@@ -76,3 +108,61 @@ const fichas = [
 		</a>
 	</div>
 </div>
+
+<script>
+	function inicializarCuentasAtras() {
+		document.querySelectorAll<HTMLElement>('[data-cuenta-atras]').forEach((bloque) => {
+			const fecha = bloque.dataset.fecha;
+			if (!fecha) return;
+			const [hh, mm] = (bloque.dataset.hora ?? '22:00').split(':').map(Number);
+			const objetivo = new Date(fecha);
+			objetivo.setHours(Number.isNaN(hh) ? 22 : hh, Number.isNaN(mm) ? 0 : mm, 0, 0);
+
+			const cajas = bloque.querySelectorAll<HTMLElement>('[data-valor]');
+			const fin = bloque.querySelector<HTMLElement>('.caja-fin');
+			let intervalo: number | null = null;
+
+			const actualizar = () => {
+				const resto = objetivo.getTime() - Date.now();
+				if (resto <= 0) {
+					cajas.forEach((el) => (el.textContent = '0'));
+					if (fin) fin.classList.remove('hidden');
+					if (intervalo !== null) window.clearInterval(intervalo);
+					return;
+				}
+				const seg = Math.floor(resto / 1000);
+				const valores = [
+					Math.floor(seg / 86400),
+					Math.floor((seg % 86400) / 3600),
+					Math.floor((seg % 3600) / 60),
+					seg % 60,
+				];
+				cajas.forEach((el, i) => (el.textContent = String(valores[i] ?? 0).padStart(2, '0')));
+			};
+
+			// Solo se ejecuta mientras el bloque sea visible (evita tics al cargar).
+			const observador = new IntersectionObserver(
+				(entradas) => {
+					entradas.forEach((entrada) => {
+						if (!entrada.isIntersecting) return;
+						if (intervalo === null) {
+							actualizar();
+							intervalo = window.setInterval(actualizar, 1000);
+						}
+						observador.disconnect();
+					});
+				},
+				{ threshold: 0.2 },
+			);
+			observador.observe(bloque);
+		});
+	}
+
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', inicializarCuentasAtras);
+	} else {
+		inicializarCuentasAtras();
+	}
+
+	document.addEventListener('astro:page-load', inicializarCuentasAtras);
+</script>

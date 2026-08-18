@@ -13,6 +13,7 @@ export const supabase = supabaseEnabled
 
 export type Noticia = {
 	id: string;
+	slug: string | null;
 	titulo: string;
 	resumen: string | null;
 	cuerpo: string | null;

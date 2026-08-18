@@ -32,4 +32,24 @@ const noticias = defineCollection({
 	}),
 });
 
-export const collections = { club, carrera, noticias };
+const reglamentos = defineCollection({
+	loader: glob({ pattern: '**/*.md', base: './src/content/reglamentos' }),
+	schema: z.object({
+		titulo: z.string(),
+		year: z.number(),
+		isCurrent: z.boolean().default(false),
+		pdfUrl: z.string().nullish(),
+		orden: z.number().default(99),
+	}),
+});
+
+const resultados = defineCollection({
+	loader: glob({ pattern: '**/*.md', base: './src/content/resultados' }),
+	schema: z.object({
+		year: z.number(),
+		cronomanchaPdfUrl: z.string(),
+		participantCount: z.number().nullish(),
+	}),
+});
+
+export const collections = { club, carrera, noticias, reglamentos, resultados };

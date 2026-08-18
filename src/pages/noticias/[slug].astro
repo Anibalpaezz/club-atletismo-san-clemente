@@ -63,7 +63,7 @@ const fecha = formatFecha(noticia.fecha_publicacion ?? noticia.created_at);
 			)}
 
 			{ContentEstatica ? (
-				<div class="prose prose-nocturno mt-6 max-w-none text-tinta/80 [&_h2]:font-display [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:text-nocturno [&_h3]:font-display [&_h3]:text-lg [&_h3]:font-bold [&_h3]:text-nocturno [&_ul]:mt-3 [&_ul]:space-y-1.5 [&_li]:text-[15px] [&_hr]:my-6 [&_em]:italic">
+				<div class="prose prose-nocturno mt-6 max-w-none text-tinta/80 [&_h2]:font-display [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:text-nocturno [&_h3]:font-display [&_h3]:text-lg [&_h3]:font-bold [&_h3]:text-nocturno [&_hr]:my-6 [&_em]:italic">
 					<ContentEstatica />
 				</div>
 			) : (
@@ -85,7 +85,7 @@ const fecha = formatFecha(noticia.fecha_publicacion ?? noticia.created_at);
 				<div class="mt-8 grid gap-6 md:grid-cols-3">
 					{recientes.map((n) => (
 						<a
-							href={`/noticias/${n.id}/`}
+							href={`/noticias/${n.slug ?? n.id}/`}
 							class="rounded-xl border border-slate-200 bg-hueso p-6 transition hover:shadow-md"
 						>
 							{formatFecha(n.fecha_publicacion ?? n.created_at) && (

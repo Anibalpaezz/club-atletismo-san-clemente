@@ -9,7 +9,8 @@ activo durante todo el año: organización de la 10K Nocturna, participación en
 provincial, entrenamientos y actividades para los socios.
 
 La junta directiva y el listado completo de socios se actualizan cada temporada. Para consultas o
-para proponer ideas, puedes escribirnos a **losquevanacorrertesaludan@hotmail.com**.
+para proponer ideas, puedes escribirnos a la dirección de correo oficial que encontrarás en la
+sección de [contacto](/contacto/).
 
 Queremos dejar un espacio especial en este apartado para el **homenaje a los socios fundadores**:
 las personas que creyeron en este proyecto desde el primer día y que, sin ninguna contrapartida,

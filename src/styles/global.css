@@ -1,5 +1,7 @@
 @import 'tailwindcss';
 
+@plugin '@tailwindcss/typography';
+
 @theme {
 	--color-nocturno: #0a1f44;
 	--color-nocturno-700: #12316b;
@@ -25,4 +27,26 @@ body {
 
 ::selection {
 	@apply bg-albero text-nocturno;
+}
+
+/* Tipografía editorial con la paleta del club.
+   Base de lectura ≥16px y line-height ~1.75 ya incluidos por defecto en el
+   plugin de tipografía; aquí se personalizan los colores de marca. */
+.prose-nocturno {
+	--tw-prose-body: var(--color-tinta);
+	--tw-prose-headings: var(--color-nocturno);
+	--tw-prose-lead: var(--color-tinta);
+	--tw-prose-links: var(--color-nocturno);
+	--tw-prose-bold: var(--color-nocturno);
+	--tw-prose-counters: var(--color-albero-600);
+	--tw-prose-bullets: var(--color-albero-600);
+	--tw-prose-hr: var(--color-hueso);
+	--tw-prose-quotes: var(--color-nocturno);
+	--tw-prose-quote-borders: var(--color-albero);
+	--tw-prose-captions: var(--color-tinta);
+	--tw-prose-code: var(--color-nocturno);
+	--tw-prose-pre-code: var(--color-hueso);
+	--tw-prose-pre-bg: var(--color-nocturno);
+	--tw-prose-th-borders: var(--color-hueso);
+	--tw-prose-td-borders: var(--color-hueso);
 }

@@ -21,7 +21,7 @@ import { FECHA_ORGANIGRAMA, JUNTA, VOCALES, SOCIOS } from '../lib/directiva';
 		{JUNTA.map((miembro, i) => (
 			<div
 				class:list={[
-					'rounded-xl border p-5',
+					'rounded-xl border p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md',
 					i === 0
 						? 'border-nocturno bg-nocturno text-white'
 						: 'border-slate-200 bg-hueso',

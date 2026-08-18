@@ -67,7 +67,7 @@ const lugaresRuta = [
 
 			<div class="mt-12 grid gap-6 md:grid-cols-3">
 				{valoresClub.map((v) => (
-					<div class="rounded-xl border border-slate-200 bg-white p-7 shadow-sm">
+					<div class="rounded-xl border border-slate-200 bg-white p-7 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
 						<span class="flex h-12 w-12 items-center justify-center rounded-full bg-nocturno/5 text-nocturno-600">
 							<Icon name={v.icono} class="h-6 w-6" />
 						</span>
@@ -119,7 +119,7 @@ const lugaresRuta = [
 
 			<div class="mt-12 grid gap-6 md:grid-cols-3">
 				{lugaresRuta.map((lugar, i) => (
-					<div class="rounded-xl border border-slate-200 bg-white p-7 shadow-sm">
+					<div class="rounded-xl border border-slate-200 bg-white p-7 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
 						<span class="text-sm font-bold text-albero-600">0{i + 1}</span>
 						<h3 class="mt-2 font-display text-xl font-bold text-nocturno">{lugar.titulo}</h3>
 						<p class="mt-2 text-sm leading-relaxed text-tinta/70">{lugar.texto}</p>

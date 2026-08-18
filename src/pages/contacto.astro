@@ -25,7 +25,7 @@ const tarjetas = [
 		icono: 'users' as const,
 		titulo: 'Hazte socio',
 		lineas: ['Abierto a todos los niveles', 'Escríbenos y te contamos todo'],
-		href: `/mailto:${SITE.email}?subject=Alta%20de%20socio%20Club%20Atletismo%20San%20Clemente`,
+		href: `mailto:${SITE.email}?subject=${encodeURIComponent('Alta de socio Club Atletismo San Clemente')}`,
 		cta: 'Solicitar información',
 	},
 ];

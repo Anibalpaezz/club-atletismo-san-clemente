@@ -1,0 +1,46 @@
+---
+import Icon from './Icon.astro';
+import SectionHeading from './SectionHeading.astro';
+import { RECORDS_CIRCUITO } from '../lib/records';
+---
+
+<section id="records" class="scroll-mt-20 bg-hueso py-20">
+	<div class="mx-auto max-w-4xl px-4 sm:px-6">
+		<SectionHeading
+			eyebrow="Récords del circuito"
+			title="Las mejores marcas de la 10K Nocturna"
+			description="Los nombres escritos con letras de oro: récords absolutos del circuito urbano de San Clemente."
+		/>
+
+		<div class="mt-12 overflow-hidden rounded-2xl border-2 border-albero bg-nocturno text-white shadow-xl shadow-nocturno/20">
+			<div class="flex items-center gap-3 border-b border-white/10 px-6 py-4 sm:px-8">
+				<span class="flex h-11 w-11 items-center justify-center rounded-full bg-albero/15 text-albero">
+					<Icon name="trophy" class="h-6 w-6" />
+				</span>
+				<div>
+					<p class="text-xs font-bold uppercase tracking-widest text-albero">Récords absolutos</p>
+					<p class="text-sm text-white/70">10.000 metros · Circuito urbano</p>
+				</div>
+			</div>
+
+			<div class="grid gap-px bg-white/10 sm:grid-cols-2">
+				{RECORDS_CIRCUITO.map((record) => (
+					<div class="bg-nocturno px-6 py-6 sm:px-8">
+						<p class="text-[11px] font-bold uppercase tracking-[0.15em] text-albero">
+							{record.categoria}
+						</p>
+						{record.nombre && record.tiempo ? (
+							<div class="mt-2">
+								<p class="font-display text-3xl font-bold text-albero">{record.tiempo}</p>
+								<p class="mt-1 text-sm font-semibold text-white">{record.nombre}</p>
+								{record.año && <p class="text-xs text-white/50">Edición {record.año}</p>}
+							</div>
+						) : (
+							<p class="mt-3 text-sm font-semibold text-white/60">Por confirmar</p>
+						)}
+					</div>
+				))}
+			</div>
+		</div>
+	</div>
+</section>

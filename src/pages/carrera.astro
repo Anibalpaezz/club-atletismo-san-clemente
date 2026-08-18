@@ -5,6 +5,10 @@ import CarreraBanner from '../components/CarreraBanner.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import Icon from '../components/Icon.astro';
 import MapaRecorrido from '../components/MapaRecorrido.astro';
+import InscripcionTarifas from '../components/InscripcionTarifas.astro';
+import RecordCircuito from '../components/RecordCircuito.astro';
+import PuntosAnimacion from '../components/PuntosAnimacion.astro';
+import ResultadosHistoricos from '../components/ResultadosHistoricos.astro';
 import { getCollection, render } from 'astro:content';
 import { getCarreraConfig } from '../lib/db';
 import { SITE } from '../lib/site';
@@ -22,8 +26,14 @@ const renderizados = await Promise.all(
 	})),
 );
 
-const reglamentos = renderizados.filter((e) => e.data.categoria === '10k' || e.data.categoria === '5k');
+const reglamento10k = renderizados.find((e) => e.data.categoria === '10k');
+const reglamento5k = renderizados.find((e) => e.data.categoria === '5k');
 const recorrido = renderizados.filter((e) => e.data.categoria === 'general');
+
+const reglamentosEdiciones = (await getCollection('reglamentos')).sort(
+	(a, b) => b.data.year - a.data.year,
+);
+const reglamentosPasados = reglamentosEdiciones.filter((e) => !e.data.isCurrent);
 
 const servicios = [
 	{
@@ -80,7 +90,7 @@ const servicios = [
 			/>
 			<div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
 				{servicios.map((s) => (
-					<div class="rounded-xl border border-slate-200 bg-hueso p-7">
+					<div class="rounded-xl border border-slate-200 bg-hueso p-7 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
 						<span class="flex h-12 w-12 items-center justify-center rounded-full bg-nocturno/5 text-nocturno-600">
 							<Icon name={s.icono} class="h-6 w-6" />
 						</span>
@@ -120,6 +130,22 @@ const servicios = [
 		</div>
 	</section>
 
+	<section id="inscripcion" class="scroll-mt-20 border-t border-tinta/10 bg-white py-20">
+		<div class="mx-auto max-w-6xl px-4 sm:px-6">
+			<SectionHeading
+				eyebrow="Inscripciones"
+				title="Tarifas de la edición vigente"
+				description="Precios diferenciados para la 10K Nocturna (según inscripción en el Circuito) y para la 5K de iniciación. Bonificaciones y recargos de la próxima edición."
+			/>
+			<div class="mt-10">
+				<InscripcionTarifas
+					enlaceInscripcion={carrera?.enlace_inscripcion}
+					textoCta={carrera?.texto_cta}
+				/>
+			</div>
+		</div>
+	</section>
+
 	{recorrido.length > 0 && (
 		<section id="recorrido" class="scroll-mt-20 bg-hueso py-20">
 			<div class="mx-auto max-w-6xl px-4 sm:px-6">
@@ -131,7 +157,7 @@ const servicios = [
 				<div class="mt-10 grid gap-8 lg:grid-cols-2">
 					<div class="space-y-8">
 						{recorrido.map((entrada) => (
-							<article class="rounded-xl border border-slate-200 bg-white p-8 shadow-sm">
+							<article class="rounded-xl border border-slate-200 bg-white p-8 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
 								<h3 class="font-display text-2xl font-bold text-nocturno">{entrada.data.titulo}</h3>
 								<div class="prose prose-nocturno mt-4 max-w-none text-tinta/80">
 									<entrada.html />
@@ -160,30 +186,121 @@ const servicios = [
 		</section>
 	)}
 
-	{reglamentos.length > 0 && (
+	{(reglamento10k || reglamento5k) && (
 		<section id="reglamento" class="scroll-mt-20 bg-white py-20">
 			<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 				<SectionHeading
 					eyebrow="Reglamento"
 					title="Bases de la prueba"
-					description="Normativa de la 10K y de la 5K de iniciación de la edición vigente."
+					description="Normativa de la edición vigente: dos pruebas distintas, dos reglamentos. La 10K Nocturna es competitiva y puntuable para el Circuito; la 5K es una prueba de iniciación, abierta y no competitiva."
 				/>
-				<div class="mt-10 space-y-8">
-					{reglamentos.map((entrada) => (
-						<article class="rounded-2xl border border-slate-200 bg-hueso p-8 sm:p-10">
-							<span class="inline-flex rounded-full bg-nocturno px-3 py-1 text-xs font-bold uppercase tracking-wider text-white">
-								{entrada.data.categoria === '10k' ? '10K' : '5K de iniciación'}
+
+				{reglamento10k && (
+					<article class="mt-10 rounded-2xl border border-slate-200 bg-hueso p-8 sm:p-10">
+						<div class="flex flex-wrap items-center justify-between gap-4">
+							<span class="inline-flex rounded-full bg-nocturno px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-white">
+								10K Nocturna · prueba reina
 							</span>
-							<h3 class="mt-4 font-display text-2xl font-bold text-nocturno">{entrada.data.titulo}</h3>
-							<div class="prose prose-nocturno mt-5 max-w-none text-tinta/80 [&_h3]:text-lg [&_h3]:font-bold [&_h3]:text-nocturno [&_ul]:mt-3 [&_ul]:space-y-1.5 [&_li]:text-[15px]">
-								<entrada.html />
-							</div>
-						</article>
-					))}
+							{carrera?.enlace_inscripcion && (
+								<a
+									href={carrera.enlace_inscripcion}
+									target="_blank"
+									rel="noreferrer noopener"
+									class="inline-flex items-center gap-2 rounded-md bg-albero px-5 py-2.5 text-sm font-bold text-nocturno transition hover:bg-albero-100"
+								>
+									Inscríbete a la 10K
+									<Icon name="external" class="h-4 w-4" />
+								</a>
+							)}
+						</div>
+						<h3 class="mt-4 font-display text-2xl font-bold text-nocturno">{reglamento10k.data.titulo}</h3>
+						<p class="mt-1 text-sm text-tinta/60">
+							Competición de 10.000 metros, dos vueltas al circuito urbano, salida a las 22:00 h desde la Plaza Mayor.
+						</p>
+						<div class="prose prose-nocturno mt-5 max-w-3xl text-tinta/80 [&_h3]:text-lg [&_h3]:font-bold [&_h3]:text-nocturno [&_ul]:mt-3 [&_ul]:space-y-1.5">
+							<reglamento10k.html />
+						</div>
+					</article>
+				)}
+
+				{reglamento5k && (
+					<article class="mt-8 rounded-2xl border border-albero/40 bg-white p-8 sm:p-10">
+						<div class="flex flex-wrap items-center justify-between gap-4">
+							<span class="inline-flex rounded-full bg-albero/15 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-albero-600">
+								5K «Iniciación al deporte saludable»
+							</span>
+							{carrera?.enlace_inscripcion && (
+								<a
+									href={carrera.enlace_inscripcion}
+									target="_blank"
+									rel="noreferrer noopener"
+									class="inline-flex items-center gap-2 rounded-md bg-albero px-5 py-2.5 text-sm font-bold text-nocturno transition hover:bg-albero-100"
+								>
+									Inscríbete a la 5K
+									<Icon name="external" class="h-4 w-4" />
+								</a>
+							)}
+						</div>
+						<h3 class="mt-4 font-display text-2xl font-bold text-nocturno">{reglamento5k.data.titulo}</h3>
+						<p class="mt-1 text-sm text-tinta/60">
+							Una sola vuelta al circuito, abierta a corredores y caminantes de todas las edades. No competitiva.
+						</p>
+						<div class="prose prose-nocturno mt-5 max-w-3xl text-tinta/80 [&_h3]:text-lg [&_h3]:font-bold [&_h3]:text-nocturno [&_ul]:mt-3 [&_ul]:space-y-1.5">
+							<reglamento5k.html />
+						</div>
+					</article>
+				)}
+
+				<div class="mt-10 rounded-2xl border border-slate-200 bg-hueso">
+					<details class="group">
+						<summary class="flex cursor-pointer list-none items-center justify-between gap-4 px-6 py-5 text-left sm:px-8">
+							<span class="font-display text-lg font-bold text-nocturno">Ediciones anteriores</span>
+							<span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-nocturno/5 text-nocturno transition group-open:rotate-180">
+								<Icon name="arrow-right" class="h-4 w-4 rotate-90" />
+							</span>
+						</summary>
+						<div class="border-t border-slate-200 px-6 py-5 sm:px-8">
+							{reglamentosPasados.length > 0 ? (
+								<ul class="space-y-4">
+									{reglamentosPasados.map((entrada) => (
+										<li class="flex flex-wrap items-center justify-between gap-3">
+											<div>
+												<p class="text-sm font-semibold text-nocturno">{entrada.data.titulo}</p>
+												<p class="text-xs text-tinta/60">Edición {entrada.data.year}</p>
+											</div>
+											{entrada.data.pdfUrl && (
+												<a
+													href={entrada.data.pdfUrl}
+													target="_blank"
+													rel="noreferrer noopener"
+													class="inline-flex items-center gap-1.5 text-sm font-semibold text-albero-600 hover:text-nocturno"
+												>
+													Ver reglamento
+													<Icon name="external" class="h-3.5 w-3.5" />
+												</a>
+											)}
+										</li>
+									))}
+								</ul>
+							) : (
+								<p class="text-sm leading-relaxed text-tinta/60">
+									Los reglamentos de ediciones anteriores se irán publicando aquí (se añaden como un
+									fichero de contenido por año, sin tocar código). Si colaboras con el club y dispones de
+									alguno, escríbenos a {SITE.email}.
+								</p>
+							)}
+						</div>
+					</details>
 				</div>
 			</div>
 		</section>
 	)}
+
+	<RecordCircuito />
+
+	<PuntosAnimacion />
+
+	<ResultadosHistoricos />
 
 	<section class="bg-nocturno py-16 text-white">
 		<div class="mx-auto max-w-3xl px-4 text-center sm:px-6">

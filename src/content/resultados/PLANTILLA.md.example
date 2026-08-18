@@ -1,0 +1,17 @@
+---
+# PLANTILLA de resultados históricos (Colección "resultados")
+#
+# Para añadir los resultados de una edición pasada:
+#   1. Copia este fichero con el nombre `YYYY.md` (el año de la edición).
+#   2. Rellena los campos del frontmatter (no necesita cuerpo).
+#
+# Campos:
+#   - year:               Año de la edición (número).
+#   - cronomanchaPdfUrl:  Enlace directo al PDF oficial de la clasificación
+#                         publicado por Cronomancha.
+#   - participantCount:   (Opcional) Número de participantes clasificados.
+
+year: 2024
+cronomanchaPdfUrl: https://www.cronomancha.com/clasificaciones/10k-nocturna-san-clemente-2024
+participantCount: 300
+---

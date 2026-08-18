@@ -1,0 +1,67 @@
+---
+import Icon from './Icon.astro';
+import SectionHeading from './SectionHeading.astro';
+
+const puntos = [
+	{
+		nombre: 'Plaza Mayor',
+		descripcion:
+			'El corazón de la noche: salida, meta y ambiente asegurado. Llega con tiempo para encontrar sitio junto a la línea de meta.',
+		icono: 'flag' as const,
+	},
+	{
+		nombre: 'Iglesia de Santiago Apóstol',
+		descripcion:
+			'En los primeros metros de la prueba, junto a la salida. Su fachada iluminada acompaña la arrancada de los corredores.',
+		icono: 'map-pin' as const,
+	},
+	{
+		nombre: 'Torre Vieja',
+		descripcion:
+			'Pasado el arranque, entre casas señoriales del casco antiguo. Un rincón mágico para animar a media vuelta.',
+		icono: 'map-pin' as const,
+	},
+	{
+		nombre: 'Zonas de avituallamiento',
+		descripcion:
+			'Hay al menos dos zonas de avituallamiento por vuelta: los corredores pasan por ellas a ritmo real y agradecen los ánimos (y los gritos de ánimo también suman).',
+		icono: 'route' as const,
+	},
+	{
+		nombre: 'Subida a la meta',
+		descripcion:
+			'Los últimos metros hacia la Plaza Mayor. El empujón final para corredores de 5K y 10K: aquí se deciden las marcas.',
+		icono: 'trophy' as const,
+	},
+];
+---
+
+<section id="puntos-animacion" class="scroll-mt-20 border-t border-tinta/10 bg-white py-20">
+	<div class="mx-auto max-w-6xl px-4 sm:px-6">
+		<SectionHeading
+			eyebrow="Vive la noche desde la calle"
+			title="Puntos de animación"
+			description="El público anima, el pueblo corre: cinco rincones del circuito perfectos para seguir la carrera y empujar a los corredores."
+		/>
+
+		<div class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+			{puntos.map((punto) => (
+				<div class="flex gap-4 rounded-xl border border-slate-200 bg-hueso p-6 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
+					<span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-nocturno text-albero">
+						<Icon name={punto.icono} class="h-5 w-5" />
+					</span>
+					<div>
+						<h3 class="font-display text-lg font-bold text-nocturno">{punto.nombre}</h3>
+						<p class="mt-1 text-sm leading-relaxed text-tinta/70">{punto.descripcion}</p>
+					</div>
+				</div>
+			))}
+			<div class="flex items-center justify-center rounded-xl border border-dashed border-slate-300 bg-white p-6 text-center">
+				<p class="text-sm text-tinta/60">
+					¿Organizas animación en tu rincón del circuito? Escríbenos y lo añadimos al mapa de la
+					prueba.
+				</p>
+			</div>
+		</div>
+	</div>
+</section>

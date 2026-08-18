@@ -1,10 +1,12 @@
 import { getCollection } from 'astro:content';
 import { supabase, supabaseEnabled, type Noticia, type Patrocinador, type CarreraConfig } from './supabase';
+import { slugify } from './formato';
 
 async function getNoticiasEstaticas(): Promise<Noticia[]> {
 	const entradas = await getCollection('noticias', ({ data }) => data.fecha_publicacion);
 	return entradas.map((entrada) => ({
 		id: entrada.id,
+		slug: entrada.id,
 		titulo: entrada.data.titulo,
 		resumen: entrada.data.resumen ?? null,
 		cuerpo: entrada.body ?? null,
@@ -28,7 +30,10 @@ export async function getNoticiasPublicadas(limit = 12): Promise<Noticia[]> {
 		if (error) {
 			console.error('[supabase] getNoticiasPublicadas:', error.message);
 		} else {
-			deSupabase = (data ?? []) as Noticia[];
+			deSupabase = (data ?? []).map((noticia) => ({
+				...noticia,
+				slug: (noticia.slug as string | null) ?? slugify(noticia.titulo),
+			}));
 		}
 	}
 
@@ -39,21 +44,27 @@ export async function getNoticiasPublicadas(limit = 12): Promise<Noticia[]> {
 
 export async function getNoticiaBySlug(slug: string): Promise<Noticia | null> {
 	const estaticas = await getNoticiasEstaticas();
-	const estatica = estaticas.find((n) => n.id === slug);
+	const estatica = estaticas.find((n) => n.id === slug || n.slug === slug);
 	if (estatica) return estatica;
 
 	if (!supabaseEnabled) return null;
 	const { data, error } = await supabase!
 		.from('noticias')
 		.select('*')
-		.eq('id', slug)
 		.eq('publicado', true)
-		.single();
+		.limit(500);
 	if (error) {
 		console.error('[supabase] getNoticiaBySlug:', error.message);
 		return null;
 	}
-	return data as Noticia;
+	const noticia = (data ?? []).find(
+		(n) =>
+			n.id === slug ||
+			n.slug === slug ||
+			slugify(n.titulo as string) === slug,
+	);
+	if (!noticia) return null;
+	return { ...noticia, slug: (noticia.slug as string | null) ?? slugify(noticia.titulo) } as Noticia;
 }
 
 export async function getPatrocinadores(): Promise<Patrocinador[]> {

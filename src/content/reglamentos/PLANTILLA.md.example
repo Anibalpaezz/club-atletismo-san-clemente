@@ -1,0 +1,24 @@
+---
+# PLANTILLA de reglamento de ediciones pasadas (Colección "reglamentos")
+#
+# Para añadir el reglamento de una edición anterior:
+#   1. Copia este fichero con el nombre `YYYY.md` (el año de la edición).
+#   2. Rellena los campos del frontmatter.
+#   3. Escribe el cuerpo del reglamento en Markdown (se renderiza en la
+#      página de la carrera dentro del acordeón "Ediciones anteriores").
+#
+# Campos:
+#   - titulo:   Nombre del documento (p. ej. "Reglamento 10K Nocturna 2024").
+#   - year:     Año de la edición (número).
+#   - isCurrent: true solo en el reglamento de la edición vigente.
+#   - pdfUrl:   (Opcional) Enlace al PDF oficial del reglamento si existe.
+#   - orden:    Orden de aparición (ascendente).
+
+titulo: Reglamento 10K Nocturna [AÑO]
+year: 2024
+isCurrent: false
+pdfUrl:
+orden: 1
+---
+
+Escribe aquí el cuerpo del reglamento de la edición anterior en Markdown.
