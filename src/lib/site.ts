@@ -4,6 +4,7 @@ export const SITE = {
 	lema: 'Corriendo por la Joya del Renacimiento Manchego',
 	url: 'https://club-atletismo-san-clemente.vercel.app',
 	email: 'losquevanacorrertesaludan@hotmail.com',
+	inscripcionUrl: 'https://www.cronomancha.com/inscripciones/10k-nocturna-san-clemente',
 	blogspot: 'https://clubatletismosanclemente.blogspot.com',
 	municipio: 'San Clemente (Cuenca)',
 	descripcion:

@@ -17,6 +17,7 @@ export const prerender = false;
 export const revalidate = 60;
 
 const carrera = await getCarreraConfig();
+const enlaceInscripcion = carrera?.enlace_inscripcion ?? SITE.inscripcionUrl;
 
 const entradas = await getCollection('carrera', ({ data }) => data.orden);
 const renderizados = await Promise.all(
@@ -101,19 +102,21 @@ const servicios = [
 			</div>
 
 			<div class="mt-10 rounded-xl border border-slate-200 bg-nocturno p-8 text-white">
-				<h3 class="font-display text-xl font-bold">Enlaces oficiales</h3>
+				<h3 class="font-display text-xl font-bold">Inscripciones</h3>
 				<p class="mt-2 text-sm text-white/70">
-					Inscripciones y cronometraje gestionados por Cronomancha. La prueba es puntuable para el
-					XXII Circuito Provincial de Carreras Populares de la Diputación de Cuenca.
+					La inscripción se realiza exclusivamente a través de
+					<span class="font-semibold text-albero">Cronomancha</span>, que gestiona también el
+					cronometraje y las clasificaciones. La prueba es puntuable para el XXII Circuito
+					Provincial de Carreras Populares de la Diputación de Cuenca.
 				</p>
 				<div class="mt-6 flex flex-wrap gap-3">
 					<a
-						href="https://www.cronomancha.com"
+						href={enlaceInscripcion}
 						target="_blank"
 						rel="noreferrer noopener"
 						class="inline-flex items-center gap-2 rounded-md bg-albero px-5 py-2.5 text-sm font-bold text-nocturno transition hover:bg-albero-100"
 					>
-						Cronomancha
+						Inscríbete en Cronomancha
 						<Icon name="external" class="h-4 w-4" />
 					</a>
 					<a
@@ -139,7 +142,7 @@ const servicios = [
 			/>
 			<div class="mt-10">
 				<InscripcionTarifas
-					enlaceInscripcion={carrera?.enlace_inscripcion}
+					enlaceInscripcion={enlaceInscripcion}
 					textoCta={carrera?.texto_cta}
 				/>
 			</div>
@@ -201,9 +204,9 @@ const servicios = [
 							<span class="inline-flex rounded-full bg-nocturno px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-white">
 								10K Nocturna · prueba reina
 							</span>
-							{carrera?.enlace_inscripcion && (
+							{enlaceInscripcion && (
 								<a
-									href={carrera.enlace_inscripcion}
+									href={enlaceInscripcion}
 									target="_blank"
 									rel="noreferrer noopener"
 									class="inline-flex items-center gap-2 rounded-md bg-albero px-5 py-2.5 text-sm font-bold text-nocturno transition hover:bg-albero-100"
@@ -229,9 +232,9 @@ const servicios = [
 							<span class="inline-flex rounded-full bg-albero/15 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-albero-600">
 								5K «Iniciación al deporte saludable»
 							</span>
-							{carrera?.enlace_inscripcion && (
+							{enlaceInscripcion && (
 								<a
-									href={carrera.enlace_inscripcion}
+									href={enlaceInscripcion}
 									target="_blank"
 									rel="noreferrer noopener"
 									class="inline-flex items-center gap-2 rounded-md bg-albero px-5 py-2.5 text-sm font-bold text-nocturno transition hover:bg-albero-100"
@@ -309,14 +312,14 @@ const servicios = [
 				Vive una noche de running bajo las estrellas de San Clemente. Plaza Mayor, 22:00 h.
 			</p>
 			<div class="mt-7 flex flex-wrap justify-center gap-3">
-				{carrera?.enlace_inscripcion && (
+				{enlaceInscripcion && (
 					<a
-						href={carrera.enlace_inscripcion}
+						href={enlaceInscripcion}
 						target="_blank"
 						rel="noreferrer noopener"
 						class="inline-flex items-center gap-2 rounded-md bg-albero px-6 py-3 text-sm font-bold text-nocturno transition hover:bg-albero-100"
 					>
-						{carrera.texto_cta ?? 'Inscríbete'}
+						{carrera?.texto_cta ?? 'Inscríbete'}
 						<Icon name="external" class="h-4 w-4" />
 					</a>
 				)}
