@@ -10,6 +10,7 @@
     "build": "node scripts/astro.mjs build",
     "preview": "node scripts/astro.mjs preview",
     "check": "node scripts/astro.mjs check",
+    "sync:resultados": "node scripts/sync-resultados.ts",
     "astro": "node scripts/astro.mjs"
   },
   "dependencies": {
@@ -28,6 +29,7 @@
     "@astrojs/check": "^0.9.10",
     "@tailwindcss/typography": "^0.5.20",
     "@types/leaflet": "^1.9.22",
+    "@types/node": "^26.2.0",
     "typescript": "^6.0.3"
   }
 }
