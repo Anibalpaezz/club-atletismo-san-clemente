@@ -63,7 +63,7 @@ insert into public.carrera_config (
   'Plaza Mayor, San Clemente (Cuenca)',
   'https://www.cronomancha.com/inscripciones/10k-nocturna-san-clemente',
   'https://www.cronomancha.com/clasificaciones/10k-nocturna-san-clemente',
-  '/carrera/#reglamento',
+  '/carrera/reglamento/',
   '/carrera/#recorrido',
   'Inscríbete a la 10K Nocturna',
   true

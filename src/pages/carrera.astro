@@ -27,14 +27,7 @@ const renderizados = await Promise.all(
 	})),
 );
 
-const reglamento10k = renderizados.find((e) => e.data.categoria === '10k');
-const reglamento5k = renderizados.find((e) => e.data.categoria === '5k');
 const recorrido = renderizados.filter((e) => e.data.categoria === 'general');
-
-const reglamentosEdiciones = (await getCollection('reglamentos')).sort(
-	(a, b) => b.data.year - a.data.year,
-);
-const reglamentosPasados = reglamentosEdiciones.filter((e) => !e.data.isCurrent);
 
 const servicios = [
 	{
@@ -70,17 +63,13 @@ const servicios = [
 		description="La prueba reina del club: 10K nocturnos por el casco histórico iluminado de la Joya del Renacimiento Manchego, con su 5K de iniciación."
 	/>
 
-	<section class="bg-nocturno pb-16">
-		<div class="mx-auto max-w-6xl px-4 sm:px-6">
-			{carrera ? (
+	{carrera && (
+		<section class="bg-nocturno pb-16">
+			<div class="mx-auto max-w-6xl px-4 sm:px-6">
 				<CarreraBanner carrera={carrera} />
-			) : (
-				<div class="rounded-2xl border border-albero/30 bg-nocturno-700 p-8 text-center text-white/80">
-					La información de la edición vigente se publicará próximamente. Consultas a {SITE.email}.
-				</div>
-			)}
-		</div>
-	</section>
+			</div>
+		</section>
+	)}
 
 	<section id="ficha" class="bg-white py-20">
 		<div class="mx-auto max-w-6xl px-4 sm:px-6">
@@ -189,115 +178,40 @@ const servicios = [
 		</section>
 	)}
 
-	{(reglamento10k || reglamento5k) && (
-		<section id="reglamento" class="scroll-mt-20 bg-white py-20">
-			<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-				<SectionHeading
-					eyebrow="Reglamento"
-					title="Bases de la prueba"
-					description="Normativa de la edición vigente: dos pruebas distintas, dos reglamentos. La 10K Nocturna es competitiva y puntuable para el Circuito; la 5K es una prueba de iniciación, abierta y no competitiva."
-				/>
-
-				{reglamento10k && (
-					<article class="mt-10 rounded-2xl border border-slate-200 bg-hueso p-8 sm:p-10">
-						<div class="flex flex-wrap items-center justify-between gap-4">
+	<section id="reglamento" class="scroll-mt-20 bg-white py-20">
+		<div class="mx-auto max-w-6xl px-4 sm:px-6">
+			<div class="rounded-2xl border border-slate-200 bg-hueso p-8 sm:p-10">
+				<div class="flex flex-wrap items-center justify-between gap-6">
+					<div class="max-w-xl">
+						<SectionHeading
+							align="left"
+							eyebrow="Reglamento"
+							title="Bases de la prueba"
+							description="Normativa completa de la edición vigente: la 10K Nocturna, competitiva y puntuable para el Circuito, y la 5K de iniciación, abierta y no competitiva."
+						/>
+						<div class="mt-6 flex flex-wrap gap-3">
 							<span class="inline-flex rounded-full bg-nocturno px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-white">
 								10K Nocturna · prueba reina
 							</span>
-							{enlaceInscripcion && (
-								<a
-									href={enlaceInscripcion}
-									target="_blank"
-									rel="noreferrer noopener"
-									class="inline-flex items-center gap-2 rounded-md bg-albero px-5 py-2.5 text-sm font-bold text-nocturno transition hover:bg-albero-100"
-								>
-									Inscríbete a la 10K
-									<Icon name="external" class="h-4 w-4" />
-								</a>
-							)}
-						</div>
-						<h3 class="mt-4 font-display text-2xl font-bold text-nocturno">{reglamento10k.data.titulo}</h3>
-						<p class="mt-1 text-sm text-tinta/60">
-							Competición de 10.000 metros, dos vueltas al circuito urbano, salida a las 22:00 h desde la Plaza Mayor.
-						</p>
-						<div class="prose prose-nocturno mt-5 max-w-3xl text-tinta/80 [&_h3]:text-lg [&_h3]:font-bold [&_h3]:text-nocturno [&_ul]:mt-3 [&_ul]:space-y-1.5">
-							<reglamento10k.html />
-						</div>
-					</article>
-				)}
-
-				{reglamento5k && (
-					<article class="mt-8 rounded-2xl border border-albero/40 bg-white p-8 sm:p-10">
-						<div class="flex flex-wrap items-center justify-between gap-4">
 							<span class="inline-flex rounded-full bg-albero/15 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-albero-600">
 								5K «Iniciación al deporte saludable»
 							</span>
-							{enlaceInscripcion && (
-								<a
-									href={enlaceInscripcion}
-									target="_blank"
-									rel="noreferrer noopener"
-									class="inline-flex items-center gap-2 rounded-md bg-albero px-5 py-2.5 text-sm font-bold text-nocturno transition hover:bg-albero-100"
-								>
-									Inscríbete a la 5K
-									<Icon name="external" class="h-4 w-4" />
-								</a>
-							)}
 						</div>
-						<h3 class="mt-4 font-display text-2xl font-bold text-nocturno">{reglamento5k.data.titulo}</h3>
-						<p class="mt-1 text-sm text-tinta/60">
-							Una sola vuelta al circuito, abierta a corredores y caminantes de todas las edades. No competitiva.
-						</p>
-						<div class="prose prose-nocturno mt-5 max-w-3xl text-tinta/80 [&_h3]:text-lg [&_h3]:font-bold [&_h3]:text-nocturno [&_ul]:mt-3 [&_ul]:space-y-1.5">
-							<reglamento5k.html />
-						</div>
-					</article>
-				)}
-
-				<div class="mt-10 rounded-2xl border border-slate-200 bg-hueso">
-					<details class="group">
-						<summary class="flex cursor-pointer list-none items-center justify-between gap-4 px-6 py-5 text-left sm:px-8">
-							<span class="font-display text-lg font-bold text-nocturno">Ediciones anteriores</span>
-							<span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-nocturno/5 text-nocturno transition group-open:rotate-180">
-								<Icon name="arrow-right" class="h-4 w-4 rotate-90" />
-							</span>
-						</summary>
-						<div class="border-t border-slate-200 px-6 py-5 sm:px-8">
-							{reglamentosPasados.length > 0 ? (
-								<ul class="space-y-4">
-									{reglamentosPasados.map((entrada) => (
-										<li class="flex flex-wrap items-center justify-between gap-3">
-											<div>
-												<p class="text-sm font-semibold text-nocturno">{entrada.data.titulo}</p>
-												<p class="text-xs text-tinta/60">Edición {entrada.data.year}</p>
-											</div>
-											{entrada.data.pdfUrl && (
-												<a
-													href={entrada.data.pdfUrl}
-													target="_blank"
-													rel="noreferrer noopener"
-													class="inline-flex items-center gap-1.5 text-sm font-semibold text-albero-600 hover:text-nocturno"
-												>
-													Ver reglamento
-													<Icon name="external" class="h-3.5 w-3.5" />
-												</a>
-											)}
-										</li>
-									))}
-								</ul>
-							) : (
-								<p class="text-sm leading-relaxed text-tinta/60">
-									Los reglamentos de ediciones anteriores se irán publicando aquí (se añaden como un
-									fichero de contenido por año, sin tocar código). Si colaboras con el club y dispones de
-									alguno, escríbenos a {SITE.email}.
-								</p>
-							)}
-						</div>
-					</details>
+					</div>
+					<div class="flex flex-col items-start gap-2">
+						<a
+							href="/carrera/reglamento/"
+							class="inline-flex items-center gap-2 rounded-md bg-albero px-6 py-3 text-sm font-bold text-nocturno transition hover:bg-albero-100"
+						>
+							Ver bases y reglamento
+							<Icon name="arrow-right" class="h-4 w-4" />
+						</a>
+						<p class="text-xs text-tinta/60">Incluye reglamentos de ediciones anteriores.</p>
+					</div>
 				</div>
 			</div>
-		</section>
-	)}
+		</div>
+	</section>
 
 	<RecordCircuito />
 

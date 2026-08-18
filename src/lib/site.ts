@@ -14,6 +14,7 @@ export const SITE = {
 export const NAV = [
 	{ href: '/', label: 'Inicio' },
 	{ href: '/el-club/', label: 'El Club' },
+	{ href: '/hazte-socio/', label: 'Hazte socio' },
 	{ href: '/carrera/', label: 'La Carrera' },
 	{ href: '/ruta/', label: 'San Clemente en Ruta' },
 	{ href: '/noticias/', label: 'Noticias' },
