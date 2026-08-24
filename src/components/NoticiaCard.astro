@@ -5,8 +5,10 @@ import Icon from './Icon.astro';
 
 interface Props {
 	noticia: Noticia;
+	imagenFallback?: string;
 }
-const { noticia } = Astro.props;
+const { noticia, imagenFallback } = Astro.props;
+const imagen = noticia.imagen_url ?? imagenFallback;
 const fecha = formatFecha(noticia.fecha_publicacion ?? noticia.created_at);
 ---
 
@@ -15,9 +17,9 @@ const fecha = formatFecha(noticia.fecha_publicacion ?? noticia.created_at);
 	class="group flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
 >
 	<div class="aspect-[16/9] overflow-hidden bg-hueso">
-		{noticia.imagen_url ? (
+		{imagen ? (
 			<img
-				src={noticia.imagen_url}
+				src={imagen}
 				alt={noticia.titulo}
 				class="h-full w-full object-cover transition duration-300 group-hover:scale-[1.03]"
 				loading="lazy"

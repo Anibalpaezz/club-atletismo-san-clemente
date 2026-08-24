@@ -9,6 +9,7 @@ import Establecimientos from '../components/Establecimientos.astro';
 import { getCarreraConfig, getNoticiasPublicadas, getPatrocinadores } from '../lib/db';
 import { ESTABLECIMIENTOS } from '../lib/comercios';
 import { SITE } from '../lib/site';
+import { fotosAleatorias } from '../lib/fotosActas';
 
 export const prerender = false;
 export const revalidate = 60;
@@ -16,6 +17,7 @@ export const revalidate = 60;
 const carrera = await getCarreraConfig();
 const noticias = await getNoticiasPublicadas(3);
 const patrocinadores = await getPatrocinadores();
+const fotosNoticias = fotosAleatorias(noticias.length);
 
 const valoresClub = [
 	{
@@ -160,8 +162,8 @@ const lugaresRuta = [
 
 			{noticias.length > 0 ? (
 				<div class="mt-10 grid gap-6 md:grid-cols-3">
-					{noticias.map((n) => (
-						<NoticiaCard noticia={n} />
+					{noticias.map((n, i) => (
+						<NoticiaCard noticia={n} imagenFallback={fotosNoticias[i]} />
 					))}
 				</div>
 			) : (

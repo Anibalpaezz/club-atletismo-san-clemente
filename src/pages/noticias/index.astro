@@ -3,11 +3,13 @@ import Layout from '../../layouts/Layout.astro';
 import PageHeader from '../../components/PageHeader.astro';
 import NoticiaCard from '../../components/NoticiaCard.astro';
 import { getNoticiasPublicadas } from '../../lib/db';
+import { fotosAleatorias } from '../../lib/fotosActas';
 
 export const prerender = false;
 export const revalidate = 60;
 
 const noticias = await getNoticiasPublicadas(50);
+const fotos = fotosAleatorias(noticias.length);
 ---
 
 <Layout
@@ -24,8 +26,8 @@ const noticias = await getNoticiasPublicadas(50);
 		<div class="mx-auto max-w-6xl px-4 sm:px-6">
 			{noticias.length > 0 ? (
 				<div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-					{noticias.map((n) => (
-						<NoticiaCard noticia={n} />
+					{noticias.map((n, i) => (
+						<NoticiaCard noticia={n} imagenFallback={fotos[i]} />
 					))}
 				</div>
 			) : (
