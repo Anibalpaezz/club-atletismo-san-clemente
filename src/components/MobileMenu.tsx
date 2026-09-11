@@ -35,7 +35,7 @@ export default function MobileMenu({
 
 			{open && (
 				<div className="absolute inset-x-0 top-full z-50 border-t border-white/10 bg-nocturno shadow-xl md:hidden">
-					<nav className="mx-auto flex max-w-6xl flex-col px-4 py-4" aria-label="Menú móvil">
+					<nav className="mx-auto flex max-w-7xl flex-col px-4 py-4 lg:px-8 xl:px-12" aria-label="Menú móvil">
 						{items.map((item) => (
 							<a
 								key={item.href}
