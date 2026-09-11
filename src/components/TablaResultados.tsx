@@ -9,11 +9,15 @@ interface Props {
 const controlClases =
 	'rounded-md border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-nocturno focus:border-albero focus:outline-none focus:ring-2 focus:ring-albero/40';
 
+const FILAS_INICIALES = 50;
+const INCREMENTO = 50;
+
 export default function TablaResultados({ filas }: Props) {
 	const [club, setClub] = useState(TODOS);
 	const [categoria, setCategoria] = useState(TODOS);
 	const [year, setYear] = useState(TODOS);
 	const [busqueda, setBusqueda] = useState('');
+	const [limite, setLimite] = useState(FILAS_INICIALES);
 
 	const clubs = useMemo(() => valoresUnicos(filas, 'club'), [filas]);
 	const categorias = useMemo(() => valoresUnicos(filas, 'category'), [filas]);
@@ -23,6 +27,14 @@ export default function TablaResultados({ filas }: Props) {
 		() => filtrarFilas(filas, { club, categoria, year, busqueda } as Filtros),
 		[filas, club, categoria, year, busqueda],
 	);
+
+	const visiblesMostrados = visibles.slice(0, limite);
+	const restantes = visibles.length - visiblesMostrados.length;
+
+	const cambiarFiltro = (setter: (v: string) => void, valor: string) => {
+		setter(valor);
+		setLimite(FILAS_INICIALES);
+	};
 
 	return (
 		<div className="rounded-2xl border border-slate-200 bg-white shadow-sm">
@@ -44,7 +56,7 @@ export default function TablaResultados({ filas }: Props) {
 					<input
 						type="search"
 						value={busqueda}
-						onChange={(e) => setBusqueda(e.target.value)}
+						onChange={(e) => cambiarFiltro(setBusqueda, e.target.value)}
 						placeholder="Nombre…"
 						aria-label="Buscar por nombre del corredor"
 						className={controlClases}
@@ -57,7 +69,7 @@ export default function TablaResultados({ filas }: Props) {
 					</span>
 					<select
 						value={club}
-						onChange={(e) => setClub(e.target.value)}
+						onChange={(e) => cambiarFiltro(setClub, e.target.value)}
 						aria-label="Filtrar por club"
 						className={controlClases}
 					>
@@ -76,7 +88,7 @@ export default function TablaResultados({ filas }: Props) {
 					</span>
 					<select
 						value={categoria}
-						onChange={(e) => setCategoria(e.target.value)}
+						onChange={(e) => cambiarFiltro(setCategoria, e.target.value)}
 						aria-label="Filtrar por categoría"
 						className={controlClases}
 					>
@@ -95,7 +107,7 @@ export default function TablaResultados({ filas }: Props) {
 					</span>
 					<select
 						value={year}
-						onChange={(e) => setYear(e.target.value)}
+						onChange={(e) => cambiarFiltro(setYear, e.target.value)}
 						aria-label="Filtrar por año"
 						disabled={years.length <= 1}
 						className={controlClases}
@@ -139,7 +151,7 @@ export default function TablaResultados({ filas }: Props) {
 							</tr>
 						</thead>
 						<tbody>
-							{visibles.map((fila) => (
+							{visiblesMostrados.map((fila) => (
 								<tr
 									key={`${fila.year}-${fila.edicion}-${fila.position}-${fila.runner_name}`}
 									className="border-b border-slate-100 transition last:border-0 hover:bg-hueso"
@@ -171,6 +183,22 @@ export default function TablaResultados({ filas }: Props) {
 					<p className="text-sm text-tinta/60">
 						Ningún resultado coincide con los filtros seleccionados.
 					</p>
+				</div>
+			)}
+
+			{restantes > 0 && (
+				<div className="flex items-center justify-center gap-4 border-t border-slate-200 px-6 py-5">
+					<p className="text-sm text-tinta/60">
+						Mostrando {visiblesMostrados.length.toLocaleString('es-ES')} de{' '}
+						{visibles.length.toLocaleString('es-ES')} clasificados.
+					</p>
+					<button
+						type="button"
+						onClick={() => setLimite((l) => l + INCREMENTO)}
+						className="inline-flex items-center gap-2 rounded-md bg-nocturno px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-nocturno-700"
+					>
+						Cargar más ({Math.min(restantes, INCREMENTO).toLocaleString('es-ES')})
+					</button>
 				</div>
 			)}
 		</div>
