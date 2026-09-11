@@ -3,117 +3,330 @@ import Layout from '../layouts/Layout.astro';
 import PageHeader from '../components/PageHeader.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import Icon from '../components/Icon.astro';
+import { SITE } from '../lib/site';
 
 export const prerender = true;
+
+const datosClave = [
+	{ cifra: '6.797', etiqueta: 'habitantes (2025)' },
+	{ cifra: '722 m', etiqueta: 'de altitud' },
+	{ cifra: '102 km', etiqueta: 'de Cuenca · 80 de Albacete' },
+	{ cifra: '2', etiqueta: 'Bienes de Interés Cultural' },
+];
+
+const geografia = [
+	{
+		icono: 'map-pin' as const,
+		titulo: 'Dónde estamos',
+		texto: 'En el suroeste de la provincia de Cuenca, a 102 km de la capital y unos 80 km de Albacete, junto al río Rus y en el cruce de las autopistas A-43 y AP-36.',
+	},
+	{
+		icono: 'clock' as const,
+		titulo: 'Clima',
+		texto: 'Mediterráneo continentalizado: inviernos muy fríos y veranos muy calurosos. Precipitaciones escasas, concentradas en primavera y otoño, con nieve ocasional entre diciembre y marzo.',
+	},
+	{
+		icono: 'route' as const,
+		titulo: 'Territorio',
+		texto: 'A 722 metros sobre el nivel del mar, en el llano de La Mancha Conquense Baja. El término lo atraviesa el río Rus, que desemboca en el Záncara, afluente del Guadiana.',
+	},
+];
+
+const hitos = [
+	{
+		periodo: '1500–1250 a. C.',
+		titulo: 'La Edad del Bronce',
+		texto: 'Los primeros restos del término evidencian presencia humana desde la Edad del Bronce Medio, y también de época celtibérica.',
+	},
+	{
+		periodo: 'Época romana',
+		titulo: 'Entre Segóbriga y Carthago Nova',
+		texto: 'Un puente sobre el río Rus y un miliario de la vía que unía Segóbriga con Carthago Nova atestiguan la presencia romana, completada con villas tardorromanas y un fuste visigodo.',
+	},
+	{
+		periodo: 'Origen de la villa',
+		titulo: 'La Virgen de Rus',
+		texto: 'La tradición sitúa en la Cueva de la Mora el hallazgo de la imagen de la Virgen de Rus, hoy patrona de San Clemente. El nombre del municipio procede de Clemente Pérez de Rus, caballero asentado en la zona.',
+	},
+	{
+		periodo: '1445',
+		titulo: 'Elevada a villa',
+		texto: 'Don Juan Pacheco elevó la población a la categoría de villa. Tras la victoria de Isabel la Católica, los Reyes Católicos la incorporaron a la Corona y visitaron la villa en agosto de 1488.',
+	},
+	{
+		periodo: 'Siglos XV y XVI',
+		titulo: 'La «Pequeña Corte Manchega»',
+		texto: 'Con más de 2.000 habitantes y casas de portadas blasonadas, San Clemente se convirtió en la capital de la Mancha Alta, conocida como la «Pequeña Corte Manchega».',
+	},
+	{
+		periodo: 'Siglos XVIII y XIX',
+		titulo: 'Muy Noble, Muy Leal y Fidelísima Villa',
+		texto: 'Tras apoyar a Felipe V en la Guerra de Sucesión, recibió este título honorífico. En 1814 quedó establecida como uno de los partidos judiciales de la provincia de Cuenca.',
+	},
+	{
+		periodo: 'Siglo XX',
+		titulo: 'Historia reciente',
+		texto: 'Durante la Guerra Civil San Clemente albergó un aeródromo con unidades de bombarderos Tupolev SB-2 y cazas Polikarpov I-15.',
+	},
+];
+
+const patrimonio = [
+	{
+		nombre: 'Casa Consistorial',
+		descripcion:
+			'Renacentista, construida en varias fases entre 1566 y 1622. Alberga el Museo de Obra Gráfica «Fundación Antonio Pérez» y el Archivo Histórico Local. BIC desde 1992.',
+		icono: 'flag' as const,
+	},
+	{
+		nombre: 'Iglesia de Santiago Apóstol',
+		descripcion:
+			'Templo renacentista del siglo XVI con tres naves, capillas y bóvedas de crucería estrellada. Destacan su retablo barroco y una Cruz de Alabastro de tres metros. BIC desde 1992.',
+		icono: 'map-pin' as const,
+	},
+	{
+		nombre: 'Torre Vieja',
+		descripcion:
+			'La edificación más antigua del municipio, del siglo XV, de planta cuadrada y usos de vigilancia. Hoy acoge la Oficina de Turismo y el Museo Etnográfico de Labranza.',
+		icono: 'trophy' as const,
+	},
+	{
+		nombre: 'Castillo de Santiago de la Torre',
+		descripcion:
+			'Fortaleza medieval junto al río Záncara, ligada a la Orden de Santiago y al Marquesado de Villena. Planta en L, muralla almenada y torre del homenaje.',
+		icono: 'route' as const,
+	},
+	{
+		nombre: 'Santuario de Rus',
+		descripcion:
+			'En el paraje del mismo nombre, junto al manantial de la patrona. Es el escenario de la tradicional romería de la Virgen de Rus.',
+		icono: 'map-pin' as const,
+	},
+	{
+		nombre: 'Conventos y palacios',
+		descripcion:
+			'Un rico conjunto señorial y religioso: conventos de San Francisco, de las Clarisas y de las Trinitarias, palacios de Valdeguerrero, Melgarejo u Oma, la Casa de la Reina Mora o la Puerta de la Inquisición.',
+		icono: 'users' as const,
+	},
+];
+
+const aves = [
+	'Avutarda',
+	'Cernícalo primilla',
+	'Alondra de Dupont',
+	'Sisón',
+	'Ganga ibérica',
+	'Ganga ortega',
+	'Alcaraván',
+	'Águila imperial ibérica',
+];
+
+const fiestas = [
+	{
+		icono: 'calendar' as const,
+		titulo: 'Fiestas de Rus',
+		texto: 'El Domingo de Resurrección se subastan las andas de la Virgen de Rus: las cuadrillas pujan por el honor de portarlas. La romería está declarada de Interés Turístico Regional.',
+	},
+	{
+		icono: 'flag' as const,
+		titulo: 'La Venida de la Virgen',
+		texto: 'El domingo siguiente al Domingo de Resurrección, la Virgen del Remedio baja hasta Rus para encontrarse con la Virgen de Rus. Tras el intercambio de imágenes, la patrona permanece 43 días en San Clemente.',
+	},
+];
+
+const economia = [
+	{
+		nombre: 'Vino',
+		detalle: 'Tradición agrícola y vitivinícola de plena tierra manchega.',
+	},
+	{
+		nombre: 'Ajos y cebollas',
+		detalle: 'Cultivos emblemáticos de la comarca conquense.',
+	},
+	{
+		nombre: 'Queso manchego',
+		detalle: 'Pastos y ganadería propios de La Mancha.',
+	},
+	{
+		nombre: 'Productos del cerdo',
+		detalle: 'Embutidos y derivados de la matanza tradicional.',
+	},
+	{
+		nombre: 'Servicios y comercio',
+		detalle: '578 empresas registradas (2022) y el polígono industrial San José.',
+	},
+];
 ---
 
 <Layout
 	title="San Clemente en Ruta"
-	description="Turismo y patrimonio para corredores visitantes: Plaza Mayor, Paraje de Rus y gastronomía manchega en San Clemente (Cuenca)."
+	description="Historia, patrimonio y naturaleza de San Clemente (Cuenca), la Joya del Renacimiento Manchego: una villa real entre La Mancha y el río Rus."
 >
 	<PageHeader
 		eyebrow="San Clemente en Ruta"
 		title="La Joya del Renacimiento Manchego"
-		description="Vienes a correr, pero te vas a quedar con ganas de más: patrimonio, naturaleza y gastronomía de la tierra."
+		description="San Clemente es cabeza de partido judicial en el suroeste de Cuenca y cuna renacentista declarada conjunto histórico-artístico en 1980."
 	/>
+
+	<section class="bg-nocturno">
+		<div class="mx-auto grid max-w-7xl grid-cols-2 gap-y-8 px-4 py-10 sm:px-6 sm:grid-cols-4 lg:px-8 xl:px-12">
+			{datosClave.map((dato) => (
+				<div class="text-center">
+					<p class="font-display text-3xl font-bold text-albero sm:text-4xl">{dato.cifra}</p>
+					<p class="mt-1 text-xs font-semibold uppercase tracking-wider text-white/60">
+						{dato.etiqueta}
+					</p>
+				</div>
+			))}
+		</div>
+	</section>
 
 	<section class="bg-hueso py-20">
 		<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 xl:px-12">
-			<div class="grid gap-10 lg:grid-cols-2">
-				<div>
-					<SectionHeading
-						align="left"
-						eyebrow="Patrimonio"
-						title="Una villa con historia"
-						description="San Clemente (Cuenca) presume de ser la Joya del Renacimiento Manchego. Su casco histórico, declarado Bien de Interés Cultural, es uno de los conjuntos urbanos más destacados de Castilla-La Mancha."
-					/>
-					<ul class="mt-8 space-y-5">
-						<li class="flex gap-4">
-							<span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-nocturno text-albero">
-								<Icon name="map-pin" class="h-5 w-5" />
-							</span>
-							<div>
-								<h3 class="font-display text-lg font-bold text-nocturno">Plaza Mayor y Antiguo Ayuntamiento</h3>
-								<p class="mt-1 text-sm leading-relaxed text-tinta/70">
-									Conjunto renacentista del siglo XVI y salida y meta de la 10K Nocturna.
-								</p>
-							</div>
-						</li>
-						<li class="flex gap-4">
-							<span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-nocturno text-albero">
-								<Icon name="map-pin" class="h-5 w-5" />
-							</span>
-							<div>
-								<h3 class="font-display text-lg font-bold text-nocturno">Torre Vieja</h3>
-								<p class="mt-1 text-sm leading-relaxed text-tinta/70">
-									Restos del castillo medieval, símbolo de la villa, al que el recorrido rinde homenaje.
-								</p>
-							</div>
-						</li>
-						<li class="flex gap-4">
-							<span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-nocturno text-albero">
-								<Icon name="map-pin" class="h-5 w-5" />
-							</span>
-							<div>
-								<h3 class="font-display text-lg font-bold text-nocturno">Iglesia de Santiago Apóstol</h3>
-								<p class="mt-1 text-sm leading-relaxed text-tinta/70">
-									Templo gótico-renacentista del siglo XVI que ilumina los primeros metros de la carrera.
-								</p>
-							</div>
-						</li>
-					</ul>
-				</div>
-
-				<div>
-					<SectionHeading
-						align="left"
-						eyebrow="Naturaleza"
-						title="Paraje de Rus y alrededores"
-						description="A un paso del casco urbano, el Paraje de Rus ofrece rutas entre viñedos, olivos y monte mediterráneo, un terreno ideal para entrenar o estirar las piernas después de la carrera."
-					/>
-					<div class="mt-8 rounded-xl border border-slate-200 bg-white p-8 shadow-sm transition hover:shadow-md">
-						<h3 class="font-display text-lg font-bold text-nocturno">Consejos del club</h3>
-						<ul class="mt-4 space-y-3 text-sm text-tinta/70">
-							<li class="flex gap-3">
-								<Icon name="check" class="mt-0.5 h-4 w-4 shrink-0 text-albero-600" />
-								Llega con tiempo el día de la carrera: el centro se corta al tráfico horas antes.
-							</li>
-							<li class="flex gap-3">
-								<Icon name="check" class="mt-0.5 h-4 w-4 shrink-0 text-albero-600" />
-								Las noches de agosto refrescan: trae ropa de abrigo para después de la meta.
-							</li>
-							<li class="flex gap-3">
-								<Icon name="check" class="mt-0.5 h-4 w-4 shrink-0 text-albero-600" />
-								Aprovecha la estancia para visitar la villa con calma: se te quedará corta.
-							</li>
-						</ul>
+			<SectionHeading
+				eyebrow="El municipio"
+				title="Una villa real entre La Mancha y el río Rus"
+				description="Lo que nos hace únicos: un casco histórico de portadas blasonadas, una estepa llena de vida y una plaza mayor que es salida y meta de nuestro atletismo."
+			/>
+			<div class="mt-12 grid gap-6 md:grid-cols-3">
+				{geografia.map((g) => (
+					<div class="rounded-xl border border-slate-200 bg-white p-7 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
+						<span class="flex h-12 w-12 items-center justify-center rounded-full bg-nocturno/5 text-nocturno-600">
+							<Icon name={g.icono} class="h-6 w-6" />
+						</span>
+						<h3 class="mt-5 font-display text-xl font-bold text-nocturno">{g.titulo}</h3>
+						<p class="mt-2 text-sm leading-relaxed text-tinta/70">{g.texto}</p>
 					</div>
-				</div>
+				))}
+			</div>
+		</div>
+	</section>
+
+	<section class="bg-white py-20">
+		<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 xl:px-12">
+			<SectionHeading
+				eyebrow="Historia"
+				title="Más de tres milenios de historia"
+				description="De la Edad del Bronce al Renacimiento manchego: los hitos que forjaron la villa que hoy corre con nosotros."
+			/>
+			<div class="mx-auto mt-14 max-w-3xl">
+				<ol class="relative space-y-10 border-l-2 border-albero/40 pl-6 sm:pl-8">
+					{hitos.map((hito) => (
+						<li class="relative">
+							<span aria-hidden="true" class="absolute -left-[31px] top-1.5 h-3 w-3 rounded-full bg-albero ring-4 ring-albero/20 sm:-left-[39px]" />
+							<p class="text-xs font-bold uppercase tracking-wider text-albero-600">{hito.periodo}</p>
+							<h3 class="mt-1 font-display text-xl font-bold text-nocturno">{hito.titulo}</h3>
+							<p class="mt-2 text-sm leading-relaxed text-tinta/70">{hito.texto}</p>
+						</li>
+					))}
+				</ol>
+			</div>
+		</div>
+	</section>
+
+	<section class="bg-hueso py-20">
+		<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 xl:px-12">
+			<SectionHeading
+				eyebrow="Patrimonio"
+				title="Un casco histórico con nombre propio"
+				description="Dos Bienes de Interés Cultural y un catálogo de palacios, conventos y plazas que convierten el paseo en un paseo por la historia."
+			/>
+			<div class="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+				{patrimonio.map((p) => (
+					<div class="flex flex-col rounded-xl border border-slate-200 bg-white p-7 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
+						<span class="flex h-11 w-11 items-center justify-center rounded-full bg-nocturno text-albero">
+							<Icon name={p.icono} class="h-5 w-5" />
+						</span>
+						<h3 class="mt-4 font-display text-lg font-bold text-nocturno">{p.nombre}</h3>
+						<p class="mt-2 text-sm leading-relaxed text-tinta/70">{p.descripcion}</p>
+					</div>
+				))}
+			</div>
+		</div>
+	</section>
+
+	<section class="bg-nocturno py-20 text-white">
+		<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 xl:px-12">
+			<SectionHeading
+				tone="dark"
+				eyebrow="Naturaleza"
+				title="La estepa, un paraíso de aves"
+				description="El término cuenta con una Zona de Especial Protección para las Aves y un Área Importante para la Conservación de las Aves, con especies propias de zonas esteparias."
+			/>
+			<ul class="mt-12 flex flex-wrap justify-center gap-3">
+				{aves.map((ave) => (
+					<li class="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-5 py-2 text-sm font-semibold text-white/90">
+						<Icon name="check" class="h-4 w-4 text-albero" />
+						{ave}
+					</li>
+				))}
+			</ul>
+		</div>
+	</section>
+
+	<section class="bg-white py-20">
+		<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 xl:px-12">
+			<SectionHeading
+				eyebrow="Fiestas y tradiciones"
+				title="El pueblo que puja por su Virgen"
+				description="Tradiciones vivas, declaradas patrimonio inmaterial de la alegría manchega, que reúnen a todo el pueblo y a los que vuelven."
+			/>
+			<div class="mt-12 grid gap-6 lg:grid-cols-2">
+				{fiestas.map((fiesta) => (
+					<div class="flex flex-col rounded-xl border border-slate-200 bg-hueso p-8">
+						<span class="flex h-12 w-12 items-center justify-center rounded-full bg-nocturno text-albero">
+							<Icon name={fiesta.icono} class="h-6 w-6" />
+						</span>
+						<h3 class="mt-5 font-display text-xl font-bold text-nocturno">{fiesta.titulo}</h3>
+						<p class="mt-2 text-sm leading-relaxed text-tinta/70">{fiesta.texto}</p>
+					</div>
+				))}
+			</div>
+		</div>
+	</section>
+
+	<section class="bg-hueso py-20">
+		<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 xl:px-12">
+			<SectionHeading
+				eyebrow="Economía"
+				title="Tierra de labor y de sabor"
+				description="Tradicionalmente agrícola, la economía de San Clemente se apoya hoy también en la industria, la construcción, el comercio y los servicios."
+			/>
+			<div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-5">
+				{economia.map((e) => (
+					<div class="rounded-xl border border-slate-200 bg-white p-6 text-center">
+						<h3 class="font-display text-lg font-bold text-nocturno">{e.nombre}</h3>
+						<p class="mt-2 text-sm leading-relaxed text-tinta/70">{e.detalle}</p>
+					</div>
+				))}
 			</div>
 		</div>
 	</section>
 
 	<section class="bg-nocturno py-16 text-white">
-		<div class="mx-auto max-w-4xl px-4 sm:px-6">
-			<SectionHeading
-				tone="dark"
-				eyebrow="Gastronomía"
-				title="Manchega, castiza y reconfortante"
-				description="La mejor recompensa tras el esfuerzo de la carrera: la cocina de la tierra."
-			/>
-			<div class="mt-10 grid gap-6 sm:grid-cols-3">
-				<div class="rounded-xl bg-white/5 p-6 text-center ring-1 ring-white/10">
-					<h3 class="font-display text-xl font-bold text-albero">Morteruelo</h3>
-					<p class="mt-2 text-sm text-white/70">El plato señero de la cocina conquense, ideal para reponer fuerzas.</p>
-				</div>
-				<div class="rounded-xl bg-white/5 p-6 text-center ring-1 ring-white/10">
-					<h3 class="font-display text-xl font-bold text-albero">Migas</h3>
-					<p class="mt-2 text-sm text-white/70">De pan, ajo y pimentón, con uvas y torreznos: la tradición en la mesa.</p>
-				</div>
-				<div class="rounded-xl bg-white/5 p-6 text-center ring-1 ring-white/10">
-					<h3 class="font-display text-xl font-bold text-albero">Vino de la tierra</h3>
-					<p class="mt-2 text-sm text-white/70">San Clemente está en plena tierra del vino de Castilla-La Mancha: brinda por la carrera.</p>
-				</div>
+		<div class="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
+			<Icon name="trophy" class="mx-auto h-10 w-10 text-albero" />
+			<h2 class="mt-4 font-display text-3xl font-bold">Y si vienes, corre con nosotros</h2>
+			<p class="mt-3 text-white/80">
+				La 10K Nocturna recorre las calles de esta Plaza Mayor declarada conjunto histórico-artístico,
+				bajo la luz de la Joya del Renacimiento Manchego.
+			</p>
+			<div class="mt-7 flex flex-wrap justify-center gap-3">
+				<a
+					href="/carrera/"
+					class="inline-flex items-center gap-2 rounded-md bg-albero px-6 py-3 text-sm font-bold text-nocturno transition hover:bg-albero-100"
+				>
+					Conoce la 10K Nocturna
+					<Icon name="arrow-right" class="h-4 w-4" />
+				</a>
+				<a
+					href="https://www.instagram.com/clubatletismosanclemente/"
+					target="_blank"
+					rel="noreferrer noopener"
+					class="inline-flex items-center gap-2 rounded-md border border-white/30 px-6 py-3 text-sm font-bold text-white transition hover:border-albero hover:text-albero"
+				>
+					<Icon name="instagram" class="h-4 w-4" />
+					Síguenos en Instagram
+				</a>
 			</div>
 		</div>
 	</section>
