@@ -50,3 +50,10 @@ body {
 	--tw-prose-th-borders: var(--color-hueso);
 	--tw-prose-td-borders: var(--color-hueso);
 }
+
+/* Pantallas ultra anchas (2560x1440): ensancha el contenedor estándar de 1280px a 1600px. */
+@media (min-width: 2560px) {
+	.max-w-7xl {
+		max-width: 100rem; /* 1600px */
+	}
+}
