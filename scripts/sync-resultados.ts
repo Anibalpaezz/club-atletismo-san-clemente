@@ -28,7 +28,7 @@ async function main() {
 				race: prueba.race,
 				race_slug: prueba.race_slug,
 				race_name: race?.race_name ?? null,
-				official_url: `https://resultados-app.cronomancha.com/race/${prueba.race_slug}`,
+				official_url: prueba.official_url,
 				synchronized_at: new Date().toISOString(),
 				results,
 			};

@@ -8,7 +8,7 @@ const cronomancha = (await getCollection('resultadosCronomancha')).map((e) => e.
 
 const participantesPorYear = new Map<number, number>();
 for (const edicion of cronomancha) {
-	const total = edicion.results.filter((r) => r.status === 'FINISHED' && r.time_ms > 0).length;
+	const total = edicion.results.length;
 	if (total > 0) participantesPorYear.set(edicion.year, total);
 }
 ---

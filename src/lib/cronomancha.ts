@@ -7,8 +7,19 @@ export const CRONOMANCHA_APP = 'https://resultados-app.cronomancha.com';
 // basta con añadir una entrada aquí y volver a ejecutar `npm run sync:resultados`.
 // La 5K «Iniciación al deporte saludable» no tiene slug localizado todavía:
 // consultar con el club o revisar la red en resultados-app.cronomancha.com.
-export const PRUEBAS_CRONOMANCHA: { year: number; race: '10K' | '5K'; race_slug: string }[] = [
-	{ year: 2026, race: '10K', race_slug: '10k-nocturnos-san-clemente-2026' },
+// `official_url` enlaza a la ficha pública de resultados de la prueba.
+export const PRUEBAS_CRONOMANCHA: {
+	year: number;
+	race: '10K' | '5K';
+	race_slug: string;
+	official_url: string;
+}[] = [
+	{
+		year: 2026,
+		race: '10K',
+		race_slug: '10k-nocturnos-san-clemente-2026',
+		official_url: 'https://ccpp.cronomancha.es/desktop#pruebas/10',
+	},
 ];
 
 export type CarreraCronomancha = {
