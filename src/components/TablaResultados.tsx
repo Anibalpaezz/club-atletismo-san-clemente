@@ -9,8 +9,8 @@ interface Props {
 const controlClases =
 	'rounded-md border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-nocturno focus:border-albero focus:outline-none focus:ring-2 focus:ring-albero/40';
 
-const FILAS_INICIALES = 50;
-const INCREMENTO = 50;
+const FILAS_INICIALES = 25;
+const INCREMENTO = 25;
 
 export default function TablaResultados({ filas }: Props) {
 	const [club, setClub] = useState(TODOS);
