@@ -1,5 +1,5 @@
 export const SITE = {
-	name: 'Club Atletismo San Clemente',
+	name: 'Club Atletismo' + '\n' + 'San Clemente',
 	nombreCorto: 'Atletismo San Clemente',
 	lema: 'Corriendo por la Joya del Renacimiento Manchego',
 	url: 'https://club-atletismo-san-clemente.vercel.app',
