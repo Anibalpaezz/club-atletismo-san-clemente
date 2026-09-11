@@ -61,7 +61,7 @@ insert into public.carrera_config (
   '2026-08-15',
   '22:00',
   'Plaza Mayor, San Clemente (Cuenca)',
-  'https://www.cronomancha.com/inscripciones/10k-nocturna-san-clemente',
+  'https://timingsys.com/',
   'https://www.cronomancha.com/clasificaciones/10k-nocturna-san-clemente',
   '/carrera/reglamento/',
   '/carrera/#recorrido',
