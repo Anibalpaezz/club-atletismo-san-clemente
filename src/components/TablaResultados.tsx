@@ -15,17 +15,30 @@ const INCREMENTO = 25;
 export default function TablaResultados({ filas }: Props) {
 	const [club, setClub] = useState(TODOS);
 	const [categoria, setCategoria] = useState(TODOS);
-	const [year, setYear] = useState(TODOS);
 	const [busqueda, setBusqueda] = useState('');
 	const [limite, setLimite] = useState(FILAS_INICIALES);
 
 	const clubs = useMemo(() => valoresUnicos(filas, 'club'), [filas]);
 	const categorias = useMemo(() => valoresUnicos(filas, 'category'), [filas]);
-	const years = useMemo(() => valoresUnicos(filas, 'year'), [filas]);
+	const years = useMemo(
+		() =>
+			valoresUnicos(filas, 'year').sort((a, b) => Number(b) - Number(a)),
+		[filas],
+	);
+	const [year, setYear] = useState<string>(() => {
+		const ordenados = valoresUnicos(filas, 'year').sort((a, b) => Number(b) - Number(a));
+		return ordenados[0] ?? TODOS;
+	});
 
 	const visibles = useMemo(
 		() => filtrarFilas(filas, { club, categoria, year, busqueda } as Filtros),
 		[filas, club, categoria, year, busqueda],
+	);
+
+	// Total de clasificados del contexto actual, sin contar la búsqueda por nombre.
+	const totalEnContexto = useMemo(
+		() => filtrarFilas(filas, { club, categoria, year, busqueda: '' } as Filtros).length,
+		[filas, club, categoria, year],
 	);
 
 	const visiblesMostrados = visibles.slice(0, limite);
@@ -43,7 +56,7 @@ export default function TablaResultados({ filas }: Props) {
 					Resultados de la carrera
 				</p>
 				<p className="mt-1 text-sm text-tinta/70">
-					{visibles.length.toLocaleString('es-ES')} de {filas.length.toLocaleString('es-ES')}{' '}
+					{visibles.length.toLocaleString('es-ES')} de {totalEnContexto.toLocaleString('es-ES')}{' '}
 					clasificados. Filtra por club, categoría, año o por el nombre del corredor.
 				</p>
 			</div>
@@ -112,12 +125,12 @@ export default function TablaResultados({ filas }: Props) {
 						disabled={years.length <= 1}
 						className={controlClases}
 					>
-						<option value={TODOS}>Todas</option>
 						{years.map((y) => (
 							<option key={y} value={y}>
 								{y}
 							</option>
 						))}
+						<option value={TODOS}>Todas</option>
 					</select>
 				</label>
 			</div>
