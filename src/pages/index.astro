@@ -168,7 +168,7 @@ const lugaresRuta = [
 				</div>
 			) : (
 				<div class="mt-10 rounded-xl border border-dashed border-slate-300 bg-hueso p-10 text-center">
-					<p class="text-sm text-tinta/60">
+					<p class="text-sm text-tinta/70">
 						Las noticias del club se publicarán aquí en cuanto se configuren en Supabase.
 					</p>
 				</div>
@@ -188,7 +188,7 @@ const lugaresRuta = [
 								href={p.url_web}
 								target="_blank"
 								rel="noreferrer noopener"
-								class="text-lg font-bold text-tinta/50 transition hover:text-nocturno"
+								class="text-lg font-bold text-tinta/700 transition hover:text-nocturno"
 							>
 								{p.logo_url ? (
 									<img src={p.logo_url} alt={p.nombre} class="h-10 w-auto max-w-40 object-contain" loading="lazy" />
@@ -197,7 +197,7 @@ const lugaresRuta = [
 								)}
 							</a>
 						) : (
-							<span class="text-lg font-bold text-tinta/50">
+							<span class="text-lg font-bold text-tinta/700">
 								{p.logo_url ? (
 									<img src={p.logo_url} alt={p.nombre} class="h-10 w-auto max-w-40 object-contain" loading="lazy" />
 								) : (
@@ -207,7 +207,7 @@ const lugaresRuta = [
 						),
 					)
 				) : (
-					<p class="text-sm text-tinta/50">Colaboran: Ayuntamiento de San Clemente · Diputación de Cuenca · Cronomancha</p>
+					<p class="text-sm text-tinta/700">Colaboran: Ayuntamiento de San Clemente · Diputación de Cuenca · Cronomancha</p>
 				)}
 			</div>
 		</div>

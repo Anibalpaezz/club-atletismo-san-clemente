@@ -6,13 +6,13 @@ import { FECHA_ORGANIGRAMA, JUNTA, VOCALES, SOCIOS } from '../lib/directiva';
 <div class="mt-10 rounded-2xl border border-slate-200 bg-white p-8 shadow-sm sm:p-10">
 	<div class="flex items-center justify-between gap-3">
 		<h3 class="font-display text-2xl font-bold text-nocturno">Organigrama</h3>
-		<span class="inline-flex items-center gap-1.5 rounded-full bg-hueso px-3 py-1 text-xs font-semibold text-tinta/60">
+		<span class="inline-flex items-center gap-1.5 rounded-full bg-hueso px-3 py-1 text-xs font-semibold text-tinta/700">
 			<Icon name="calendar" class="h-3.5 w-3.5" />
 			a {FECHA_ORGANIGRAMA}
 		</span>
 	</div>
 
-	<p class="mt-2 text-sm text-tinta/60">
+	<p class="mt-2 text-sm text-tinta/700">
 		La Junta Directiva trabaja de forma voluntaria para mantener el club activo todo el año. Toda la
 		directiva se elige en asamblea y el organigrama se actualiza cada temporada.
 	</p>
@@ -53,7 +53,7 @@ import { FECHA_ORGANIGRAMA, JUNTA, VOCALES, SOCIOS } from '../lib/directiva';
 					<span class="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-albero-600" />
 					<div>
 						<p class="font-semibold text-nocturno">{miembro.nombre}</p>
-						{miembro.funcion && <p class="text-xs text-tinta/55">{miembro.funcion}</p>}
+						{miembro.funcion && <p class="text-xs text-tinta/70">{miembro.funcion}</p>}
 					</div>
 				</div>
 			))}
