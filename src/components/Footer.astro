@@ -44,7 +44,7 @@ import Sponsors from './Sponsors';
 			</a>
 			<p class="mt-5 mb-4 text-xs font-semibold uppercase tracking-widest text-white/50">Síguenos</p>
 			<ul class="flex items-center gap-3">
-				{REDES.map((red) => (
+				{REDES.filter((red) => red.href !== SITE.blogspot).map((red) => (
 					<li>
 						<a
 							href={red.href}
