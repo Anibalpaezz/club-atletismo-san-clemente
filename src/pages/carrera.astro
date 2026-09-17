@@ -218,37 +218,4 @@ const servicios = [
 	<PuntosAnimacion />
 
 	<ResultadosHistoricos />
-
-	<section class="bg-nocturno py-16 text-white">
-		<div class="mx-auto max-w-7xl px-4 text-center sm:px-6">
-			<h2 class="font-display text-3xl font-bold">¿Te lo vas a perder?</h2>
-			<p class="mt-3 text-white/80">
-				Vive una noche de running bajo las estrellas de San Clemente. Plaza Mayor, 22:00 h.
-			</p>
-			<div class="mt-7 flex flex-wrap justify-center gap-3">
-				{enlaceInscripcion && (
-					<a
-						href={enlaceInscripcion}
-						target="_blank"
-						rel="noreferrer noopener"
-						class="inline-flex items-center gap-2 rounded-md bg-albero px-6 py-3 text-sm font-bold text-nocturno transition hover:bg-albero-100"
-					>
-						{carrera?.texto_cta ?? 'Inscríbete'}
-						<Icon name="external" class="h-4 w-4" />
-					</a>
-				)}
-				{carrera?.enlace_clasificaciones && (
-					<a
-						href={carrera.enlace_clasificaciones}
-						target="_blank"
-						rel="noreferrer noopener"
-						class="inline-flex items-center gap-2 rounded-md border border-white/30 px-6 py-3 text-sm font-bold text-white transition hover:border-albero hover:text-albero"
-					>
-						Ver clasificaciones
-						<Icon name="external" class="h-4 w-4" />
-					</a>
-				)}
-			</div>
-		</div>
-	</section>
 </Layout>

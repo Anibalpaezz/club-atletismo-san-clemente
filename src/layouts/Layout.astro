@@ -11,7 +11,7 @@ interface Props {
 	description?: string;
 	image?: string;
 }
-const { title = SITE.name, description = SITE.descripcion, image = '/images/logo-nuevo.png' } = Astro.props;
+const { title = SITE.name, description = SITE.descripcion, image = '/images/logo-nuevo.avif' } = Astro.props;
 const pageTitle = title === SITE.name || title.includes(SITE.name) ? title : `${title} · ${SITE.name}`;
 const canonical = new URL(Astro.url.pathname, SITE.url).toString();
 const ogImage = new URL(image, SITE.url).toString();
@@ -68,7 +68,7 @@ const estructuraClub = {
 	<body class="flex min-h-screen flex-col">
 		<Header />
 		<Instituciones />
-		<main class="flex-1">
+		<main class="flex-1 min-h-screen">
 			<slot />
 		</main>
 		<Footer />
