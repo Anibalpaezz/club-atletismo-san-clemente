@@ -29,6 +29,10 @@ const noticias = defineCollection({
 		imagen_url: z.string().optional(),
 		fecha_publicacion: z.coerce.date(),
 		destacada: z.boolean().default(false),
+		// Entradas ingeridas del blog histórico del club (scripts/sync-blogspot.ts).
+		origen: z.literal('blogspot').optional(),
+		origen_url: z.string().optional(),
+		origen_id: z.string().optional(),
 	}),
 });
 

@@ -11,6 +11,7 @@
     "preview": "node scripts/astro.mjs preview",
     "check": "node scripts/astro.mjs check",
     "sync:resultados": "node scripts/sync-resultados.ts",
+    "sync:blogspot": "node scripts/sync-blogspot.ts",
     "astro": "node scripts/astro.mjs"
   },
   "dependencies": {

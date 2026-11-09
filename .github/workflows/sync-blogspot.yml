@@ -1,0 +1,55 @@
+# Vigila el blog histórico del club y trae a este sitio lo que se publique allí.
+#
+# Ejecuta `npm run sync:blogspot`, que compara el blog con
+# scripts/blogspot-estado.json y escribe las entradas nuevas (o modificadas) en
+# src/content/noticias/. Si hay cambios, los commitea: Vercel redespliega solo.
+#
+# Requiere que Actions tenga permiso de escritura:
+#   Settings → Actions → General → Workflow permissions → "Read and write permissions".
+name: Sincronizar blog
+
+on:
+  schedule:
+    # Cada 6 horas (el blog publica pocas veces al mes).
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'src/lib/blogspot.ts'
+      - 'scripts/sync-blogspot.ts'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-blogspot
+  cancel-in-progress: false
+
+jobs:
+  sincronizar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - run: npm ci
+
+      - name: Sincronizar el blog
+        run: npm run sync:blogspot
+
+      - name: Commitear el contenido nuevo
+        run: |
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "Sin cambios en el blog."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/content/noticias scripts/blogspot-estado.json
+          git commit -m "Sincroniza las novedades del blog del club"
+          git push
