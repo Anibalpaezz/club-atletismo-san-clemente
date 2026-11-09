@@ -142,6 +142,7 @@ const lugaresRuta = [1, 2, 3];
 
 	<Establecimientos establecimientos={ESTABLECIMIENTOS} lang={lang} />
 
+	{patrocinadores.length > 0 && (
 	<section class="border-t border-slate-200 bg-hueso py-16">
 		<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 xl:px-12">
 			<div class="flex flex-wrap items-center justify-center gap-x-12 gap-y-6">
@@ -170,14 +171,9 @@ const lugaresRuta = [1, 2, 3];
 							</span>
 						),
 					)
-				) : (
-					<p class="text-sm text-tinta/700">
-						{lang === 'es'
-							? 'Colaboran: Ayuntamiento de San Clemente · Diputación de Cuenca · Cronomancha'
-							: 'With the support of: San Clemente Town Council · Cuenca Provincial Council · Cronomancha'}
-					</p>
-				)}
+				) : null}
 			</div>
 		</div>
 	</section>
+	)}
 </Layout>
