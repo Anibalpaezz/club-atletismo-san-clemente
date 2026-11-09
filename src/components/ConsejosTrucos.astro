@@ -23,48 +23,131 @@ import { CAPITULOS, INTRO_CONSEJOS, ORIGEN_CONSEJOS } from '../lib/consejos';
 		</a>
 	</div>
 
-	<div class="mt-8 grid items-start gap-4 md:grid-cols-2">
+	<div class="mt-8 grid gap-4 md:grid-cols-2">
 		{
 			CAPITULOS.map((capitulo, i) => (
-				<details
+				<button
+					type="button"
+					data-abrir-consejos={`consejos-capitulo-${capitulo.numero}`}
+					aria-haspopup="dialog"
 					class:list={[
-						'group overflow-hidden rounded-xl border border-white/10 bg-white/5 transition open:border-albero/40 open:bg-white/10',
+						'group flex h-full w-full flex-col gap-3 rounded-xl border border-white/10 bg-white/5 p-5 text-left transition hover:border-albero/40 hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-albero focus-visible:ring-offset-2 focus-visible:ring-offset-nocturno',
 						i === CAPITULOS.length - 1 && CAPITULOS.length % 2 === 1 ? 'md:col-span-2' : '',
 					]}
 				>
-					<summary class="flex cursor-pointer list-none items-start gap-3 p-5 [&::-webkit-details-marker]:hidden">
+					<span class="flex items-start justify-between gap-3">
 						<span class="font-display text-xl font-bold leading-none text-albero">
 							{String(capitulo.numero).padStart(2, '0')}
 						</span>
-						<span class="min-w-0 flex-1">
-							<span class="block font-display text-lg font-bold leading-snug text-white">
-								{capitulo.titulo}
-							</span>
-							<span class="mt-1 block text-[11px] font-semibold uppercase tracking-[0.15em] text-white/50">
-								Consejos {capitulo.consejos[0].numero}–{capitulo.consejos[capitulo.consejos.length - 1].numero} ·
-								<span class="text-albero/80">desplegar</span>
-							</span>
-						</span>
 						<Icon
 							name="arrow-right"
-							class="mt-1 h-4 w-4 shrink-0 text-white/60 transition group-open:rotate-90 group-open:text-albero"
+							class="h-4 w-4 shrink-0 text-white/50 transition group-hover:translate-x-0.5 group-hover:text-albero"
 						/>
-					</summary>
-					<div class="border-t border-white/10 px-5 pb-5 pt-4">
-						<p class="text-sm leading-relaxed text-white/60">{capitulo.resumen}</p>
-						<ol class="mt-4 space-y-4">
-							{capitulo.consejos.map((consejo) => (
-								<li class="flex gap-3 text-sm leading-relaxed text-white/80">
-									<span class="w-6 shrink-0 text-right font-display text-sm font-bold text-albero">
-										{consejo.numero}.
-									</span>
-									<span>{consejo.texto}</span>
-								</li>
-							))}
-						</ol>
-					</div>
-				</details>
+					</span>
+					<span class="block font-display text-lg font-bold leading-snug text-white">
+						{capitulo.titulo}
+					</span>
+					<span class="block text-sm leading-relaxed text-white/60">{capitulo.resumen}</span>
+					<span class="mt-auto pt-2 text-[11px] font-semibold uppercase tracking-[0.15em] text-albero/80">
+						Consejos {capitulo.consejos[0].numero}–{capitulo.consejos[capitulo.consejos.length - 1].numero} · abrir
+					</span>
+				</button>
 			))
 		}
 	</div>
 </div>
+
+{
+	CAPITULOS.map((capitulo) => (
+		<dialog
+			id={`consejos-capitulo-${capitulo.numero}`}
+			data-dialogo-consejos
+			aria-labelledby={`consejos-titulo-${capitulo.numero}`}
+			class="m-auto max-h-[85vh] w-[min(94vw,44rem)] overflow-hidden rounded-2xl border border-white/10 bg-nocturno p-0 text-white shadow-2xl shadow-black/50 backdrop:bg-nocturno/80"
+		>
+			<div class="flex items-start justify-between gap-4 border-b border-white/10 px-6 py-5">
+				<div>
+					<p class="text-xs font-bold uppercase tracking-[0.2em] text-albero">
+						Capítulo {capitulo.numero} · Consejos {capitulo.consejos[0].numero}–
+						{capitulo.consejos[capitulo.consejos.length - 1].numero}
+					</p>
+					<h3
+						id={`consejos-titulo-${capitulo.numero}`}
+						class="mt-1 font-display text-xl font-bold leading-snug text-white"
+					>
+						{capitulo.titulo}
+					</h3>
+					<p class="mt-2 text-sm leading-relaxed text-white/60">{capitulo.resumen}</p>
+				</div>
+				<form method="dialog">
+					<button
+						type="submit"
+						aria-label="Cerrar"
+						class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/15 text-lg leading-none text-white/70 transition hover:border-albero hover:text-albero"
+					>
+						<span aria-hidden="true">×</span>
+					</button>
+				</form>
+			</div>
+			<div class="max-h-[60vh] overflow-y-auto px-6 py-5">
+				<ol class="space-y-4">
+					{capitulo.consejos.map((consejo) => (
+						<li class="flex gap-3 text-sm leading-relaxed text-white/80">
+							<span class="w-6 shrink-0 text-right font-display text-sm font-bold text-albero">
+								{consejo.numero}.
+							</span>
+							<span>{consejo.texto}</span>
+						</li>
+					))}
+				</ol>
+				<a
+					href={ORIGEN_CONSEJOS}
+					target="_blank"
+					rel="noreferrer noopener"
+					class="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-albero transition hover:text-white"
+				>
+					Ver la serie completa en el blog
+					<Icon name="external" class="h-4 w-4" />
+				</a>
+			</div>
+		</dialog>
+	))
+}
+
+<script>
+	function inicializarConsejos() {
+		document.querySelectorAll<HTMLElement>('[data-abrir-consejos]').forEach((boton) => {
+			if (boton.dataset.consejosListo) return;
+			boton.dataset.consejosListo = '1';
+			boton.addEventListener('click', () => {
+				const dialogo = document.getElementById(boton.dataset.abrirConsejos ?? '');
+				if (!(dialogo instanceof HTMLDialogElement)) return;
+				dialogo.showModal();
+				document.documentElement.classList.add('overflow-hidden');
+			});
+		});
+
+		document.querySelectorAll<HTMLDialogElement>('dialog[data-dialogo-consejos]').forEach((dialogo) => {
+			if (dialogo.dataset.consejosListo) return;
+			dialogo.dataset.consejosListo = '1';
+
+			// Cerrar al pulsar el fondo (el contenido no propaga el clic al diálogo).
+			dialogo.addEventListener('click', (evento) => {
+				if (evento.target === dialogo) dialogo.close();
+			});
+
+			dialogo.addEventListener('close', () => {
+				const abierto = document.querySelector('dialog[data-dialogo-consejos][open]');
+				if (!abierto) document.documentElement.classList.remove('overflow-hidden');
+			});
+		});
+	}
+
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', inicializarConsejos);
+	} else {
+		inicializarConsejos();
+	}
+
+	document.addEventListener('astro:page-load', inicializarConsejos);
+</script>
