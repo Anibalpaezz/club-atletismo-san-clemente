@@ -136,6 +136,12 @@ import { CAPITULOS, INTRO_CONSEJOS, ORIGEN_CONSEJOS } from '../lib/consejos';
 				if (evento.target === dialogo) dialogo.close();
 			});
 
+			// Como en la búsqueda de Apple: al sacar el ratón del panel se cierra y te
+			// deja donde estabas. Solo con ratón: en pantallas táctiles no hay "salir".
+			if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+				dialogo.addEventListener('mouseleave', () => dialogo.close());
+			}
+
 			dialogo.addEventListener('close', () => {
 				const abierto = document.querySelector('dialog[data-dialogo-consejos][open]');
 				if (!abierto) document.documentElement.classList.remove('overflow-hidden');
