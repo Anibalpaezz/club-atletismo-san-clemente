@@ -4,22 +4,21 @@ import PageHeader from '../../components/PageHeader.astro';
 import NoticiaCard from '../../components/NoticiaCard.astro';
 import { getNoticiasPublicadas } from '../../lib/db';
 import { fotosAleatorias } from '../../lib/fotosActas';
+import { idiomaDe, t } from '../../i18n/ui';
 
 export const prerender = false;
 export const revalidate = 60;
 
+const lang = idiomaDe(Astro.originPathname ?? Astro.url.pathname);
 const noticias = await getNoticiasPublicadas(50);
 const fotos = fotosAleatorias(noticias.length);
 ---
 
-<Layout
-	title="Noticias"
-	description="Noticias del Club Atletismo San Clemente y del atletismo popular del circuito provincial de Cuenca."
->
+<Layout title={t(lang, 'noticias.tituloPagina')} description={t(lang, 'noticias.metaDesc')}>
 	<PageHeader
-		eyebrow="Noticias"
-		title="Actualidad del club"
-		description="Inscripciones, resultados, entrenamientos y crónicas de las carreras del Circuito Provincial de Carreras Populares de Cuenca."
+		eyebrow={t(lang, 'noticias.eyebrow')}
+		title={t(lang, 'noticias.titulo')}
+		description={t(lang, 'noticias.desc')}
 	/>
 
 	<section class="bg-hueso py-20">
@@ -32,10 +31,8 @@ const fotos = fotosAleatorias(noticias.length);
 				</div>
 			) : (
 				<div class="rounded-xl border border-dashed border-slate-300 bg-white p-14 text-center">
-					<p class="text-lg font-semibold text-nocturno">Todavía no hay noticias publicadas</p>
-					<p class="mt-2 text-sm text-tinta/70">
-						En cuanto el club publique sus primeras noticias, aparecerán aquí.
-					</p>
+					<p class="text-lg font-semibold text-nocturno">{t(lang, 'noticias.vacioTitulo')}</p>
+					<p class="mt-2 text-sm text-tinta/70">{t(lang, 'noticias.vacioTexto')}</p>
 				</div>
 			)}
 		</div>

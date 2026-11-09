@@ -2,25 +2,32 @@
 import type { CarreraConfig } from '../lib/supabase';
 import { formatFecha } from '../lib/formato';
 import Icon from './Icon.astro';
+import { ruta } from '../i18n/rutas';
 
 interface Props {
 	carrera: CarreraConfig;
+	lang?: 'es' | 'en';
 }
-const { carrera } = Astro.props;
-const fecha = formatFecha(carrera.fecha ?? null);
+const { carrera, lang = 'es' } = Astro.props;
+const es = lang !== 'en';
+const fecha = formatFecha(carrera.fecha ?? null, lang);
 
 const fichas = [
-	carrera.fecha ? { icono: 'calendar' as const, label: 'Fecha', valor: fecha || 'Próximamente' } : null,
-	{ icono: 'clock' as const, label: 'Salida', valor: carrera.hora ? `${carrera.hora} h` : '22:00 h' },
-	{ icono: 'map-pin' as const, label: 'Lugar', valor: carrera.lugar ?? 'Plaza Mayor, San Clemente' },
-	{ icono: 'trophy' as const, label: 'Prueba', valor: '10K + 5K de iniciación' },
+	carrera.fecha
+		? { icono: 'calendar' as const, label: es ? 'Fecha' : 'Date', valor: fecha || (es ? 'Próximamente' : 'Coming soon') }
+		: null,
+	{ icono: 'clock' as const, label: es ? 'Salida' : 'Start', valor: carrera.hora ? `${carrera.hora} h` : '22:00 h' },
+	{ icono: 'map-pin' as const, label: es ? 'Lugar' : 'Venue', valor: carrera.lugar ?? 'Plaza Mayor, San Clemente' },
+	{ icono: 'trophy' as const, label: es ? 'Prueba' : 'Race', valor: es ? '10K + 5K de iniciación' : '10K + introductory 5K' },
 ].filter(Boolean) as { icono: 'calendar' | 'clock' | 'map-pin' | 'trophy'; label: string; valor: string }[];
 ---
 
 <div class="rounded-2xl border border-albero/30 bg-nocturno text-white shadow-xl shadow-nocturno/20">
 	<div class="flex flex-wrap items-center justify-between gap-4 border-b border-white/10 px-6 py-5 sm:px-8">
 		<div>
-			<p class="text-xs font-bold uppercase tracking-widest text-albero">Carrera Popular 10K Nocturna</p>
+			<p class="text-xs font-bold uppercase tracking-widest text-albero">
+				{es ? 'Carrera Popular 10K Nocturna' : '10K Night Race'}
+			</p>
 			<h3 class="mt-1 font-display text-2xl font-bold">Villa de San Clemente</h3>
 		</div>
 		{carrera.edicion && (
@@ -51,27 +58,29 @@ const fichas = [
 			data-fecha={carrera.fecha}
 			data-hora={carrera.hora ?? '22:00'}
 		>
-			<p class="text-xs font-semibold uppercase tracking-widest text-white/50">Cuenta atrás para la salida</p>
+			<p class="text-xs font-semibold uppercase tracking-widest text-white/50">
+				{es ? 'Cuenta atrás para la salida' : 'Countdown to the start'}
+			</p>
 			<div class="mt-3 grid max-w-md grid-cols-4 gap-3">
 				<div class="rounded-lg bg-white/10 px-2 py-2.5 text-center">
 					<p data-valor class="font-display text-2xl font-bold tabular-nums text-albero">–</p>
-					<p class="mt-0.5 text-[10px] font-semibold uppercase tracking-wider text-white/50">días</p>
+					<p class="mt-0.5 text-[10px] font-semibold uppercase tracking-wider text-white/50">{es ? 'días' : 'days'}</p>
 				</div>
 				<div class="rounded-lg bg-white/10 px-2 py-2.5 text-center">
 					<p data-valor class="font-display text-2xl font-bold tabular-nums text-albero">–</p>
-					<p class="mt-0.5 text-[10px] font-semibold uppercase tracking-wider text-white/50">horas</p>
+					<p class="mt-0.5 text-[10px] font-semibold uppercase tracking-wider text-white/50">{es ? 'horas' : 'hours'}</p>
 				</div>
 				<div class="rounded-lg bg-white/10 px-2 py-2.5 text-center">
 					<p data-valor class="font-display text-2xl font-bold tabular-nums text-albero">–</p>
-					<p class="mt-0.5 text-[10px] font-semibold uppercase tracking-wider text-white/50">min</p>
+					<p class="mt-0.5 text-[10px] font-semibold uppercase tracking-wider text-white/50">{es ? 'min' : 'min'}</p>
 				</div>
 				<div class="rounded-lg bg-white/10 px-2 py-2.5 text-center">
 					<p data-valor class="font-display text-2xl font-bold tabular-nums text-albero">–</p>
-					<p class="mt-0.5 text-[10px] font-semibold uppercase tracking-wider text-white/50">seg</p>
+					<p class="mt-0.5 text-[10px] font-semibold uppercase tracking-wider text-white/50">{es ? 'seg' : 'sec'}</p>
 				</div>
 			</div>
 			<p class="caja-fin hidden mt-3 text-sm font-semibold text-albero">
-				¡Gracias por correr con nosotros!
+				{es ? '¡Gracias por correr con nosotros!' : 'Thanks for running with us!'}
 			</p>
 		</div>
 	)}
@@ -84,7 +93,7 @@ const fichas = [
 				rel="noreferrer noopener"
 				class="inline-flex items-center gap-2 rounded-md bg-albero px-5 py-2.5 text-sm font-bold text-nocturno transition hover:bg-albero-100"
 			>
-				{carrera.texto_cta ?? 'Inscríbete'}
+				{carrera.texto_cta ?? (es ? 'Inscríbete' : 'Enter')}
 				<Icon name="external" class="h-4 w-4" />
 			</a>
 		)}
@@ -95,15 +104,15 @@ const fichas = [
 				rel="noreferrer noopener"
 				class="inline-flex items-center gap-2 rounded-md border border-white/25 px-5 py-2.5 text-sm font-bold text-white transition hover:border-albero hover:text-albero"
 			>
-				Clasificaciones
+				{es ? 'Clasificaciones' : 'Results'}
 				<Icon name="external" class="h-4 w-4" />
 			</a>
 		)}
 		<a
-			href="/carrera/"
+			href={ruta(lang, '/carrera/')}
 			class="inline-flex items-center gap-2 rounded-md px-3 py-2.5 text-sm font-semibold text-white/70 transition hover:text-white"
 		>
-			Toda la información
+			{es ? 'Toda la información' : 'All the information'}
 			<Icon name="arrow-right" class="h-4 w-4" />
 		</a>
 	</div>

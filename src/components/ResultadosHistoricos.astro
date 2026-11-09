@@ -3,6 +3,12 @@ import { getCollection } from 'astro:content';
 import Icon from './Icon.astro';
 import SectionHeading from './SectionHeading.astro';
 
+interface Props {
+	lang?: 'es' | 'en';
+}
+const { lang = 'es' } = Astro.props;
+const es = lang !== 'en';
+
 const resultados = (await getCollection('resultados')).sort((a, b) => b.data.year - a.data.year);
 const cronomancha = (await getCollection('resultadosCronomancha')).map((e) => e.data);
 
@@ -16,9 +22,11 @@ for (const edicion of cronomancha) {
 <section id="resultados" class="scroll-mt-20 border-t border-tinta/10 bg-hueso py-20">
 	<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 xl:px-12">
 		<SectionHeading
-			eyebrow="Histórico"
-			title="Resultados de ediciones anteriores"
-			description="Clasificaciones oficiales de la 10K Nocturna publicadas por Cronomancha. Añade una nueva edición con un simple fichero de contenido."
+			eyebrow={es ? 'Histórico' : 'Archive'}
+			title={es ? 'Resultados de ediciones anteriores' : 'Results from previous editions'}
+			description={es
+				? 'Clasificaciones oficiales de la 10K Nocturna publicadas por Cronomancha. Añade una nueva edición con un simple fichero de contenido.'
+				: 'Official 10K Night Race results published by Cronomancha. A new edition is added with a single content file.'}
 		/>
 
 		{resultados.length > 0 ? (
@@ -26,9 +34,9 @@ for (const edicion of cronomancha) {
 				<table class="w-full text-left text-sm">
 					<thead>
 						<tr class="border-b border-slate-200 bg-hueso text-xs font-bold uppercase tracking-wider text-tinta/70">
-							<th scope="col" class="px-6 py-4">Edición</th>
-							<th scope="col" class="hidden px-6 py-4 sm:table-cell">Participantes</th>
-							<th scope="col" class="px-6 py-4 text-right">Clasificación oficial</th>
+							<th scope="col" class="px-6 py-4">{es ? 'Edición' : 'Edition'}</th>
+							<th scope="col" class="hidden px-6 py-4 sm:table-cell">{es ? 'Participantes' : 'Entrants'}</th>
+							<th scope="col" class="px-6 py-4 text-right">{es ? 'Clasificación oficial' : 'Official results'}</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -38,7 +46,9 @@ for (const edicion of cronomancha) {
 									<span class="font-display text-lg font-bold text-nocturno">{r.data.year}</span>
 								</td>
 								<td class="hidden px-6 py-4 text-tinta/70 sm:table-cell">
-									{(r.data.participantCount ?? participantesPorYear.get(r.data.year)) ? `${r.data.participantCount ?? participantesPorYear.get(r.data.year)} corredores/as` : '—'}
+									{(r.data.participantCount ?? participantesPorYear.get(r.data.year))
+										? `${r.data.participantCount ?? participantesPorYear.get(r.data.year)} ${es ? 'corredores/as' : 'runners'}`
+										: '—'}
 								</td>
 								<td class="px-6 py-4 text-right">
 									<a
@@ -47,7 +57,7 @@ for (const edicion of cronomancha) {
 										rel="noreferrer noopener"
 										class="inline-flex items-center gap-1.5 text-sm font-semibold text-albero-600 transition hover:text-nocturno"
 									>
-										Ver clasificación
+										{es ? 'Ver clasificación' : 'View results'}
 										<Icon name="external" class="h-3.5 w-3.5" />
 									</a>
 								</td>
@@ -59,7 +69,9 @@ for (const edicion of cronomancha) {
 		) : (
 			<div class="mt-12 rounded-xl border border-dashed border-slate-300 bg-white p-10 text-center">
 				<p class="text-sm text-tinta/70">
-					Las clasificaciones oficiales de ediciones anteriores se irán publicando aquí.
+					{es
+						? 'Las clasificaciones oficiales de ediciones anteriores se irán publicando aquí.'
+						: 'Official results from previous editions will be published here.'}
 				</p>
 			</div>
 		)}

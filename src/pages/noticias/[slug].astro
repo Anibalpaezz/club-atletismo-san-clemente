@@ -5,16 +5,19 @@ import { getNoticiaBySlug, getNoticiasPublicadas } from '../../lib/db';
 import { formatFecha } from '../../lib/formato';
 import { fotoAleatoria } from '../../lib/fotosActas';
 import { getCollection, render } from 'astro:content';
+import { idiomaDe } from '../../i18n/ui';
+import { ruta } from '../../i18n/rutas';
 
 export const prerender = false;
 export const revalidate = 60;
 
+const lang = idiomaDe(Astro.originPathname ?? Astro.url.pathname);
 const { slug } = Astro.params;
 
 const noticia = await getNoticiaBySlug(slug!);
 
 if (!noticia) {
-	return Astro.redirect('/noticias/');
+	return Astro.redirect(ruta(lang, '/noticias/'));
 }
 
 const recientes = (await getNoticiasPublicadas(3)).filter((n) => n.id !== noticia.id).slice(0, 3);
@@ -26,7 +29,7 @@ if (entradaEstatica) {
 }
 
 const parrafos = (noticia.cuerpo ?? '').split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean);
-const fecha = formatFecha(noticia.fecha_publicacion ?? noticia.created_at);
+const fecha = formatFecha(noticia.fecha_publicacion ?? noticia.created_at, lang);
 const imagen = noticia.imagen_url ?? fotoAleatoria();
 ---
 
@@ -37,9 +40,12 @@ const imagen = noticia.imagen_url ?? fotoAleatoria();
 >
 	<article class="bg-hueso">
 		<div class="mx-auto max-w-7xl px-4 py-16 sm:px-6">
-			<a href="/noticias/" class="inline-flex items-center gap-1.5 text-sm font-semibold text-albero-600 hover:text-nocturno">
+			<a
+				href={ruta(lang, '/noticias/')}
+				class="inline-flex items-center gap-1.5 text-sm font-semibold text-albero-600 hover:text-nocturno"
+			>
 				<Icon name="arrow-right" class="h-4 w-4 rotate-180" />
-				Todas las noticias
+				{lang === 'es' ? 'Todas las noticias' : 'All news'}
 			</a>
 
 			<h1 class="mt-4 font-display text-3xl font-bold leading-tight text-nocturno sm:text-4xl">
@@ -83,16 +89,18 @@ const imagen = noticia.imagen_url ?? fotoAleatoria();
 	{recientes.length > 0 && (
 		<section class="border-t border-slate-200 bg-white py-16">
 			<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 xl:px-12">
-				<h2 class="font-display text-2xl font-bold text-nocturno">Noticias recientes</h2>
+				<h2 class="font-display text-2xl font-bold text-nocturno">
+					{lang === 'es' ? 'Noticias recientes' : 'Recent news'}
+				</h2>
 				<div class="mt-8 grid gap-6 md:grid-cols-3">
 					{recientes.map((n) => (
 						<a
-							href={`/noticias/${n.slug ?? n.id}/`}
+							href={ruta(lang, `/noticias/${n.slug ?? n.id}/`)}
 							class="rounded-xl border border-slate-200 bg-hueso p-6 transition hover:shadow-md"
 						>
-							{formatFecha(n.fecha_publicacion ?? n.created_at) && (
+							{formatFecha(n.fecha_publicacion ?? n.created_at, lang) && (
 								<p class="text-xs font-semibold uppercase tracking-wider text-albero-600">
-									{formatFecha(n.fecha_publicacion ?? n.created_at)}
+									{formatFecha(n.fecha_publicacion ?? n.created_at, lang)}
 								</p>
 							)}
 							<h3 class="mt-2 font-display text-lg font-bold leading-snug text-nocturno">{n.titulo}</h3>

@@ -5,8 +5,30 @@ import ClubesAmigos from '../components/ClubesAmigos.astro';
 import Organigrama from '../components/Organigrama.astro';
 import { CLUBES_AMIGOS } from '../lib/clubes';
 import { getCollection, render } from 'astro:content';
+import { idiomaDe } from '../i18n/ui';
 
-export const prerender = true;
+export const prerender = false;
+export const revalidate = 60;
+
+const lang = idiomaDe(Astro.originPathname ?? Astro.url.pathname);
+const C =
+	lang === 'es'
+		? {
+				title: 'El Club',
+				desc: 'Historia, valores y directiva del Club Atletismo San Clemente, club de atletismo popular de San Clemente (Cuenca).',
+				eyebrow: 'El Club',
+				h1: 'Club Atletismo San Clemente',
+				lead: 'Historia, valores y personas de un club nacido del atletismo popular y del cariño por la Joya del Renacimiento Manchego.',
+				nota: 'Los textos de esta sección son contenido editorial del club y se publican en español.',
+			}
+		: {
+				title: 'The Club',
+				desc: 'History, values and board of Club Atletismo San Clemente, a grassroots athletics club from San Clemente (Cuenca).',
+				eyebrow: 'The Club',
+				h1: 'Club Atletismo San Clemente',
+				lead: 'The history, values and people of a club born from grassroots running and from a love for the Jewel of the Manchegan Renaissance.',
+				nota: 'The articles in this section are the club’s editorial content and are published in Spanish.',
+			};
 
 const entradas = await getCollection('club', ({ data }) => data.orden);
 const renderizados = await Promise.all(
@@ -17,18 +39,16 @@ const renderizados = await Promise.all(
 );
 ---
 
-<Layout
-	title="El Club"
-	description="Historia, valores y directiva del Club Atletismo San Clemente, club de atletismo popular de San Clemente (Cuenca)."
->
-	<PageHeader
-		eyebrow="El Club"
-		title="Club Atletismo San Clemente"
-		description="Historia, valores y personas de un club nacido del atletismo popular y del cariño por la Joya del Renacimiento Manchego."
-	/>
+<Layout title={C.title} description={C.desc}>
+	<PageHeader eyebrow={C.eyebrow} title={C.h1} description={C.lead} />
 
 	<section class="bg-hueso py-20">
 		<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 xl:px-12">
+			{lang === 'en' && (
+				<p class="mb-10 rounded-lg border border-slate-200 bg-white px-4 py-3 text-xs text-tinta/60">
+					{C.nota}
+				</p>
+			)}
 			{renderizados.map((entrada, i) => (
 				<article class={i > 0 ? 'mt-16' : ''}>
 					<div class="mx-auto max-w-7xl">
@@ -45,11 +65,11 @@ const renderizados = await Promise.all(
 							<entrada.html />
 						</div>
 					</div>
-					{entrada.data.titulo === 'Directiva' && <Organigrama />}
+					{entrada.data.titulo === 'Directiva' && <Organigrama lang={lang} />}
 				</article>
 			))}
 		</div>
 	</section>
 
-	<ClubesAmigos clubes={CLUBES_AMIGOS} />
+	<ClubesAmigos clubes={CLUBES_AMIGOS} lang={lang} />
 </Layout>

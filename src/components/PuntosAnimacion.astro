@@ -2,7 +2,13 @@
 import Icon from './Icon.astro';
 import SectionHeading from './SectionHeading.astro';
 
-const puntos = [
+interface Props {
+	lang?: 'es' | 'en';
+}
+const { lang = 'es' } = Astro.props;
+const es = lang !== 'en';
+
+const puntos = es ? [
 	{
 		nombre: 'Plaza Mayor',
 		descripcion:
@@ -33,15 +39,48 @@ const puntos = [
 			'Los últimos metros hacia la Plaza Mayor. El empujón final para corredores de 5K y 10K: aquí se deciden las marcas.',
 		icono: 'trophy' as const,
 	},
+] : [
+	{
+		nombre: 'Plaza Mayor',
+		descripcion:
+			'The heart of the night: start, finish and a guaranteed atmosphere. Come early to find a spot by the finish line.',
+		icono: 'flag' as const,
+	},
+	{
+		nombre: 'Church of Santiago Apóstol',
+		descripcion:
+			'In the first metres of the race, beside the start. Its floodlit facade follows the runners as they set off.',
+		icono: 'map-pin' as const,
+	},
+	{
+		nombre: 'Torre Vieja',
+		descripcion:
+			'Past the start, among the noble houses of the old town. A magical corner to cheer the runners halfway round.',
+		icono: 'map-pin' as const,
+	},
+	{
+		nombre: 'Refreshment points',
+		descripcion:
+			'There are at least two refreshment points per lap: runners pass them at race pace and appreciate the support (and the shouting helps too).',
+		icono: 'route' as const,
+	},
+	{
+		nombre: 'The climb to the finish',
+		descripcion:
+			'The last metres into the Plaza Mayor. The final push for 5K and 10K runners: this is where times are decided.',
+		icono: 'trophy' as const,
+	},
 ];
 ---
 
 <section id="puntos-animacion" class="scroll-mt-20 border-t border-tinta/10 bg-white py-20">
 	<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 xl:px-12">
 		<SectionHeading
-			eyebrow="Vive la noche desde la calle"
-			title="Puntos de animación"
-			description="El público anima, el pueblo corre: cinco rincones del circuito perfectos para seguir la carrera y empujar a los corredores."
+			eyebrow={es ? 'Vive la noche desde la calle' : 'Live the night from the street'}
+			title={es ? 'Puntos de animación' : 'Cheering points'}
+			description={es
+				? 'El público anima, el pueblo corre: cinco rincones del circuito perfectos para seguir la carrera y empujar a los corredores.'
+				: 'The crowd cheers, the town runs: five spots on the circuit that are perfect for following the race and pushing the runners on.'}
 		/>
 
 		<div class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -58,8 +97,9 @@ const puntos = [
 			))}
 			<div class="flex items-center justify-center rounded-xl border border-dashed border-slate-300 bg-white p-6 text-center">
 				<p class="text-sm text-tinta/70">
-					¿Organizas animación en tu rincón del circuito? Escríbenos y lo añadimos al mapa de la
-					prueba.
+					{es
+						? '¿Organizas animación en tu rincón del circuito? Escríbenos y lo añadimos al mapa de la prueba.'
+						: 'Organising a cheer zone at your corner of the circuit? Write to us and we will add it to the race map.'}
 				</p>
 			</div>
 		</div>

@@ -3,173 +3,381 @@ import Layout from '../layouts/Layout.astro';
 import PageHeader from '../components/PageHeader.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import Icon from '../components/Icon.astro';
-import { SITE } from '../lib/site';
+import { idiomaDe } from '../i18n/ui';
 
-export const prerender = true;
+export const prerender = false;
+export const revalidate = 60;
 
-const datosClave = [
-	{ cifra: '6.797', etiqueta: 'habitantes (2025)' },
-	{ cifra: '722 m', etiqueta: 'de altitud' },
-	{ cifra: '102 km', etiqueta: 'de Cuenca · 80 de Albacete' },
-	{ cifra: '2', etiqueta: 'Bienes de Interés Cultural' },
-];
+const lang = idiomaDe(Astro.originPathname ?? Astro.url.pathname);
 
-const geografia = [
-	{
-		icono: 'map-pin' as const,
-		titulo: 'Dónde estamos',
-		texto: 'En el suroeste de la provincia de Cuenca, a 102 km de la capital y unos 80 km de Albacete, junto al río Rus y en el cruce de las autopistas A-43 y AP-36.',
-	},
-	{
-		icono: 'clock' as const,
-		titulo: 'Clima',
-		texto: 'Mediterráneo continentalizado: inviernos muy fríos y veranos muy calurosos. Precipitaciones escasas, concentradas en primavera y otoño, con nieve ocasional entre diciembre y marzo.',
-	},
-	{
-		icono: 'route' as const,
-		titulo: 'Territorio',
-		texto: 'A 722 metros sobre el nivel del mar, en el llano de La Mancha Conquense Baja. El término lo atraviesa el río Rus, que desemboca en el Záncara, afluente del Guadiana.',
-	},
-];
-
-const hitos = [
-	{
-		periodo: '1500–1250 a. C.',
-		titulo: 'La Edad del Bronce',
-		texto: 'Los primeros restos del término evidencian presencia humana desde la Edad del Bronce Medio, y también de época celtibérica.',
-	},
-	{
-		periodo: 'Época romana',
-		titulo: 'Entre Segóbriga y Carthago Nova',
-		texto: 'Un puente sobre el río Rus y un miliario de la vía que unía Segóbriga con Carthago Nova atestiguan la presencia romana, completada con villas tardorromanas y un fuste visigodo.',
-	},
-	{
-		periodo: 'Origen de la villa',
-		titulo: 'La Virgen de Rus',
-		texto: 'La tradición sitúa en la Cueva de la Mora el hallazgo de la imagen de la Virgen de Rus, hoy patrona de San Clemente. El nombre del municipio procede de Clemente Pérez de Rus, caballero asentado en la zona.',
-	},
-	{
-		periodo: '1445',
-		titulo: 'Elevada a villa',
-		texto: 'Don Juan Pacheco elevó la población a la categoría de villa. Tras la victoria de Isabel la Católica, los Reyes Católicos la incorporaron a la Corona y visitaron la villa en agosto de 1488.',
-	},
-	{
-		periodo: 'Siglos XV y XVI',
-		titulo: 'La «Pequeña Corte Manchega»',
-		texto: 'Con más de 2.000 habitantes y casas de portadas blasonadas, San Clemente se convirtió en la capital de la Mancha Alta, conocida como la «Pequeña Corte Manchega».',
-	},
-	{
-		periodo: 'Siglos XVIII y XIX',
-		titulo: 'Muy Noble, Muy Leal y Fidelísima Villa',
-		texto: 'Tras apoyar a Felipe V en la Guerra de Sucesión, recibió este título honorífico. En 1814 quedó establecida como uno de los partidos judiciales de la provincia de Cuenca.',
-	},
-	{
-		periodo: 'Siglo XX',
-		titulo: 'Historia reciente',
-		texto: 'Durante la Guerra Civil San Clemente albergó un aeródromo con unidades de bombarderos Tupolev SB-2 y cazas Polikarpov I-15.',
-	},
-];
-
-const patrimonio = [
-	{
-		nombre: 'Casa Consistorial',
-		descripcion:
-			'Renacentista, construida en varias fases entre 1566 y 1622. Alberga el Museo de Obra Gráfica «Fundación Antonio Pérez» y el Archivo Histórico Local. BIC desde 1992.',
-		icono: 'flag' as const,
-	},
-	{
-		nombre: 'Iglesia de Santiago Apóstol',
-		descripcion:
-			'Templo renacentista del siglo XVI con tres naves, capillas y bóvedas de crucería estrellada. Destacan su retablo barroco y una Cruz de Alabastro de tres metros. BIC desde 1992.',
-		icono: 'map-pin' as const,
-	},
-	{
-		nombre: 'Torre Vieja',
-		descripcion:
-			'La edificación más antigua del municipio, del siglo XV, de planta cuadrada y usos de vigilancia. Hoy acoge la Oficina de Turismo y el Museo Etnográfico de Labranza.',
-		icono: 'trophy' as const,
-	},
-	{
-		nombre: 'Castillo de Santiago de la Torre',
-		descripcion:
-			'Fortaleza medieval junto al río Záncara, ligada a la Orden de Santiago y al Marquesado de Villena. Planta en L, muralla almenada y torre del homenaje.',
-		icono: 'route' as const,
-	},
-	{
-		nombre: 'Santuario de Rus',
-		descripcion:
-			'En el paraje del mismo nombre, junto al manantial de la patrona. Es el escenario de la tradicional romería de la Virgen de Rus.',
-		icono: 'map-pin' as const,
-	},
-	{
-		nombre: 'Conventos y palacios',
-		descripcion:
-			'Un rico conjunto señorial y religioso: conventos de San Francisco, de las Clarisas y de las Trinitarias, palacios de Valdeguerrero, Melgarejo u Oma, la Casa de la Reina Mora o la Puerta de la Inquisición.',
-		icono: 'users' as const,
-	},
-];
-
-const aves = [
-	'Avutarda',
-	'Cernícalo primilla',
-	'Alondra de Dupont',
-	'Sisón',
-	'Ganga ibérica',
-	'Ganga ortega',
-	'Alcaraván',
-	'Águila imperial ibérica',
-];
-
-const fiestas = [
-	{
-		icono: 'calendar' as const,
-		titulo: 'Fiestas de Rus',
-		texto: 'El Domingo de Resurrección se subastan las andas de la Virgen de Rus: las cuadrillas pujan por el honor de portarlas. La romería está declarada de Interés Turístico Regional.',
-	},
-	{
-		icono: 'flag' as const,
-		titulo: 'La Venida de la Virgen',
-		texto: 'El domingo siguiente al Domingo de Resurrección, la Virgen del Remedio baja hasta Rus para encontrarse con la Virgen de Rus. Tras el intercambio de imágenes, la patrona permanece 43 días en San Clemente.',
-	},
-];
-
-const economia = [
-	{
-		nombre: 'Vino',
-		detalle: 'Tradición agrícola y vitivinícola de plena tierra manchega.',
-	},
-	{
-		nombre: 'Ajos y cebollas',
-		detalle: 'Cultivos emblemáticos de la comarca conquense.',
-	},
-	{
-		nombre: 'Queso manchego',
-		detalle: 'Pastos y ganadería propios de La Mancha.',
-	},
-	{
-		nombre: 'Productos del cerdo',
-		detalle: 'Embutidos y derivados de la matanza tradicional.',
-	},
-	{
-		nombre: 'Servicios y comercio',
-		detalle: '578 empresas registradas (2022) y el polígono industrial San José.',
-	},
-];
+const C =
+	lang === 'es'
+		? {
+				title: 'San Clemente en Ruta',
+				desc: 'Historia, patrimonio y naturaleza de San Clemente (Cuenca), la Joya del Renacimiento Manchego: una villa real entre La Mancha y el río Rus.',
+				eyebrow: 'San Clemente en Ruta',
+				h1: 'La Joya del Renacimiento Manchego',
+				lead: 'San Clemente es cabeza de partido judicial en el suroeste de Cuenca y cuna renacentista declarada conjunto histórico-artístico en 1980.',
+				datos: [
+					{ cifra: '6.797', etiqueta: 'habitantes (2025)' },
+					{ cifra: '722 m', etiqueta: 'de altitud' },
+					{ cifra: '102 km', etiqueta: 'de Cuenca · 80 de Albacete' },
+					{ cifra: '2', etiqueta: 'Bienes de Interés Cultural' },
+				],
+				municipio: {
+					eyebrow: 'El municipio',
+					title: 'Una villa real entre La Mancha y el río Rus',
+					desc: 'Lo que nos hace únicos: un casco histórico de portadas blasonadas, una estepa llena de vida y una plaza mayor que es salida y meta de nuestro atletismo.',
+				},
+				geografia: [
+					{
+						icono: 'map-pin' as const,
+						titulo: 'Dónde estamos',
+						texto:
+							'En el suroeste de la provincia de Cuenca, a 102 km de la capital y unos 80 km de Albacete, junto al río Rus y en el cruce de las autopistas A-43 y AP-36.',
+					},
+					{
+						icono: 'clock' as const,
+						titulo: 'Clima',
+						texto:
+							'Mediterráneo continentalizado: inviernos muy fríos y veranos muy calurosos. Precipitaciones escasas, concentradas en primavera y otoño, con nieve ocasional entre diciembre y marzo.',
+					},
+					{
+						icono: 'route' as const,
+						titulo: 'Territorio',
+						texto:
+							'A 722 metros sobre el nivel del mar, en el llano de La Mancha Conquense Baja. El término lo atraviesa el río Rus, que desemboca en el Záncara, afluente del Guadiana.',
+					},
+				],
+				historia: {
+					eyebrow: 'Historia',
+					title: 'Más de tres milenios de historia',
+					desc: 'De la Edad del Bronce al Renacimiento manchego: los hitos que forjaron la villa que hoy corre con nosotros.',
+				},
+				hitos: [
+					{
+						periodo: '1500–1250 a. C.',
+						titulo: 'La Edad del Bronce',
+						texto:
+							'Los primeros restos del término evidencian presencia humana desde la Edad del Bronce Medio, y también de época celtibérica.',
+					},
+					{
+						periodo: 'Época romana',
+						titulo: 'Entre Segóbriga y Carthago Nova',
+						texto:
+							'Un puente sobre el río Rus y un miliario de la vía que unía Segóbriga con Carthago Nova atestiguan la presencia romana, completada con villas tardorromanas y un fuste visigodo.',
+					},
+					{
+						periodo: 'Origen de la villa',
+						titulo: 'La Virgen de Rus',
+						texto:
+							'La tradición sitúa en la Cueva de la Mora el hallazgo de la imagen de la Virgen de Rus, hoy patrona de San Clemente. El nombre del municipio procede de Clemente Pérez de Rus, caballero asentado en la zona.',
+					},
+					{
+						periodo: '1445',
+						titulo: 'Elevada a villa',
+						texto:
+							'Don Juan Pacheco elevó la población a la categoría de villa. Tras la victoria de Isabel la Católica, los Reyes Católicos la incorporaron a la Corona y visitaron la villa en agosto de 1488.',
+					},
+					{
+						periodo: 'Siglos XV y XVI',
+						titulo: 'La «Pequeña Corte Manchega»',
+						texto:
+							'Con más de 2.000 habitantes y casas de portadas blasonadas, San Clemente se convirtió en la capital de la Mancha Alta, conocida como la «Pequeña Corte Manchega».',
+					},
+					{
+						periodo: 'Siglos XVIII y XIX',
+						titulo: 'Muy Noble, Muy Leal y Fidelísima Villa',
+						texto:
+							'Tras apoyar a Felipe V en la Guerra de Sucesión, recibió este título honorífico. En 1814 quedó establecida como uno de los partidos judiciales de la provincia de Cuenca.',
+					},
+					{
+						periodo: 'Siglo XX',
+						titulo: 'Historia reciente',
+						texto:
+							'Durante la Guerra Civil San Clemente albergó un aeródromo con unidades de bombarderos Tupolev SB-2 y cazas Polikarpov I-15.',
+					},
+				],
+				patrimonio: {
+					eyebrow: 'Patrimonio',
+					title: 'Un casco histórico con nombre propio',
+					desc: 'Dos Bienes de Interés Cultural y un catálogo de palacios, conventos y plazas que convierten el paseo en un paseo por la historia.',
+				},
+				monumentos: [
+					{
+						nombre: 'Casa Consistorial',
+						descripcion:
+							'Renacentista, construida en varias fases entre 1566 y 1622. Alberga el Museo de Obra Gráfica «Fundación Antonio Pérez» y el Archivo Histórico Local. BIC desde 1992.',
+						icono: 'flag' as const,
+					},
+					{
+						nombre: 'Iglesia de Santiago Apóstol',
+						descripcion:
+							'Templo renacentista del siglo XVI con tres naves, capillas y bóvedas de crucería estrellada. Destacan su retablo barroco y una Cruz de Alabastro de tres metros. BIC desde 1992.',
+						icono: 'map-pin' as const,
+					},
+					{
+						nombre: 'Torre Vieja',
+						descripcion:
+							'La edificación más antigua del municipio, del siglo XV, de planta cuadrada y usos de vigilancia. Hoy acoge la Oficina de Turismo y el Museo Etnográfico de Labranza.',
+						icono: 'trophy' as const,
+					},
+					{
+						nombre: 'Castillo de Santiago de la Torre',
+						descripcion:
+							'Fortaleza medieval junto al río Záncara, ligada a la Orden de Santiago y al Marquesado de Villena. Planta en L, muralla almenada y torre del homenaje.',
+						icono: 'route' as const,
+					},
+					{
+						nombre: 'Santuario de Rus',
+						descripcion:
+							'En el paraje del mismo nombre, junto al manantial de la patrona. Es el escenario de la tradicional romería de la Virgen de Rus.',
+						icono: 'map-pin' as const,
+					},
+					{
+						nombre: 'Conventos y palacios',
+						descripcion:
+							'Un rico conjunto señorial y religioso: conventos de San Francisco, de las Clarisas y de las Trinitarias, palacios de Valdeguerrero, Melgarejo u Oma, la Casa de la Reina Mora o la Puerta de la Inquisición.',
+						icono: 'users' as const,
+					},
+				],
+				naturaleza: {
+					eyebrow: 'Naturaleza',
+					title: 'La estepa, un paraíso de aves',
+					desc: 'El término cuenta con una Zona de Especial Protección para las Aves y un Área Importante para la Conservación de las Aves, con especies propias de zonas esteparias.',
+				},
+				aves: [
+					'Avutarda',
+					'Cernícalo primilla',
+					'Alondra de Dupont',
+					'Sisón',
+					'Ganga ibérica',
+					'Ganga ortega',
+					'Alcaraván',
+					'Águila imperial ibérica',
+				],
+				fiestas: {
+					eyebrow: 'Fiestas y tradiciones',
+					title: 'El pueblo que puja por su Virgen',
+					desc: 'Tradiciones vivas, declaradas patrimonio inmaterial de la alegría manchega, que reúnen a todo el pueblo y a los que vuelven.',
+				},
+				celebraciones: [
+					{
+						icono: 'calendar' as const,
+						titulo: 'Fiestas de Rus',
+						texto:
+							'El Domingo de Resurrección se subastan las andas de la Virgen de Rus: las cuadrillas pujan por el honor de portarlas. La romería está declarada de Interés Turístico Regional.',
+					},
+					{
+						icono: 'flag' as const,
+						titulo: 'La Venida de la Virgen',
+						texto:
+							'El domingo siguiente al Domingo de Resurrección, la Virgen del Remedio baja hasta Rus para encontrarse con la Virgen de Rus. Tras el intercambio de imágenes, la patrona permanece 43 días en San Clemente.',
+					},
+				],
+				economia: {
+					eyebrow: 'Economía',
+					title: 'Tierra de labor y de sabor',
+					desc: 'Tradicionalmente agrícola, la economía de San Clemente se apoya hoy también en la industria, la construcción, el comercio y los servicios.',
+				},
+				sectores: [
+					{ nombre: 'Vino', detalle: 'Tradición agrícola y vitivinícola de plena tierra manchega.' },
+					{ nombre: 'Ajos y cebollas', detalle: 'Cultivos emblemáticos de la comarca conquense.' },
+					{ nombre: 'Queso manchego', detalle: 'Pastos y ganadería propios de La Mancha.' },
+					{ nombre: 'Productos del cerdo', detalle: 'Embutidos y derivados de la matanza tradicional.' },
+					{
+						nombre: 'Servicios y comercio',
+						detalle: '578 empresas registradas (2022) y el polígono industrial San José.',
+					},
+				],
+			}
+		: {
+				title: 'San Clemente on the Route',
+				desc: 'History, heritage and nature in San Clemente (Cuenca), the Jewel of the Manchegan Renaissance: a royal town between La Mancha and the river Rus.',
+				eyebrow: 'San Clemente on the Route',
+				h1: 'The Jewel of the Manchegan Renaissance',
+				lead: 'San Clemente is the seat of its judicial district in south-west Cuenca and a Renaissance birthplace declared a historic-artistic site in 1980.',
+				datos: [
+					{ cifra: '6,797', etiqueta: 'inhabitants (2025)' },
+					{ cifra: '722 m', etiqueta: 'above sea level' },
+					{ cifra: '102 km', etiqueta: 'from Cuenca · 80 from Albacete' },
+					{ cifra: '2', etiqueta: 'Listed Heritage Sites' },
+				],
+				municipio: {
+					eyebrow: 'The town',
+					title: 'A royal town between La Mancha and the river Rus',
+					desc: 'What makes us unique: an old town of noble doorways, a steppe full of life and a main square that is the start and finish of our athletics.',
+				},
+				geografia: [
+					{
+						icono: 'map-pin' as const,
+						titulo: 'Where we are',
+						texto:
+							'In the south-west of the province of Cuenca, 102 km from the provincial capital and about 80 km from Albacete, beside the river Rus where the A-43 and AP-36 motorways meet.',
+					},
+					{
+						icono: 'clock' as const,
+						titulo: 'Climate',
+						texto:
+							'Continental Mediterranean: very cold winters and very hot summers. Little rainfall, mostly in spring and autumn, with occasional snow between December and March.',
+					},
+					{
+						icono: 'route' as const,
+						titulo: 'Landscape',
+						texto:
+							'At 722 metres above sea level, on the plain of La Mancha Conquense Baja. The river Rus crosses the municipality and flows into the Záncara, a tributary of the Guadiana.',
+					},
+				],
+				historia: {
+					eyebrow: 'History',
+					title: 'More than three thousand years of history',
+					desc: 'From the Bronze Age to the Manchegan Renaissance: the milestones that shaped the town that runs with us today.',
+				},
+				hitos: [
+					{
+						periodo: '1500–1250 BC',
+						titulo: 'The Bronze Age',
+						texto:
+							'The earliest finds in the area show human presence from the Middle Bronze Age, and also from the Celtiberian period.',
+					},
+					{
+						periodo: 'Roman times',
+						titulo: 'Between Segóbriga and Carthago Nova',
+						texto:
+							'A bridge over the river Rus and a milestone from the road linking Segóbriga with Carthago Nova attest to the Roman presence, completed by late-Roman villas and a Visigothic column shaft.',
+					},
+					{
+						periodo: 'Origin of the town',
+						titulo: 'Our Lady of Rus',
+						texto:
+							'Tradition places the discovery of the image of Our Lady of Rus, now the town’s patron, in the Cueva de la Mora. The town’s name comes from Clemente Pérez de Rus, a knight who settled here.',
+					},
+					{
+						periodo: '1445',
+						titulo: 'Raised to a town',
+						texto:
+							'Don Juan Pacheco raised the settlement to the status of town. After Isabella the Catholic’s victory, the Catholic Monarchs brought it under the Crown and visited in August 1488.',
+					},
+					{
+						periodo: '15th and 16th centuries',
+						titulo: 'The “Little Manchegan Court”',
+						texto:
+							'With more than 2,000 inhabitants and houses with heraldic doorways, San Clemente became the capital of Upper La Mancha, known as the “Little Manchegan Court”.',
+					},
+					{
+						periodo: '18th and 19th centuries',
+						titulo: 'Muy Noble, Muy Leal y Fidelísima Villa',
+						texto:
+							'After supporting Philip V in the War of Succession it received this honorary title. In 1814 it became one of the judicial districts of the province of Cuenca.',
+					},
+					{
+						periodo: '20th century',
+						titulo: 'Recent history',
+						texto:
+							'During the Civil War San Clemente hosted an airfield with Tupolev SB-2 bomber units and Polikarpov I-15 fighters.',
+					},
+				],
+				patrimonio: {
+					eyebrow: 'Heritage',
+					title: 'An old town with a name of its own',
+					desc: 'Two Listed Heritage Sites and a catalogue of palaces, convents and squares that turn a walk into a walk through history.',
+				},
+				monumentos: [
+					{
+						nombre: 'Town Hall (Casa Consistorial)',
+						descripcion:
+							'Renaissance, built in several phases between 1566 and 1622. It houses the Antonio Pérez Foundation print museum and the local historical archive. Listed since 1992.',
+						icono: 'flag' as const,
+					},
+					{
+						nombre: 'Church of Santiago Apóstol',
+						descripcion:
+							'16th-century Renaissance church with three naves, chapels and star-ribbed vaults. Its baroque altarpiece and a three-metre alabaster cross stand out. Listed since 1992.',
+						icono: 'map-pin' as const,
+					},
+					{
+						nombre: 'Torre Vieja',
+						descripcion:
+							'The oldest building in the town, from the 15th century, square in plan and once used as a watchtower. It now houses the tourist office and the farming ethnography museum.',
+						icono: 'trophy' as const,
+					},
+					{
+						nombre: 'Castle of Santiago de la Torre',
+						descripcion:
+							'Medieval fortress beside the river Záncara, linked to the Order of Santiago and the Marquisate of Villena. L-shaped plan, battlemented walls and keep.',
+						icono: 'route' as const,
+					},
+					{
+						nombre: 'Sanctuary of Rus',
+						descripcion:
+							'In the spot of the same name, beside the patron’s spring. It is the setting of the traditional pilgrimage of Our Lady of Rus.',
+						icono: 'map-pin' as const,
+					},
+					{
+						nombre: 'Convents and palaces',
+						descripcion:
+							'A rich collection of noble and religious buildings: the convents of San Francisco, the Poor Clares and the Trinitarians, the palaces of Valdeguerrero, Melgarejo and Oma, the Casa de la Reina Mora and the Inquisition Gate.',
+						icono: 'users' as const,
+					},
+				],
+				naturaleza: {
+					eyebrow: 'Nature',
+					title: 'The steppe, a paradise for birds',
+					desc: 'The municipality has a Special Protection Area for Birds and an Important Bird Area, home to species typical of the steppe.',
+				},
+				aves: [
+					'Great bustard',
+					'Lesser kestrel',
+					'Dupont’s lark',
+					'Little bustard',
+					'Black-bellied sandgrouse',
+					'Pin-tailed sandgrouse',
+					'Stone-curlew',
+					'Spanish imperial eagle',
+				],
+				fiestas: {
+					eyebrow: 'Festivals and traditions',
+					title: 'The town that bids for its Virgin',
+					desc: 'Living traditions, part of the Manchegan joy, that bring together the whole town and everyone who comes back.',
+				},
+				celebraciones: [
+					{
+						icono: 'calendar' as const,
+						titulo: 'Fiestas de Rus',
+						texto:
+							'On Easter Sunday the litter of Our Lady of Rus is auctioned: the groups bid for the honour of carrying it. The pilgrimage is declared of Regional Tourist Interest.',
+					},
+					{
+						icono: 'flag' as const,
+						titulo: 'The Coming of the Virgin',
+						texto:
+							'On the Sunday after Easter, Our Lady of Remedios comes down to Rus to meet Our Lady of Rus. After the images are exchanged, the patron spends 43 days in San Clemente.',
+					},
+				],
+				economia: {
+					eyebrow: 'Economy',
+					title: 'A land of work and flavour',
+					desc: 'Traditionally agricultural, San Clemente’s economy now also relies on industry, construction, retail and services.',
+				},
+				sectores: [
+					{ nombre: 'Wine', detalle: 'Farming and wine-making tradition in the heart of La Mancha.' },
+					{ nombre: 'Garlic and onions', detalle: 'Emblematic crops of the Cuenca region.' },
+					{ nombre: 'Manchego cheese', detalle: 'Pastures and livestock typical of La Mancha.' },
+					{ nombre: 'Pork products', detalle: 'Sausages and produce from the traditional slaughter.' },
+					{
+						nombre: 'Services and retail',
+						detalle: '578 registered businesses (2022) and the San José industrial estate.',
+					},
+				],
+			};
 ---
 
-<Layout
-	title="San Clemente en Ruta"
-	description="Historia, patrimonio y naturaleza de San Clemente (Cuenca), la Joya del Renacimiento Manchego: una villa real entre La Mancha y el río Rus."
->
-	<PageHeader
-		eyebrow="San Clemente en Ruta"
-		title="La Joya del Renacimiento Manchego"
-		description="San Clemente es cabeza de partido judicial en el suroeste de Cuenca y cuna renacentista declarada conjunto histórico-artístico en 1980."
-	/>
+<Layout title={C.title} description={C.desc}>
+	<PageHeader eyebrow={C.eyebrow} title={C.h1} description={C.lead} />
 
 	<section class="bg-nocturno">
 		<div class="mx-auto grid max-w-7xl grid-cols-2 gap-y-8 px-4 py-10 sm:px-6 sm:grid-cols-4 lg:px-8 xl:px-12">
-			{datosClave.map((dato) => (
+			{C.datos.map((dato) => (
 				<div class="text-center">
 					<p class="font-display text-3xl font-bold text-albero sm:text-4xl">{dato.cifra}</p>
 					<p class="mt-1 text-xs font-semibold uppercase tracking-wider text-white/60">
@@ -183,12 +391,12 @@ const economia = [
 	<section class="bg-hueso py-20">
 		<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 xl:px-12">
 			<SectionHeading
-				eyebrow="El municipio"
-				title="Una villa real entre La Mancha y el río Rus"
-				description="Lo que nos hace únicos: un casco histórico de portadas blasonadas, una estepa llena de vida y una plaza mayor que es salida y meta de nuestro atletismo."
+				eyebrow={C.municipio.eyebrow}
+				title={C.municipio.title}
+				description={C.municipio.desc}
 			/>
 			<div class="mt-12 grid gap-6 md:grid-cols-3">
-				{geografia.map((g) => (
+				{C.geografia.map((g) => (
 					<div class="rounded-xl border border-slate-200 bg-white p-7 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
 						<span class="flex h-12 w-12 items-center justify-center rounded-full bg-nocturno/5 text-nocturno-600">
 							<Icon name={g.icono} class="h-6 w-6" />
@@ -203,14 +411,10 @@ const economia = [
 
 	<section class="bg-white py-20">
 		<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 xl:px-12">
-			<SectionHeading
-				eyebrow="Historia"
-				title="Más de tres milenios de historia"
-				description="De la Edad del Bronce al Renacimiento manchego: los hitos que forjaron la villa que hoy corre con nosotros."
-			/>
+			<SectionHeading eyebrow={C.historia.eyebrow} title={C.historia.title} description={C.historia.desc} />
 			<div class="mx-auto mt-14 max-w-7xl">
 				<ol class="relative space-y-10 border-l-2 border-albero/40 pl-6 sm:pl-8">
-					{hitos.map((hito) => (
+					{C.hitos.map((hito) => (
 						<li class="relative">
 							<span aria-hidden="true" class="absolute -left-[31px] top-1.5 h-3 w-3 rounded-full bg-albero ring-4 ring-albero/20 sm:-left-[39px]" />
 							<p class="text-xs font-bold uppercase tracking-wider text-albero-600">{hito.periodo}</p>
@@ -226,12 +430,12 @@ const economia = [
 	<section class="bg-hueso py-20">
 		<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 xl:px-12">
 			<SectionHeading
-				eyebrow="Patrimonio"
-				title="Un casco histórico con nombre propio"
-				description="Dos Bienes de Interés Cultural y un catálogo de palacios, conventos y plazas que convierten el paseo en un paseo por la historia."
+				eyebrow={C.patrimonio.eyebrow}
+				title={C.patrimonio.title}
+				description={C.patrimonio.desc}
 			/>
 			<div class="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-				{patrimonio.map((p) => (
+				{C.monumentos.map((p) => (
 					<div class="flex flex-col rounded-xl border border-slate-200 bg-white p-7 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
 						<span class="flex h-11 w-11 items-center justify-center rounded-full bg-nocturno text-albero">
 							<Icon name={p.icono} class="h-5 w-5" />
@@ -248,12 +452,12 @@ const economia = [
 		<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 xl:px-12">
 			<SectionHeading
 				tone="dark"
-				eyebrow="Naturaleza"
-				title="La estepa, un paraíso de aves"
-				description="El término cuenta con una Zona de Especial Protección para las Aves y un Área Importante para la Conservación de las Aves, con especies propias de zonas esteparias."
+				eyebrow={C.naturaleza.eyebrow}
+				title={C.naturaleza.title}
+				description={C.naturaleza.desc}
 			/>
 			<ul class="mt-12 flex flex-wrap justify-center gap-3">
-				{aves.map((ave) => (
+				{C.aves.map((ave) => (
 					<li class="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-5 py-2 text-sm font-semibold text-white/90">
 						<Icon name="check" class="h-4 w-4 text-albero" />
 						{ave}
@@ -265,13 +469,9 @@ const economia = [
 
 	<section class="bg-white py-20">
 		<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 xl:px-12">
-			<SectionHeading
-				eyebrow="Fiestas y tradiciones"
-				title="El pueblo que puja por su Virgen"
-				description="Tradiciones vivas, declaradas patrimonio inmaterial de la alegría manchega, que reúnen a todo el pueblo y a los que vuelven."
-			/>
+			<SectionHeading eyebrow={C.fiestas.eyebrow} title={C.fiestas.title} description={C.fiestas.desc} />
 			<div class="mt-12 grid gap-6 lg:grid-cols-2">
-				{fiestas.map((fiesta) => (
+				{C.celebraciones.map((fiesta) => (
 					<div class="flex flex-col rounded-xl border border-slate-200 bg-hueso p-8">
 						<span class="flex h-12 w-12 items-center justify-center rounded-full bg-nocturno text-albero">
 							<Icon name={fiesta.icono} class="h-6 w-6" />
@@ -286,13 +486,9 @@ const economia = [
 
 	<section class="bg-hueso py-20">
 		<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 xl:px-12">
-			<SectionHeading
-				eyebrow="Economía"
-				title="Tierra de labor y de sabor"
-				description="Tradicionalmente agrícola, la economía de San Clemente se apoya hoy también en la industria, la construcción, el comercio y los servicios."
-			/>
+			<SectionHeading eyebrow={C.economia.eyebrow} title={C.economia.title} description={C.economia.desc} />
 			<div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-5">
-				{economia.map((e) => (
+				{C.sectores.map((e) => (
 					<div class="rounded-xl border border-slate-200 bg-white p-6 text-center">
 						<h3 class="font-display text-lg font-bold text-nocturno">{e.nombre}</h3>
 						<p class="mt-2 text-sm leading-relaxed text-tinta/70">{e.detalle}</p>
@@ -301,5 +497,4 @@ const economia = [
 			</div>
 		</div>
 	</section>
-
-	</Layout>
+</Layout>

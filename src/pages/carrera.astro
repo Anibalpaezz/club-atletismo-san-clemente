@@ -12,9 +12,120 @@ import ResultadosHistoricos from '../components/ResultadosHistoricos.astro';
 import { getCollection, render } from 'astro:content';
 import { getCarreraConfig } from '../lib/db';
 import { SITE } from '../lib/site';
+import { idiomaDe } from '../i18n/ui';
+import { ruta } from '../i18n/rutas';
 
 export const prerender = false;
 export const revalidate = 60;
+
+const lang = idiomaDe(Astro.originPathname ?? Astro.url.pathname);
+const C =
+	lang === 'es'
+		? {
+				title: 'La Carrera · 10K Nocturna',
+				desc: 'Carrera Popular 10K Nocturna Villa de San Clemente: recorrido, reglamento, inscripción y clasificaciones. Puntuable para el Circuito Provincial de Cuenca.',
+				eyebrow: 'La Carrera',
+				h1: '10K Nocturna Villa de San Clemente',
+				lead: 'La prueba reina del club: 10K nocturnos por el casco histórico iluminado de la Joya del Renacimiento Manchego, con su 5K de iniciación.',
+				fichaEyebrow: 'Ficha técnica',
+				fichaTitulo: 'Servicios para el corredor',
+				fichaDesc: 'Salida a las 22:00 h desde la Plaza Mayor, junto al Antiguo Ayuntamiento renacentista, y una organización pensada para que solo tengas que correr.',
+				inscripciones: 'Inscripciones',
+				inscripcionesTexto: 'La inscripción se realiza exclusivamente a través de Cronomancha, que gestiona también el cronometraje y las clasificaciones. La prueba es puntuable para el XXII Circuito Provincial de Carreras Populares de la Diputación de Cuenca.',
+				ctaCrono: 'Inscríbete en Cronomancha',
+				ctaCircuito: 'Circuito Diputación de Cuenca',
+				tarifasEyebrow: 'Inscripciones',
+				tarifasTitulo: 'Tarifas de la edición vigente',
+				tarifasDesc: 'Precios diferenciados para la 10K Nocturna (según inscripción en el Circuito) y para la 5K de iniciación. Bonificaciones y recargos de la próxima edición.',
+				recorridoEyebrow: 'Recorrido',
+				recorridoTitulo: 'Un circuito por el corazón del Renacimiento',
+				recorridoDesc: 'Urbano y llano: Plaza Mayor, Torre Vieja e Iglesia de Santiago Apóstol, con salida y meta junto al Antiguo Ayuntamiento.',
+				mapaGrande: 'Ver mapa más grande',
+				reglamentoEyebrow: 'Reglamento',
+				reglamentoTitulo: 'Bases de la prueba',
+				reglamentoDesc: 'Normativa completa de la edición vigente: la 10K Nocturna, competitiva y puntuable para el Circuito, y la 5K de iniciación, abierta y no competitiva.',
+				badge10k: '10K Nocturna · prueba reina',
+				badge5k: '5K «Iniciación al deporte saludable»',
+				basesCta: 'Ver bases y reglamento',
+				basesNota: 'Incluye reglamentos de ediciones anteriores.',
+				nota: 'Los textos del recorrido son contenido editorial del club y se publican en español.',
+			}
+		: {
+				title: 'The Race · 10K Night Race',
+				desc: '10K Night Race Villa de San Clemente: course, regulations, entry and results. A scoring race in the Provincial Circuit of Cuenca.',
+				eyebrow: 'The Race',
+				h1: '10K Night Race Villa de San Clemente',
+				lead: 'The club’s flagship event: 10K at night through the floodlit old town of the Jewel of the Manchegan Renaissance, with its introductory 5K.',
+				fichaEyebrow: 'Key facts',
+				fichaTitulo: 'Runner services',
+				fichaDesc: 'Start at 22:00 from the Plaza Mayor, beside the Renaissance former town hall, with an organisation designed so all you have to do is run.',
+				inscripciones: 'Entry',
+				inscripcionesTexto: 'Entries are handled exclusively through Cronomancha, which also manages timing and results. The race scores for the 22nd Provincial Popular Races Circuit of the Cuenca Provincial Council.',
+				ctaCrono: 'Enter on Cronomancha',
+				ctaCircuito: 'Cuenca Provincial Council Circuit',
+				tarifasEyebrow: 'Entry',
+				tarifasTitulo: 'Fees for the current edition',
+				tarifasDesc: 'Different prices for the 10K Night Race (depending on Circuit entry) and for the introductory 5K. Discounts and surcharges for the next edition.',
+				recorridoEyebrow: 'Course',
+				recorridoTitulo: 'A circuit through the heart of the Renaissance',
+				recorridoDesc: 'Urban and flat: Plaza Mayor, Torre Vieja and the church of Santiago Apóstol, with start and finish beside the former town hall.',
+				mapaGrande: 'View larger map',
+				reglamentoEyebrow: 'Regulations',
+				reglamentoTitulo: 'Race rules',
+				reglamentoDesc: 'The complete rules of the current edition: the 10K Night Race, competitive and scoring for the Circuit, and the introductory 5K, open and non-competitive.',
+				badge10k: '10K Night Race · flagship event',
+				badge5k: '5K “Introduction to healthy sport”',
+				basesCta: 'View rules and regulations',
+				basesNota: 'Includes regulations from previous editions.',
+				nota: 'The course descriptions are the club’s editorial content and are published in Spanish.',
+			};
+
+const servicios =
+	lang === 'es'
+		? [
+				{
+					icono: 'trophy' as const,
+					titulo: 'Cronometraje y clasificaciones',
+					texto: 'Gestionados por Cronomancha/Timingsys, con resultado oficial y chip.',
+				},
+				{
+					icono: 'check' as const,
+					titulo: 'Bolsa del corredor',
+					texto: 'Todos los inscritos reciben su bolsa del corredor.',
+				},
+				{
+					icono: 'users' as const,
+					titulo: 'Fisioterapia',
+					texto: 'Servicio gratuito de fisioterapia al finalizar la prueba.',
+				},
+				{
+					icono: 'route' as const,
+					titulo: 'Avituallamiento',
+					texto: 'Avituallamiento en el recorrido y en la llegada.',
+				},
+			]
+		: [
+				{
+					icono: 'trophy' as const,
+					titulo: 'Timing and results',
+					texto: 'Managed by Cronomancha/Timingsys, with official results and chip timing.',
+				},
+				{
+					icono: 'check' as const,
+					titulo: 'Runner bag',
+					texto: 'Every entrant receives a runner bag.',
+				},
+				{
+					icono: 'users' as const,
+					titulo: 'Physiotherapy',
+					texto: 'Free physiotherapy service at the finish.',
+				},
+				{
+					icono: 'route' as const,
+					titulo: 'Refreshments',
+					texto: 'Refreshment stations on the course and at the finish.',
+				},
+			];
 
 const carrera = await getCarreraConfig();
 const enlaceInscripcion = carrera?.enlace_inscripcion ?? SITE.inscripcionUrl;
@@ -28,56 +139,22 @@ const renderizados = await Promise.all(
 );
 
 const recorrido = renderizados.filter((e) => e.data.categoria === 'general');
-
-const servicios = [
-	{
-		icono: 'trophy' as const,
-		titulo: 'Cronometraje y clasificaciones',
-		texto: 'Gestionados por Cronomancha/Timingsys, con resultado oficial y chip.',
-	},
-	{
-		icono: 'check' as const,
-		titulo: 'Bolsa del corredor',
-		texto: 'Todos los inscritos reciben su bolsa del corredor.',
-	},
-	{
-		icono: 'users' as const,
-		titulo: 'Fisioterapia',
-		texto: 'Servicio gratuito de fisioterapia al finalizar la prueba.',
-	},
-	{
-		icono: 'route' as const,
-		titulo: 'Avituallamiento',
-		texto: 'Avituallamiento en el recorrido y en la llegada.',
-	},
-];
 ---
 
-<Layout
-	title="La Carrera · 10K Nocturna"
-	description="Carrera Popular 10K Nocturna Villa de San Clemente: recorrido, reglamento, inscripción y clasificaciones. Puntuable para el Circuito Provincial de Cuenca."
->
-	<PageHeader
-		eyebrow="La Carrera"
-		title="10K Nocturna Villa de San Clemente"
-		description="La prueba reina del club: 10K nocturnos por el casco histórico iluminado de la Joya del Renacimiento Manchego, con su 5K de iniciación."
-	/>
+<Layout title={C.title} description={C.desc}>
+	<PageHeader eyebrow={C.eyebrow} title={C.h1} description={C.lead} />
 
 	{carrera && (
 		<section class="bg-nocturno pb-16">
 		<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 xl:px-12">
-			<CarreraBanner carrera={carrera} />
+			<CarreraBanner carrera={carrera} lang={lang} />
 			</div>
 		</section>
 	)}
 
 	<section id="ficha" class="bg-white py-20">
 		<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 xl:px-12">
-			<SectionHeading
-				eyebrow="Ficha técnica"
-				title="Servicios para el corredor"
-				description="Salida a las 22:00 h desde la Plaza Mayor, junto al Antiguo Ayuntamiento renacentista, y una organización pensada para que solo tengas que correr."
-			/>
+			<SectionHeading eyebrow={C.fichaEyebrow} title={C.fichaTitulo} description={C.fichaDesc} />
 			<div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
 				{servicios.map((s) => (
 					<div class="rounded-xl border border-slate-200 bg-hueso p-7 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
@@ -91,13 +168,8 @@ const servicios = [
 			</div>
 
 			<div class="mt-10 rounded-xl border border-slate-200 bg-nocturno p-8 text-white">
-				<h3 class="font-display text-xl font-bold">Inscripciones</h3>
-				<p class="mt-2 text-sm text-white/70">
-					La inscripción se realiza exclusivamente a través de
-					<span class="font-semibold text-albero">Cronomancha</span>, que gestiona también el
-					cronometraje y las clasificaciones. La prueba es puntuable para el XXII Circuito
-					Provincial de Carreras Populares de la Diputación de Cuenca.
-				</p>
+				<h3 class="font-display text-xl font-bold">{C.inscripciones}</h3>
+				<p class="mt-2 text-sm text-white/70">{C.inscripcionesTexto}</p>
 				<div class="mt-6 flex flex-wrap gap-3">
 					<a
 						href={enlaceInscripcion}
@@ -105,7 +177,7 @@ const servicios = [
 						rel="noreferrer noopener"
 						class="inline-flex items-center gap-2 rounded-md bg-albero px-5 py-2.5 text-sm font-bold text-nocturno transition hover:bg-albero-100"
 					>
-						Inscríbete en Cronomancha
+						{C.ctaCrono}
 						<Icon name="external" class="h-4 w-4" />
 					</a>
 					<a
@@ -114,7 +186,7 @@ const servicios = [
 						rel="noreferrer noopener"
 						class="inline-flex items-center gap-2 rounded-md border border-white/25 px-5 py-2.5 text-sm font-bold text-white transition hover:border-albero hover:text-albero"
 					>
-						Circuito Diputación de Cuenca
+						{C.ctaCircuito}
 						<Icon name="external" class="h-4 w-4" />
 					</a>
 				</div>
@@ -124,16 +196,9 @@ const servicios = [
 
 	<section id="inscripcion" class="scroll-mt-20 border-t border-tinta/10 bg-white py-20">
 		<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 xl:px-12">
-			<SectionHeading
-				eyebrow="Inscripciones"
-				title="Tarifas de la edición vigente"
-				description="Precios diferenciados para la 10K Nocturna (según inscripción en el Circuito) y para la 5K de iniciación. Bonificaciones y recargos de la próxima edición."
-			/>
+			<SectionHeading eyebrow={C.tarifasEyebrow} title={C.tarifasTitulo} description={C.tarifasDesc} />
 			<div class="mt-10">
-				<InscripcionTarifas
-					enlaceInscripcion={enlaceInscripcion}
-					textoCta={carrera?.texto_cta}
-				/>
+				<InscripcionTarifas enlaceInscripcion={enlaceInscripcion} textoCta={carrera?.texto_cta} lang={lang} />
 			</div>
 		</div>
 	</section>
@@ -142,9 +207,9 @@ const servicios = [
 		<section id="recorrido" class="scroll-mt-20 bg-hueso py-20">
 			<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 xl:px-12">
 				<SectionHeading
-					eyebrow="Recorrido"
-					title="Un circuito por el corazón del Renacimiento"
-					description="Urbano y llano: Plaza Mayor, Torre Vieja e Iglesia de Santiago Apóstol, con salida y meta junto al Antiguo Ayuntamiento."
+					eyebrow={C.recorridoEyebrow}
+					title={C.recorridoTitulo}
+					description={C.recorridoDesc}
 				/>
 				<div class="mt-10 grid gap-8 lg:grid-cols-2">
 					<div class="space-y-8">
@@ -156,17 +221,20 @@ const servicios = [
 								</div>
 							</article>
 						))}
+						{lang === 'en' && (
+							<p class="rounded-lg border border-slate-200 bg-white px-4 py-3 text-xs text-tinta/60">{C.nota}</p>
+						)}
 					</div>
 					<div class="lg:sticky lg:top-24 lg:self-start">
 						<div class="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
-							<MapaRecorrido />
+							<MapaRecorrido lang={lang} />
 							<a
 								href="https://www.openstreetmap.org/?mlat=39.40387&mlon=-2.42878#map=16/39.40387/-2.42878"
 								target="_blank"
 								rel="noreferrer noopener"
 								class="block bg-white px-4 py-3 text-center text-xs font-semibold text-nocturno transition hover:bg-hueso"
 							>
-								Ver mapa más grande
+								{C.mapaGrande}
 							</a>
 							<p class="border-t border-slate-200 bg-hueso px-4 py-2 text-center text-[11px] text-tinta/700">
 								Datos del mapa © <a href="https://www.openstreetmap.org/" target="_blank" rel="noreferrer noopener" class="underline underline-offset-2 hover:text-nocturno">OpenStreetMap</a>
@@ -185,37 +253,37 @@ const servicios = [
 					<div class="max-w-7xl">
 						<SectionHeading
 							align="left"
-							eyebrow="Reglamento"
-							title="Bases de la prueba"
-							description="Normativa completa de la edición vigente: la 10K Nocturna, competitiva y puntuable para el Circuito, y la 5K de iniciación, abierta y no competitiva."
+							eyebrow={C.reglamentoEyebrow}
+							title={C.reglamentoTitulo}
+							description={C.reglamentoDesc}
 						/>
 						<div class="mt-6 flex flex-wrap gap-3">
 							<span class="inline-flex rounded-full bg-nocturno px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-white">
-								10K Nocturna · prueba reina
+								{C.badge10k}
 							</span>
 							<span class="inline-flex rounded-full bg-albero/15 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-albero-600">
-								5K «Iniciación al deporte saludable»
+								{C.badge5k}
 							</span>
 						</div>
 					</div>
 					<div class="flex flex-col items-start gap-2">
 						<a
-							href="/carrera/reglamento/"
+							href={ruta(lang, '/carrera/reglamento/')}
 							class="inline-flex items-center gap-2 rounded-md bg-albero px-6 py-3 text-sm font-bold text-nocturno transition hover:bg-albero-100"
 						>
-							Ver bases y reglamento
+							{C.basesCta}
 							<Icon name="arrow-right" class="h-4 w-4" />
 						</a>
-						<p class="text-xs text-tinta/70">Incluye reglamentos de ediciones anteriores.</p>
+						<p class="text-xs text-tinta/70">{C.basesNota}</p>
 					</div>
 				</div>
 			</div>
 		</div>
 	</section>
 
-	<RecordCircuito />
+	<RecordCircuito lang={lang} />
 
-	<PuntosAnimacion />
+	<PuntosAnimacion lang={lang} />
 
-	<ResultadosHistoricos />
+	<ResultadosHistoricos lang={lang} />
 </Layout>

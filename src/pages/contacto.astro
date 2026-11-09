@@ -2,37 +2,40 @@
 import Layout from '../layouts/Layout.astro';
 import PageHeader from '../components/PageHeader.astro';
 import Icon from '../components/Icon.astro';
-import { SITE, REDES } from '../lib/site';
+import { SITE } from '../lib/site';
+import { idiomaDe, t } from '../i18n/ui';
 
-export const prerender = true;
+export const prerender = false;
+export const revalidate = 60;
+
+const lang = idiomaDe(Astro.originPathname ?? Astro.url.pathname);
+const asuntoAlta = lang === 'es' ? 'Alta de socio Club Atletismo San Clemente' : 'Club membership — Club Atletismo San Clemente';
+const asuntoColab = lang === 'es' ? 'Colaboración con el Club Atletismo San Clemente' : 'Partnership with Club Atletismo San Clemente';
 
 const tarjetas = [
 	{
 		icono: 'mail' as const,
-		titulo: 'Correo oficial',
+		titulo: t(lang, 'contacto.correoTitulo'),
 		lineas: [SITE.email],
 		href: `mailto:${SITE.email}`,
-		cta: 'Escribir un correo',
+		cta: t(lang, 'contacto.correoCta'),
 	},
-	{ redes: true, icono: 'users' as const, titulo: 'Redes sociales' },
+	{ redes: true, icono: 'users' as const, titulo: t(lang, 'contacto.redesTitulo') },
 	{
 		icono: 'users' as const,
-		titulo: 'Hazte socio',
-		lineas: ['Abierto a todos los niveles', 'Escríbenos y te contamos todo'],
-		href: `mailto:${SITE.email}?subject=${encodeURIComponent('Alta de socio Club Atletismo San Clemente')}`,
-		cta: 'Solicitar información',
+		titulo: t(lang, 'contacto.socioTitulo'),
+		lineas: [t(lang, 'contacto.socioLinea1'), t(lang, 'contacto.socioLinea2')],
+		href: `mailto:${SITE.email}?subject=${encodeURIComponent(asuntoAlta)}`,
+		cta: t(lang, 'contacto.socioCta'),
 	},
 ];
 ---
 
-<Layout
-	title="Contacto"
-	description="Contacta con el Club Atletismo San Clemente: correo oficial, información de la 10K Nocturna y cómo hacerte socio."
->
+<Layout title={t(lang, 'contacto.tituloPagina')} description={t(lang, 'contacto.metaDesc')}>
 	<PageHeader
-		eyebrow="Contacto"
-		title="Hablemos"
-		description="Un correo basta para resolver dudas, apuntarte al club o colaborar con la 10K Nocturna."
+		eyebrow={t(lang, 'contacto.eyebrow')}
+		title={t(lang, 'contacto.titulo')}
+		description={t(lang, 'contacto.desc')}
 	/>
 
 	<section class="bg-hueso py-20">
@@ -46,7 +49,19 @@ const tarjetas = [
 							</span>
 							<h2 class="mt-5 font-display text-xl font-bold text-nocturno">{tarjeta.titulo}</h2>
 							<div class="mt-4 space-y-2">
-								{REDES.map((red) => (
+								{[
+									{ nombre: t(lang, 'red.blogspot'), href: SITE.blogspot, icono: 'blogspot' as const },
+									{
+										nombre: 'Facebook',
+										href: 'https://www.facebook.com/groups/clubatletismosanclemente/',
+										icono: 'facebook' as const,
+									},
+									{
+										nombre: 'Instagram',
+										href: 'https://www.instagram.com/clubatletismosanclemente/',
+										icono: 'instagram' as const,
+									},
+								].map((red) => (
 									<a
 										href={red.href}
 										target="_blank"
@@ -69,7 +84,7 @@ const tarjetas = [
 							</span>
 							<h2 class="mt-5 font-display text-xl font-bold text-nocturno">{tarjeta.titulo}</h2>
 							<ul class="mt-2 space-y-1 text-sm text-tinta/70">
-								{tarjeta.lineas.map((linea) => (
+								{(tarjeta.lineas ?? []).map((linea) => (
 									<li>{linea}</li>
 								))}
 							</ul>
@@ -83,17 +98,14 @@ const tarjetas = [
 			</div>
 
 			<div class="mx-auto mt-16 max-w-7xl rounded-2xl bg-nocturno p-10 text-center text-white">
-				<h2 class="font-display text-2xl font-bold">Colaboradores y patrocinadores</h2>
-				<p class="mt-3 text-white/80">
-					¿Quieres colaborar con el club o patrocinar la 10K Nocturna? Cuéntanos tu propuesta por
-					correo: la carrera y el club necesitan a gente como tú.
-				</p>
+				<h2 class="font-display text-2xl font-bold">{t(lang, 'contacto.colabTitulo')}</h2>
+				<p class="mt-3 text-white/80">{t(lang, 'contacto.colabTexto')}</p>
 				<a
-					href={`mailto:${SITE.email}?subject=Colaboraci%C3%B3n%20con%20el%20Club%20Atletismo%20San%20Clemente`}
+					href={`mailto:${SITE.email}?subject=${encodeURIComponent(asuntoColab)}`}
 					class="mt-6 inline-flex items-center gap-2 rounded-md bg-albero px-6 py-3 text-sm font-bold text-nocturno transition hover:bg-albero-100"
 				>
 					<Icon name="mail" class="h-4 w-4" />
-					Propón tu colaboración
+					{t(lang, 'contacto.colabBoton')}
 				</a>
 			</div>
 		</div>

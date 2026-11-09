@@ -12,13 +12,13 @@ export const SITE = {
 };
 
 export const NAV = [
-	{ href: '/', label: 'Inicio' },
-	{ href: '/el-club/', label: 'El Club' },
-	{ href: '/hazte-socio/', label: 'Hazte socio' },
-	{ href: '/carrera/', label: 'La Carrera' },
-	{ href: '/ruta/', label: 'San Clemente en Ruta' },
-	{ href: '/noticias/', label: 'Noticias' },
-	{ href: '/contacto/', label: 'Contacto' },
+	{ href: '/', label: 'Inicio', clave: 'inicio' },
+	{ href: '/el-club/', label: 'El Club', clave: 'club' },
+	{ href: '/hazte-socio/', label: 'Hazte socio', clave: 'socio' },
+	{ href: '/carrera/', label: 'La Carrera', clave: 'carrera' },
+	{ href: '/ruta/', label: 'San Clemente en Ruta', clave: 'ruta' },
+	{ href: '/noticias/', label: 'Noticias', clave: 'noticias' },
+	{ href: '/contacto/', label: 'Contacto', clave: 'contacto' },
 ];
 
 export const REDES = [

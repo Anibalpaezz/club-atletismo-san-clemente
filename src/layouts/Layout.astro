@@ -5,6 +5,8 @@ import Footer from '../components/Footer.astro';
 import Instituciones from '../components/Instituciones.astro';
 import SpeedInsights from '@vercel/speed-insights/astro';
 import { SITE } from '../lib/site';
+import { idiomaDe, t } from '../i18n/ui';
+import { rutaAlterna } from '../i18n/rutas';
 
 interface Props {
 	title?: string;
@@ -12,8 +14,15 @@ interface Props {
 	image?: string;
 }
 const { title = SITE.name, description = SITE.descripcion, image = '/images/logo-nuevo.avif' } = Astro.props;
+
+// El idioma sale de la ruta original: el middleware reescribe /en/… a la misma página.
+const lang = idiomaDe(Astro.originPathname ?? Astro.url.pathname);
+const pathname = Astro.originPathname ?? Astro.url.pathname;
 const pageTitle = title === SITE.name || title.includes(SITE.name) ? title : `${title} · ${SITE.name}`;
-const canonical = new URL(Astro.url.pathname, SITE.url).toString();
+const canonical = new URL(pathname, SITE.url).toString();
+const alterno = new URL(rutaAlterna(lang, pathname), SITE.url).toString();
+const esUrl = new URL(lang === 'es' ? pathname : rutaAlterna(lang, pathname), SITE.url).toString();
+const enUrl = new URL(lang === 'en' ? pathname : rutaAlterna(lang, pathname), SITE.url).toString();
 const ogImage = new URL(image, SITE.url).toString();
 
 const estructuraClub = {
@@ -21,7 +30,7 @@ const estructuraClub = {
 	'@type': 'SportsClub',
 	name: SITE.name,
 	url: `${SITE.url}/`,
-	description: SITE.descripcion,
+	description: lang === 'es' ? SITE.descripcion : t('en', 'home.descripcion'),
 	email: SITE.email,
 	sport: 'Atletismo',
 	image: ogImage,
@@ -35,7 +44,7 @@ const estructuraClub = {
 ---
 
 <!doctype html>
-<html lang="es">
+<html lang={lang}>
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -47,13 +56,17 @@ const estructuraClub = {
 			content="club atletismo san clemente, atletismo san clemente, escuela atletismo san clemente cuenca, carreras san clemente"
 		/>
 		<link rel="canonical" href={canonical} />
+		<link rel="alternate" hreflang="es" href={esUrl} />
+		<link rel="alternate" hreflang="en" href={enUrl} />
+		<link rel="alternate" hreflang="x-default" href={esUrl} />
+		{lang === 'en' && <link rel="alternate" href={alterno} hreflang="es" />}
 		<meta property="og:title" content={pageTitle} />
 		<meta property="og:description" content={description} />
 		<meta property="og:type" content="website" />
 		<meta property="og:url" content={canonical} />
 		<meta property="og:image" content={ogImage} />
 		<meta property="og:site_name" content={SITE.name} />
-		<meta property="og:locale" content="es_ES" />
+		<meta property="og:locale" content={lang === 'es' ? 'es_ES' : 'en_US'} />
 		<meta name="theme-color" content="#0A1F44" />
 		<meta name="google-site-verification" content="TG7qZke2Lnh04ZYZeTjkXLEDmksOBJ-qmaN6FL6wBfo" />
 		<link rel="icon" href="/favicon.ico" sizes="any" />

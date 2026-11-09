@@ -4,8 +4,57 @@ import PageHeader from '../../components/PageHeader.astro';
 import Icon from '../../components/Icon.astro';
 import { getCollection, render } from 'astro:content';
 import { SITE } from '../../lib/site';
+import { idiomaDe } from '../../i18n/ui';
+import { ruta } from '../../i18n/rutas';
 
-export const prerender = true;
+export const prerender = false;
+export const revalidate = 60;
+
+const lang = idiomaDe(Astro.originPathname ?? Astro.url.pathname);
+const C =
+	lang === 'es'
+		? {
+				title: 'Bases y reglamento',
+				desc: 'Reglamento completo de la 10K Nocturna Villa de San Clemente y de la 5K de iniciación: categorías, inscripciones, servicios y premios.',
+				eyebrow: 'La Carrera',
+				h1: 'Bases y reglamento',
+				lead: 'Normativa íntegra de la edición vigente: dos pruebas distintas, dos reglamentos. La 10K Nocturna es competitiva y puntuable para el Circuito; la 5K es una prueba de iniciación, abierta y no competitiva.',
+				volver: 'Volver a la carrera',
+				badge10k: '10K Nocturna · prueba reina',
+				badge5k: '5K «Iniciación al deporte saludable»',
+				sub10k: 'Competición de 10.000 metros, dos vueltas al circuito urbano, salida a las 22:00 h desde la Plaza Mayor.',
+				sub5k: 'Una sola vuelta al circuito, abierta a corredores y caminantes de todas las edades. No competitiva.',
+				ediciones: 'Ediciones anteriores',
+				verReglamento: 'Ver reglamento',
+				edicion: 'Edición',
+				vacio: 'Los reglamentos de ediciones anteriores se irán publicando aquí. Si colaboras con el club y dispones de alguno, escríbenos a',
+				dudas: '¿Dudas con las bases?',
+				dudasTexto: 'Puedes consultar la ficha de la carrera, las tarifas y el recorrido, o escribirnos directamente.',
+				tarifas: 'Tarifas e inscripción',
+				escribenos: 'Escríbenos',
+				nota: 'El reglamento es texto legal y se publica en español.',
+			}
+		: {
+				title: 'Rules and regulations',
+				desc: 'Full regulations for the 10K Night Race Villa de San Clemente and the introductory 5K: categories, entries, services and prizes.',
+				eyebrow: 'The Race',
+				h1: 'Rules and regulations',
+				lead: 'The complete rules of the current edition: two different races, two sets of regulations. The 10K Night Race is competitive and scores for the Circuit; the 5K is an introductory, open, non-competitive race.',
+				volver: 'Back to the race',
+				badge10k: '10K Night Race · flagship event',
+				badge5k: '5K “Introduction to healthy sport”',
+				sub10k: 'A 10,000 metre race, two laps of the town-centre circuit, starting at 22:00 from the Plaza Mayor.',
+				sub5k: 'A single lap of the circuit, open to runners and walkers of all ages. Non-competitive.',
+				ediciones: 'Previous editions',
+				verReglamento: 'View regulations',
+				edicion: 'Edition',
+				vacio: 'Regulations from previous editions will be published here. If you help the club and have one, write to',
+				dudas: 'Questions about the rules?',
+				dudasTexto: 'You can check the race details, entry fees and course, or write to us directly.',
+				tarifas: 'Fees and entry',
+				escribenos: 'Write to us',
+				nota: 'The regulations are a legal document and are published in Spanish.',
+			};
 
 const entradas = await getCollection('carrera', ({ data }) => data.orden);
 const renderizados = await Promise.all(
@@ -23,36 +72,32 @@ const reglamentosEdiciones = (await getCollection('reglamentos')).sort(
 const reglamentosPasados = reglamentosEdiciones.filter((e) => !e.data.isCurrent);
 ---
 
-<Layout
-	title="Bases y reglamento"
-	description="Reglamento completo de la 10K Nocturna Villa de San Clemente y de la 5K de iniciación: categorías, inscripciones, servicios y premios."
->
-	<PageHeader
-		eyebrow="La Carrera"
-		title="Bases y reglamento"
-		description="Normativa íntegra de la edición vigente: dos pruebas distintas, dos reglamentos. La 10K Nocturna es competitiva y puntuable para el Circuito; la 5K es una prueba de iniciación, abierta y no competitiva."
-	/>
+<Layout title={C.title} description={C.desc}>
+	<PageHeader eyebrow={C.eyebrow} title={C.h1} description={C.lead} />
 
 	<section class="bg-hueso py-20">
 		<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 xl:px-12">
+			{lang === 'en' && (
+				<p class="mb-8 rounded-lg border border-slate-200 bg-white px-4 py-3 text-xs text-tinta/60">
+					{C.nota}
+				</p>
+			)}
 			{reglamento10k && (
 				<article class="rounded-2xl border border-slate-200 bg-white p-8 sm:p-10">
 					<div class="flex flex-wrap items-center justify-between gap-4">
 						<span class="inline-flex rounded-full bg-nocturno px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-white">
-							10K Nocturna · prueba reina
+							{C.badge10k}
 						</span>
 						<a
-							href="/carrera/"
+							href={ruta(lang, '/carrera/')}
 							class="inline-flex items-center gap-1.5 text-sm font-semibold text-albero-600 hover:text-nocturno"
 						>
-							Volver a la carrera
+							{C.volver}
 							<Icon name="arrow-right" class="h-4 w-4 rotate-180" />
 						</a>
 					</div>
 					<h2 class="mt-4 font-display text-2xl font-bold text-nocturno">{reglamento10k.data.titulo}</h2>
-					<p class="mt-1 text-sm text-tinta/70">
-						Competición de 10.000 metros, dos vueltas al circuito urbano, salida a las 22:00 h desde la Plaza Mayor.
-					</p>
+					<p class="mt-1 text-sm text-tinta/70">{C.sub10k}</p>
 					<div class="prose prose-nocturno mt-6 max-w-none text-tinta/80 [&_h3]:text-lg [&_h3]:font-bold [&_h3]:text-nocturno [&_ul]:mt-3 [&_ul]:space-y-1.5">
 						<reglamento10k.html />
 					</div>
@@ -63,13 +108,11 @@ const reglamentosPasados = reglamentosEdiciones.filter((e) => !e.data.isCurrent)
 				<article class="mt-8 rounded-2xl border border-albero/40 bg-white p-8 sm:p-10">
 					<div class="flex flex-wrap items-center justify-between gap-4">
 						<span class="inline-flex rounded-full bg-albero/15 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-albero-600">
-							5K «Iniciación al deporte saludable»
+							{C.badge5k}
 						</span>
 					</div>
 					<h2 class="mt-4 font-display text-2xl font-bold text-nocturno">{reglamento5k.data.titulo}</h2>
-					<p class="mt-1 text-sm text-tinta/70">
-						Una sola vuelta al circuito, abierta a corredores y caminantes de todas las edades. No competitiva.
-					</p>
+					<p class="mt-1 text-sm text-tinta/70">{C.sub5k}</p>
 					<div class="prose prose-nocturno mt-6 max-w-none text-tinta/80 [&_h3]:text-lg [&_h3]:font-bold [&_h3]:text-nocturno [&_ul]:mt-3 [&_ul]:space-y-1.5">
 						<reglamento5k.html />
 					</div>
@@ -79,7 +122,7 @@ const reglamentosPasados = reglamentosEdiciones.filter((e) => !e.data.isCurrent)
 			<div class="mt-10 rounded-2xl border border-slate-200 bg-white">
 				<details class="group">
 					<summary class="flex cursor-pointer list-none items-center justify-between gap-4 px-6 py-5 text-left sm:px-8">
-						<span class="font-display text-lg font-bold text-nocturno">Ediciones anteriores</span>
+						<span class="font-display text-lg font-bold text-nocturno">{C.ediciones}</span>
 						<span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-nocturno/5 text-nocturno transition group-open:rotate-180">
 							<Icon name="arrow-right" class="h-4 w-4 rotate-90" />
 						</span>
@@ -91,7 +134,7 @@ const reglamentosPasados = reglamentosEdiciones.filter((e) => !e.data.isCurrent)
 									<li class="flex flex-wrap items-center justify-between gap-3">
 										<div>
 											<p class="text-sm font-semibold text-nocturno">{entrada.data.titulo}</p>
-											<p class="text-xs text-tinta/70">Edición {entrada.data.year}</p>
+											<p class="text-xs text-tinta/70">{C.edicion} {entrada.data.year}</p>
 										</div>
 										{entrada.data.pdfUrl && (
 											<a
@@ -100,7 +143,7 @@ const reglamentosPasados = reglamentosEdiciones.filter((e) => !e.data.isCurrent)
 												rel="noreferrer noopener"
 												class="inline-flex items-center gap-1.5 text-sm font-semibold text-albero-600 hover:text-nocturno"
 											>
-												Ver reglamento
+												{C.verReglamento}
 												<Icon name="external" class="h-3.5 w-3.5" />
 											</a>
 										)}
@@ -109,9 +152,7 @@ const reglamentosPasados = reglamentosEdiciones.filter((e) => !e.data.isCurrent)
 							</ul>
 						) : (
 							<p class="text-sm leading-relaxed text-tinta/70">
-								Los reglamentos de ediciones anteriores se irán publicando aquí (se añaden como un
-								fichero de contenido por año, sin tocar código). Si colaboras con el club y dispones de
-								alguno, escríbenos a {SITE.email}.
+								{C.vacio} {SITE.email}.
 							</p>
 						)}
 					</div>
@@ -122,16 +163,14 @@ const reglamentosPasados = reglamentosEdiciones.filter((e) => !e.data.isCurrent)
 
 	<section class="bg-nocturno py-16 text-white">
 		<div class="mx-auto max-w-7xl px-4 text-center sm:px-6">
-			<h2 class="font-display text-3xl font-bold">¿Dudas con las bases?</h2>
-			<p class="mt-3 text-white/80">
-				Puedes consultar la ficha de la carrera, las tarifas y el recorrido, o escribirnos directamente.
-			</p>
+			<h2 class="font-display text-3xl font-bold">{C.dudas}</h2>
+			<p class="mt-3 text-white/80">{C.dudasTexto}</p>
 			<div class="mt-7 flex flex-wrap justify-center gap-3">
 				<a
-					href="/carrera/#inscripcion"
+					href={`${ruta(lang, '/carrera/')}#inscripcion`}
 					class="inline-flex items-center gap-2 rounded-md bg-albero px-6 py-3 text-sm font-bold text-nocturno transition hover:bg-albero-100"
 				>
-					Tarifas e inscripción
+					{C.tarifas}
 					<Icon name="arrow-right" class="h-4 w-4" />
 				</a>
 				<a
@@ -139,7 +178,7 @@ const reglamentosPasados = reglamentosEdiciones.filter((e) => !e.data.isCurrent)
 					class="inline-flex items-center gap-2 rounded-md border border-white/30 px-6 py-3 text-sm font-bold text-white transition hover:border-albero hover:text-albero"
 				>
 					<Icon name="mail" class="h-4 w-4" />
-					Escríbenos
+					{C.escribenos}
 				</a>
 			</div>
 		</div>

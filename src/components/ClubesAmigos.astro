@@ -5,22 +5,26 @@ import Icon from './Icon.astro';
 
 interface Props {
 	clubes: ClubAmigo[];
+	lang?: 'es' | 'en';
 }
-const { clubes } = Astro.props;
+const { clubes, lang = 'es' } = Astro.props;
+const es = lang !== 'en';
 
 const filtros = [
-	{ id: 'todos', etiqueta: 'Todos' },
-	{ id: 'clubes', etiqueta: 'Clubes de Cuenca' },
-	{ id: 'circuitos', etiqueta: 'Circuitos Oficiales' },
+	{ id: 'todos', etiqueta: es ? 'Todos' : 'All' },
+	{ id: 'clubes', etiqueta: es ? 'Clubes de Cuenca' : 'Clubs in Cuenca' },
+	{ id: 'circuitos', etiqueta: es ? 'Circuitos Oficiales' : 'Official circuits' },
 ];
 ---
 
 <section id="clubes-amigos" class="border-t border-slate-200 bg-hueso py-20">
 	<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 xl:px-12">
 		<SectionHeading
-			eyebrow="Hermanamiento deportivo"
-			title="Clubes Amigos y Comunidad Runner"
-			description="La relación de colaboración que el Club Atletismo San Clemente mantiene con otros clubes de la provincia de Cuenca y zonas limítrofes, dentro del calendario del Circuito de Carreras Populares."
+			eyebrow={es ? 'Hermanamiento deportivo' : 'Sporting friendship'}
+			title={es ? 'Clubes Amigos y Comunidad Runner' : 'Friendship clubs and running community'}
+			description={es
+				? 'La relación de colaboración que el Club Atletismo San Clemente mantiene con otros clubes de la provincia de Cuenca y zonas limítrofes, dentro del calendario del Circuito de Carreras Populares.'
+				: 'The working relationship Club Atletismo San Clemente keeps with other clubs in the province of Cuenca and nearby areas, within the Popular Races Circuit calendar.'}
 		/>
 
 		<div class="mt-10 flex flex-wrap justify-center gap-2">
@@ -68,7 +72,7 @@ const filtros = [
 						rel="noopener noreferrer"
 						class="mt-auto inline-flex items-center gap-2 pt-5 text-sm font-semibold text-albero-600 transition hover:text-nocturno"
 					>
-						Visitar web
+						{es ? 'Visitar web' : 'Visit website'}
 						<Icon name="external" class="h-4 w-4" />
 					</a>
 				</article>

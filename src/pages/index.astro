@@ -8,82 +8,60 @@ import Icon from '../components/Icon.astro';
 import Establecimientos from '../components/Establecimientos.astro';
 import { getNoticiasPublicadas, getPatrocinadores } from '../lib/db';
 import { ESTABLECIMIENTOS } from '../lib/comercios';
-import { SITE } from '../lib/site';
 import { fotosAleatorias } from '../lib/fotosActas';
+import { idiomaDe, t } from '../i18n/ui';
+import { ruta } from '../i18n/rutas';
 
 export const prerender = false;
 export const revalidate = 60;
 
+const lang = idiomaDe(Astro.originPathname ?? Astro.url.pathname);
 const noticias = await getNoticiasPublicadas(3);
 const patrocinadores = await getPatrocinadores();
 const fotosNoticias = fotosAleatorias(noticias.length);
 
 const valoresClub = [
-	{
-		icono: 'users' as const,
-		titulo: 'Un club para todos',
-		texto: 'Del que se estrena al más rápido: todos los niveles tienen hueco en el atletismo popular.',
-	},
-	{
-		icono: 'route' as const,
-		titulo: 'Presencia en el circuito',
-		texto: 'Participamos en el Circuito Provincial de Carreras Populares de la Diputación de Cuenca.',
-	},
-	{
-		icono: 'flag' as const,
-		titulo: 'Organizamos la 10K Nocturna',
-		texto: 'La prueba que cada año pone a San Clemente en el mapa del atletismo popular.',
-	},
+	{ icono: 'users' as const, clave: 1 },
+	{ icono: 'route' as const, clave: 2 },
+	{ icono: 'flag' as const, clave: 3 },
 ];
 
-const lugaresRuta = [
-	{
-		titulo: 'Plaza Mayor',
-		texto: 'Salida y meta de la carrera. Junto al Antiguo Ayuntamiento renacentista del siglo XVI, es el corazón monumental de la villa.',
-	},
-	{
-		titulo: 'Paraje de Rus',
-		texto: 'Suelo privilegiado de entrenamiento a un paso del casco urbano, entre viñedos y naturaleza manchega.',
-	},
-	{
-		titulo: 'Gastronomía manchega',
-		texto: 'Morteruelo, migas y vino de la tierra: la mejor recompensa después de correr por la Joya del Renacimiento Manchego.',
-	},
-];
+const lugaresRuta = [1, 2, 3];
 ---
 
-<Layout
-	title="Club Atletismo San Clemente | Escuela y Entrenamientos en San Clemente"
-	description={SITE.descripcion}
->
+<Layout title={t(lang, 'home.titulo')} description={t(lang, 'home.descripcion')}>
 	<Hero />
 
 	<section class="bg-hueso py-20">
 		<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 xl:px-12">
 			<SectionHeading
-				eyebrow="El Club"
-				title="Atletismo popular con raíces manchegas"
-				description="Nacimos de un grupo de amigos que corría por los caminos de San Clemente y hoy somos un club de referencia en el atletismo popular conquense."
+				eyebrow={t(lang, 'home.club.eyebrow')}
+				title={t(lang, 'home.club.titulo')}
+				description={t(lang, 'home.club.texto')}
 			/>
 
 			<div class="mt-12 grid gap-6 md:grid-cols-3">
-				{valoresClub.map((v) => (
+				{valoresClub.map((valor) => (
 					<div class="rounded-xl border border-slate-200 bg-white p-7 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
 						<span class="flex h-12 w-12 items-center justify-center rounded-full bg-nocturno/5 text-nocturno-600">
-							<Icon name={v.icono} class="h-6 w-6" />
+							<Icon name={valor.icono} class="h-6 w-6" />
 						</span>
-						<h3 class="mt-5 font-display text-xl font-bold text-nocturno">{v.titulo}</h3>
-						<p class="mt-2 text-sm leading-relaxed text-tinta/70">{v.texto}</p>
+						<h3 class="mt-5 font-display text-xl font-bold text-nocturno">
+							{t(lang, `home.valor${valor.clave}.titulo`)}
+						</h3>
+						<p class="mt-2 text-sm leading-relaxed text-tinta/70">
+							{t(lang, `home.valor${valor.clave}.texto`)}
+						</p>
 					</div>
 				))}
 			</div>
 
 			<div class="mt-10 flex justify-center">
 				<a
-					href="/el-club/"
+					href={ruta(lang, '/el-club/')}
 					class="inline-flex items-center gap-2 rounded-md border-2 border-nocturno px-6 py-3 text-sm font-bold text-nocturno transition hover:bg-nocturno hover:text-white"
 				>
-					Conoce el club
+					{t(lang, 'home.club.boton')}
 					<Icon name="arrow-right" class="h-4 w-4" />
 				</a>
 			</div>
@@ -99,27 +77,31 @@ const lugaresRuta = [
 	<section class="bg-hueso py-20">
 		<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 xl:px-12">
 			<SectionHeading
-				eyebrow="San Clemente en Ruta"
-				title="Ven a correr, quédate a conocer la Joya"
-				description="San Clemente (Cuenca), la Joya del Renacimiento Manchego, es mucho más que una salida y una meta."
+				eyebrow={t(lang, 'home.ruta.eyebrow')}
+				title={t(lang, 'home.ruta.titulo')}
+				description={t(lang, 'home.ruta.texto')}
 			/>
 
 			<div class="mt-12 grid gap-6 md:grid-cols-3">
 				{lugaresRuta.map((lugar, i) => (
 					<div class="rounded-xl border border-slate-200 bg-white p-7 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
 						<span class="text-sm font-bold text-albero-600">0{i + 1}</span>
-						<h3 class="mt-2 font-display text-xl font-bold text-nocturno">{lugar.titulo}</h3>
-						<p class="mt-2 text-sm leading-relaxed text-tinta/70">{lugar.texto}</p>
+						<h3 class="mt-2 font-display text-xl font-bold text-nocturno">
+							{t(lang, `home.lugar${lugar}.titulo`)}
+						</h3>
+						<p class="mt-2 text-sm leading-relaxed text-tinta/70">
+							{t(lang, `home.lugar${lugar}.texto`)}
+						</p>
 					</div>
 				))}
 			</div>
 
 			<div class="mt-10 flex justify-center">
 				<a
-					href="/ruta/"
+					href={ruta(lang, '/ruta/')}
 					class="inline-flex items-center gap-2 rounded-md border-2 border-nocturno px-6 py-3 text-sm font-bold text-nocturno transition hover:bg-nocturno hover:text-white"
 				>
-					Descubre San Clemente
+					{t(lang, 'home.ruta.boton')}
 					<Icon name="arrow-right" class="h-4 w-4" />
 				</a>
 			</div>
@@ -131,15 +113,15 @@ const lugaresRuta = [
 			<div class="flex flex-wrap items-end justify-between gap-4">
 				<SectionHeading
 					align="left"
-					eyebrow="Noticias"
-					title="Últimas del club y del circuito"
-					description="Resultados, inscripciones, entrenamientos y carreras del Circuito Provincial de Cuenca."
+					eyebrow={t(lang, 'home.noticias.eyebrow')}
+					title={t(lang, 'home.noticias.titulo')}
+					description={t(lang, 'home.noticias.texto')}
 				/>
 				<a
-					href="/noticias/"
+					href={ruta(lang, '/noticias/')}
 					class="inline-flex items-center gap-2 rounded-md border-2 border-nocturno px-5 py-2.5 text-sm font-bold text-nocturno transition hover:bg-nocturno hover:text-white"
 				>
-					Todas las noticias
+					{t(lang, 'home.noticias.boton')}
 					<Icon name="arrow-right" class="h-4 w-4" />
 				</a>
 			</div>
@@ -152,15 +134,13 @@ const lugaresRuta = [
 				</div>
 			) : (
 				<div class="mt-10 rounded-xl border border-dashed border-slate-300 bg-hueso p-10 text-center">
-					<p class="text-sm text-tinta/70">
-						Las noticias del club se publicarán aquí en cuanto se configuren en Supabase.
-					</p>
+					<p class="text-sm text-tinta/70">{t(lang, 'home.noticias.vacio')}</p>
 				</div>
 			)}
 		</div>
 	</section>
 
-	<Establecimientos establecimientos={ESTABLECIMIENTOS} />
+	<Establecimientos establecimientos={ESTABLECIMIENTOS} lang={lang} />
 
 	<section class="border-t border-slate-200 bg-hueso py-16">
 		<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 xl:px-12">
@@ -191,7 +171,11 @@ const lugaresRuta = [
 						),
 					)
 				) : (
-					<p class="text-sm text-tinta/700">Colaboran: Ayuntamiento de San Clemente · Diputación de Cuenca · Cronomancha</p>
+					<p class="text-sm text-tinta/700">
+						{lang === 'es'
+							? 'Colaboran: Ayuntamiento de San Clemente · Diputación de Cuenca · Cronomancha'
+							: 'With the support of: San Clemente Town Council · Cuenca Provincial Council · Cronomancha'}
+					</p>
 				)}
 			</div>
 		</div>

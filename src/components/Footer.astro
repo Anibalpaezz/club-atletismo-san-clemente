@@ -1,28 +1,44 @@
 ---
-import { SITE, REDES } from '../lib/site';
+import { SITE } from '../lib/site';
 import Logo from './Logo.astro';
 import Icon from './Icon.astro';
 import Sponsors from './Sponsors';
+import { idiomaDe, t } from '../i18n/ui';
+import { ruta } from '../i18n/rutas';
+
+const lang = idiomaDe(Astro.originPathname ?? Astro.url.pathname);
+const redes = [
+	{ nombre: t(lang, 'red.blogspot'), href: SITE.blogspot, icono: 'blogspot' as const, placeholder: false },
+	{
+		nombre: 'Facebook',
+		href: 'https://www.facebook.com/groups/clubatletismosanclemente/',
+		icono: 'facebook' as const,
+		placeholder: false,
+	},
+	{
+		nombre: 'Instagram',
+		href: 'https://www.instagram.com/clubatletismosanclemente/',
+		icono: 'instagram' as const,
+		placeholder: false,
+	},
+];
 ---
 
 <footer class="bg-nocturno text-white">
 	<div class="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 lg:px-8 xl:px-12 md:grid-cols-3">
 		<div>
-			<a href="/" class="flex items-center gap-2.5">
+			<a href={ruta(lang, '/')} class="flex items-center gap-2.5">
 				<Logo class="h-10 w-10 text-albero" />
 				<span class="flex flex-col leading-tight">
 					<span class="text-sm font-bold">Club Atletismo</span>
 					<span class="text-xs font-semibold uppercase tracking-wider text-albero">San Clemente</span>
 				</span>
 			</a>
-			<p class="mt-4 max-w-xs text-sm leading-relaxed text-white/70">{SITE.lema}.</p>
-			<p class="mt-2 text-sm text-white/70">
-				Atletismo popular desde San Clemente (Cuenca), la Joya del Renacimiento Manchego.
-			</p>
+			<p class="mt-4 max-w-xs text-sm leading-relaxed text-white/70">{t(lang, 'footer.lema')}</p>
 		</div>
 
 		<div>
-			<p class="mb-4 text-xs font-semibold uppercase tracking-widest text-white/50">Contacto</p>
+			<p class="mb-4 text-xs font-semibold uppercase tracking-widest text-white/50">{t(lang, 'footer.contacto')}</p>
 			<a
 				href={`mailto:${SITE.email}`}
 				class="inline-flex items-center gap-2 text-sm text-white/80 transition hover:text-white"
@@ -31,7 +47,7 @@ import Sponsors from './Sponsors';
 				{SITE.email}
 			</a>
 			<p class="mt-5 mb-4 text-xs font-semibold uppercase tracking-widest text-white/50">
-				Nuestro blog histórico
+				{t(lang, 'footer.blog')}
 			</p>
 			<a
 				href={SITE.blogspot}
@@ -42,18 +58,18 @@ import Sponsors from './Sponsors';
 				<Icon name="blogspot" class="h-4 w-4 shrink-0 text-albero" />
 				clubatletismosanclemente.blogspot.com
 			</a>
-			<p class="mt-5 mb-4 text-xs font-semibold uppercase tracking-widest text-white/50">Síguenos</p>
+			<p class="mt-5 mb-4 text-xs font-semibold uppercase tracking-widest text-white/50">{t(lang, 'footer.siguenos')}</p>
 			<ul class="flex items-center gap-3">
-				{REDES.filter((red) => red.href !== SITE.blogspot).map((red) => (
+				{redes.map((red) => (
 					<li>
 						<a
 							href={red.href}
 							target="_blank"
 							rel="noreferrer noopener"
-							aria-label={`${red.nombre}${red.placeholder ? ' (pendiente de configurar)' : ''}`}
+							aria-label={red.nombre}
 							class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white/80 transition hover:bg-albero hover:text-nocturno"
 						>
-							<Icon name={red.icono as 'facebook' | 'instagram' | 'blogspot'} class="h-5 w-5" />
+							<Icon name={red.icono} class="h-5 w-5" />
 						</a>
 					</li>
 				))}
@@ -61,17 +77,15 @@ import Sponsors from './Sponsors';
 		</div>
 
 		<div>
-			<Sponsors client:visible />
+			<Sponsors client:visible titulo={lang === 'es' ? 'Colaboran' : 'Supported by'} />
 		</div>
 	</div>
 
 	<div class="border-t border-white/10">
 		<div class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-4 py-5 text-xs text-white/50 sm:flex-row sm:px-6 lg:px-8 xl:px-12">
-			<p>
-				© {new Date().getFullYear()} {SITE.name} · San Clemente (Cuenca)
-			</p>
+			<p>© {new Date().getFullYear()} Club Atletismo San Clemente · San Clemente (Cuenca)</p>
 			<p class="italic text-white/60">
-				Desarrollado por{' '}
+				{t(lang, 'footer.desarrollado')}{' '}
 				<a
 					href="https://anibalpaezzgallego.com"
 					target="_blank"

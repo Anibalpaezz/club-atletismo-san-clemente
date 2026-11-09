@@ -5,16 +5,20 @@ import Icon from './Icon.astro';
 
 interface Props {
 	establecimientos: Establecimiento[];
+	lang?: 'es' | 'en';
 }
-const { establecimientos } = Astro.props;
+const { establecimientos, lang = 'es' } = Astro.props;
+const es = lang !== 'en';
 ---
 
 <section class="border-t border-slate-200 bg-white py-20">
 	<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 xl:px-12">
 		<SectionHeading
-			eyebrow="Comercios y servicios locales"
-			title="Establecimientos que nos apoyan"
-			description="Los comercios y negocios que colaboran con el club y con la 10K Nocturna: tiendas, bodegas, bancos y servicios de la comarca."
+			eyebrow={es ? 'Comercios y servicios locales' : 'Local shops and services'}
+			title={es ? 'Establecimientos que nos apoyan' : 'Businesses that support us'}
+			description={es
+				? 'Los comercios y negocios que colaboran con el club y con la 10K Nocturna: tiendas, bodegas, bancos y servicios de la comarca.'
+				: 'The shops and businesses that support the club and the 10K Night Race: stores, wineries, banks and services from the area.'}
 		/>
 		<div class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
 			{establecimientos.map((establecimiento) => (
@@ -33,7 +37,7 @@ const { establecimientos } = Astro.props;
 								href={establecimiento.web}
 								target="_blank"
 								rel="noreferrer noopener"
-								aria-label={`Visitar la web de ${establecimiento.nombre}`}
+								aria-label={`${es ? 'Visitar la web de' : 'Visit the website of'} ${establecimiento.nombre}`}
 								class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-nocturno text-albero transition hover:bg-nocturno-700"
 							>
 								<Icon name="external" class="h-4 w-4" />
@@ -66,7 +70,7 @@ const { establecimientos } = Astro.props;
 							rel="noreferrer noopener"
 							class="mt-auto inline-flex min-h-10 items-center gap-1 py-2 -my-2 text-xs font-semibold text-albero-600 transition hover:text-nocturno"
 						>
-							Visitar
+							{es ? 'Visitar' : 'Visit'}
 							<Icon name="arrow-right" class="h-3 w-3" />
 						</a>
 					)}

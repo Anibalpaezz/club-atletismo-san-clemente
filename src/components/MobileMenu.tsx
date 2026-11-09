@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { t, type Lang } from '../i18n/ui';
 
 type NavItem = { href: string; label: string };
 
@@ -6,10 +7,18 @@ export default function MobileMenu({
 	items,
 	ctaHref,
 	ctaLabel,
+	lang,
+	altHref,
+	altLabel,
+	altAria,
 }: {
 	items: NavItem[];
 	ctaHref: string;
 	ctaLabel: string;
+	lang: Lang;
+	altHref: string;
+	altLabel: string;
+	altAria: string;
 }) {
 	const [open, setOpen] = useState(false);
 
@@ -17,7 +26,7 @@ export default function MobileMenu({
 		<div className="md:hidden">
 			<button
 				type="button"
-				aria-label={open ? 'Cerrar menú' : 'Abrir menú'}
+				aria-label={open ? t(lang, 'header.menu.cerrar') : t(lang, 'header.menu.abrir')}
 				aria-expanded={open}
 				onClick={() => setOpen((v) => !v)}
 				className="inline-flex h-10 w-10 items-center justify-center rounded-md text-white hover:bg-white/10"
@@ -35,7 +44,10 @@ export default function MobileMenu({
 
 			{open && (
 				<div className="absolute inset-x-0 top-full z-50 border-t border-white/10 bg-nocturno shadow-xl md:hidden">
-					<nav className="mx-auto flex max-w-7xl flex-col px-4 py-4 lg:px-8 xl:px-12" aria-label="Menú móvil">
+					<nav
+						className="mx-auto flex max-w-7xl flex-col px-4 py-4 lg:px-8 xl:px-12"
+						aria-label={lang === 'es' ? 'Menú móvil' : 'Mobile menu'}
+					>
 						{items.map((item) => (
 							<a
 								key={item.href}
@@ -46,13 +58,23 @@ export default function MobileMenu({
 								{item.label}
 							</a>
 						))}
-						<a
-							href={ctaHref}
-							onClick={() => setOpen(false)}
-							className="mt-3 inline-flex items-center justify-center rounded-md bg-albero px-4 py-2.5 text-sm font-semibold text-nocturno hover:bg-albero-100"
-						>
-							{ctaLabel}
-						</a>
+						<div className="mt-3 flex items-center gap-2">
+							<a
+								href={ctaHref}
+								onClick={() => setOpen(false)}
+								className="inline-flex flex-1 items-center justify-center rounded-md bg-albero px-4 py-2.5 text-sm font-semibold text-nocturno hover:bg-albero-100"
+							>
+								{ctaLabel}
+							</a>
+							<a
+								href={altHref}
+								aria-label={altAria}
+								onClick={() => setOpen(false)}
+								className="inline-flex items-center justify-center rounded-md border border-white/20 px-3 py-2.5 text-xs font-bold text-white/80 hover:border-albero hover:text-albero"
+							>
+								{altLabel}
+							</a>
+						</div>
 					</nav>
 				</div>
 			)}

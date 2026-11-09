@@ -4,6 +4,7 @@ import { TODOS, filtrarFilas, valoresUnicos } from '../lib/tabla-resultados';
 
 interface Props {
 	filas: FilaResultado[];
+	lang?: 'es' | 'en';
 }
 
 const controlClases =
@@ -12,7 +13,9 @@ const controlClases =
 const FILAS_INICIALES = 25;
 const INCREMENTO = 25;
 
-export default function TablaResultados({ filas }: Props) {
+export default function TablaResultados({ filas, lang = 'es' }: Props) {
+	const es = lang !== 'en';
+	const locale = es ? 'es-ES' : 'en-GB';
 	const [club, setClub] = useState(TODOS);
 	const [categoria, setCategoria] = useState(TODOS);
 	const [busqueda, setBusqueda] = useState('');
@@ -53,40 +56,49 @@ export default function TablaResultados({ filas }: Props) {
 		<div className="rounded-2xl border border-slate-200 bg-white shadow-sm">
 			<div className="border-b border-slate-200 px-6 py-5">
 				<p className="text-xs font-bold uppercase tracking-widest text-albero-600">
-					Resultados de la carrera
+					{es ? 'Resultados de la carrera' : 'Race results'}
 				</p>
 				<p className="mt-1 text-sm text-tinta/70">
-					{visibles.length.toLocaleString('es-ES')} de {totalEnContexto.toLocaleString('es-ES')}{' '}
-					clasificados. Filtra por club, categoría, año o por el nombre del corredor.
+					{es ? (
+						<>
+							{visibles.length.toLocaleString(locale)} de {totalEnContexto.toLocaleString(locale)}{' '}
+							clasificados. Filtra por club, categoría, año o por el nombre del corredor.
+						</>
+					) : (
+						<>
+							{visibles.length.toLocaleString(locale)} of {totalEnContexto.toLocaleString(locale)}{' '}
+							finishers. Filter by club, category, year or runner name.
+						</>
+					)}
 				</p>
 			</div>
 
 			<div className="grid gap-3 border-b border-slate-200 bg-hueso/50 p-4 sm:grid-cols-2 lg:grid-cols-4">
 				<label className="flex flex-col gap-1.5">
 					<span className="text-[11px] font-semibold uppercase tracking-wider text-tinta/60">
-						Buscar corredor
+						{es ? 'Buscar corredor' : 'Search runner'}
 					</span>
 					<input
 						type="search"
 						value={busqueda}
 						onChange={(e) => cambiarFiltro(setBusqueda, e.target.value)}
-						placeholder="Nombre…"
-						aria-label="Buscar por nombre del corredor"
+						placeholder={es ? 'Nombre…' : 'Name…'}
+						aria-label={es ? 'Buscar por nombre del corredor' : 'Search by runner name'}
 						className={controlClases}
 					/>
 				</label>
 
 				<label className="flex flex-col gap-1.5">
 					<span className="text-[11px] font-semibold uppercase tracking-wider text-tinta/60">
-						Club
+						{es ? 'Club' : 'Club'}
 					</span>
 					<select
 						value={club}
 						onChange={(e) => cambiarFiltro(setClub, e.target.value)}
-						aria-label="Filtrar por club"
+						aria-label={es ? 'Filtrar por club' : 'Filter by club'}
 						className={controlClases}
 					>
-						<option value={TODOS}>Todos</option>
+						<option value={TODOS}>{es ? 'Todos' : 'All'}</option>
 						{clubs.map((c) => (
 							<option key={c} value={c}>
 								{c}
@@ -97,15 +109,15 @@ export default function TablaResultados({ filas }: Props) {
 
 				<label className="flex flex-col gap-1.5">
 					<span className="text-[11px] font-semibold uppercase tracking-wider text-tinta/60">
-						Categoría
+						{es ? 'Categoría' : 'Category'}
 					</span>
 					<select
 						value={categoria}
 						onChange={(e) => cambiarFiltro(setCategoria, e.target.value)}
-						aria-label="Filtrar por categoría"
+						aria-label={es ? 'Filtrar por categoría' : 'Filter by category'}
 						className={controlClases}
 					>
-						<option value={TODOS}>Todas</option>
+						<option value={TODOS}>{es ? 'Todas' : 'All'}</option>
 						{categorias.map((c) => (
 							<option key={c} value={c}>
 								{c}
@@ -116,12 +128,12 @@ export default function TablaResultados({ filas }: Props) {
 
 				<label className="flex flex-col gap-1.5">
 					<span className="text-[11px] font-semibold uppercase tracking-wider text-tinta/60">
-						Año / edición
+						{es ? 'Año / edición' : 'Year / edition'}
 					</span>
 					<select
 						value={year}
 						onChange={(e) => cambiarFiltro(setYear, e.target.value)}
-						aria-label="Filtrar por año"
+						aria-label={es ? 'Filtrar por año' : 'Filter by year'}
 						disabled={years.length <= 1}
 						className={controlClases}
 					>
@@ -130,7 +142,7 @@ export default function TablaResultados({ filas }: Props) {
 								{y}
 							</option>
 						))}
-						<option value={TODOS}>Todas</option>
+						<option value={TODOS}>{es ? 'Todas' : 'All'}</option>
 					</select>
 				</label>
 			</div>
@@ -141,25 +153,25 @@ export default function TablaResultados({ filas }: Props) {
 						<thead>
 							<tr className="border-b border-slate-200 bg-hueso text-xs font-bold uppercase tracking-wider text-tinta/60">
 								<th scope="col" className="px-5 py-3.5">
-									Pos.
+									{es ? 'Pos.' : 'Pos.'}
 								</th>
 								<th scope="col" className="hidden px-5 py-3.5 md:table-cell">
-									Dorsal
+									{es ? 'Dorsal' : 'Bib'}
 								</th>
 								<th scope="col" className="px-5 py-3.5">
-									Corredor/a
+									{es ? 'Corredor/a' : 'Runner'}
 								</th>
 								<th scope="col" className="px-5 py-3.5">
 									Club
 								</th>
 								<th scope="col" className="hidden px-5 py-3.5 sm:table-cell">
-									Categoría
+									{es ? 'Categoría' : 'Category'}
 								</th>
 								<th scope="col" className="px-5 py-3.5 text-right">
-									Tiempo
+									{es ? 'Tiempo' : 'Time'}
 								</th>
 								<th scope="col" className="hidden px-5 py-3.5 lg:table-cell">
-									Año
+									{es ? 'Año' : 'Year'}
 								</th>
 							</tr>
 						</thead>
@@ -194,7 +206,9 @@ export default function TablaResultados({ filas }: Props) {
 			) : (
 				<div className="px-6 py-12 text-center">
 					<p className="text-sm text-tinta/60">
-						Ningún resultado coincide con los filtros seleccionados.
+						{es
+							? 'Ningún resultado coincide con los filtros seleccionados.'
+							: 'No results match the selected filters.'}
 					</p>
 				</div>
 			)}
@@ -202,15 +216,16 @@ export default function TablaResultados({ filas }: Props) {
 			{restantes > 0 && (
 				<div className="flex items-center justify-center gap-4 border-t border-slate-200 px-6 py-5">
 					<p className="text-sm text-tinta/60">
-						Mostrando {visiblesMostrados.length.toLocaleString('es-ES')} de{' '}
-						{visibles.length.toLocaleString('es-ES')} clasificados.
+						{es ? 'Mostrando' : 'Showing'} {visiblesMostrados.length.toLocaleString(locale)}{' '}
+						{es ? 'de' : 'of'} {visibles.length.toLocaleString(locale)}{' '}
+						{es ? 'clasificados.' : 'finishers.'}
 					</p>
 					<button
 						type="button"
 						onClick={() => setLimite((l) => l + INCREMENTO)}
 						className="inline-flex items-center gap-2 rounded-md bg-nocturno px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-nocturno-700"
 					>
-						Cargar más ({Math.min(restantes, INCREMENTO).toLocaleString('es-ES')})
+						{es ? 'Cargar más' : 'Load more'} ({Math.min(restantes, INCREMENTO).toLocaleString(locale)})
 					</button>
 				</div>
 			)}

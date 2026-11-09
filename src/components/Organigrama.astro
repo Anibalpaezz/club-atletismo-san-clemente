@@ -1,20 +1,27 @@
 ---
 import Icon from './Icon.astro';
 import { FECHA_ORGANIGRAMA, JUNTA, VOCALES, SOCIOS } from '../lib/directiva';
+
+interface Props {
+	lang?: 'es' | 'en';
+}
+const { lang = 'es' } = Astro.props;
+const es = lang !== 'en';
 ---
 
 <div class="mt-10 rounded-2xl border border-slate-200 bg-white p-8 shadow-sm sm:p-10">
 	<div class="flex items-center justify-between gap-3">
-		<h3 class="font-display text-2xl font-bold text-nocturno">Organigrama</h3>
+		<h3 class="font-display text-2xl font-bold text-nocturno">{es ? 'Organigrama' : 'Club board'}</h3>
 		<span class="inline-flex items-center gap-1.5 rounded-full bg-hueso px-3 py-1 text-xs font-semibold text-tinta/700">
 			<Icon name="calendar" class="h-3.5 w-3.5" />
-			a {FECHA_ORGANIGRAMA}
+			{FECHA_ORGANIGRAMA}
 		</span>
 	</div>
 
 	<p class="mt-2 text-sm text-tinta/700">
-		La Junta Directiva trabaja de forma voluntaria para mantener el club activo todo el año. Toda la
-		directiva se elige en asamblea y el organigrama se actualiza cada temporada.
+		{es
+			? 'La Junta Directiva trabaja de forma voluntaria para mantener el club activo todo el año. Toda la directiva se elige en asamblea y el organigrama se actualiza cada temporada.'
+			: 'The board works on a voluntary basis to keep the club active all year round. The whole board is elected at the general meeting and the structure is updated every season.'}
 	</p>
 
 	<div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -45,7 +52,7 @@ import { FECHA_ORGANIGRAMA, JUNTA, VOCALES, SOCIOS } from '../lib/directiva';
 	<div class="mt-10">
 		<h4 class="flex items-center gap-2 font-display text-lg font-bold text-nocturno">
 			<Icon name="users" class="h-5 w-5 text-albero-600" />
-			Vocales
+			{es ? 'Vocales' : 'Committee members'}
 		</h4>
 		<div class="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
 			{VOCALES.map((miembro) => (
@@ -63,7 +70,7 @@ import { FECHA_ORGANIGRAMA, JUNTA, VOCALES, SOCIOS } from '../lib/directiva';
 	<div class="mt-10">
 		<h4 class="flex items-center gap-2 font-display text-lg font-bold text-nocturno">
 			<Icon name="flag" class="h-5 w-5 text-albero-600" />
-			Socios
+			{es ? 'Socios' : 'Members'}
 		</h4>
 		<div class="mt-4 flex flex-wrap gap-2.5">
 			{SOCIOS.map((miembro) => (

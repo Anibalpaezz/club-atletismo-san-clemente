@@ -1,8 +1,8 @@
-export function formatFecha(input: string | null | undefined): string {
+export function formatFecha(input: string | null | undefined, lang: 'es' | 'en' = 'es'): string {
 	if (!input) return '';
 	const date = new Date(input);
 	if (Number.isNaN(date.getTime())) return '';
-	return new Intl.DateTimeFormat('es-ES', {
+	return new Intl.DateTimeFormat(lang === 'en' ? 'en-GB' : 'es-ES', {
 		day: 'numeric',
 		month: 'long',
 		year: 'numeric',

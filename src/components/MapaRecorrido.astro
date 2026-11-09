@@ -1,13 +1,22 @@
 ---
 import 'leaflet/dist/leaflet.css';
 import { TRACKS } from '../lib/tracks';
+
+interface Props {
+	lang?: 'es' | 'en';
+}
+const { lang = 'es' } = Astro.props;
+const es = lang !== 'en';
 ---
 
 <div class="h-full w-full">
 	<div
 		id="mapa-recorrido"
 		class="h-80 w-full bg-amber-50 sm:h-96 lg:h-[28rem]"
-		aria-label="Mapa del circuito urbano de la Carrera Nocturna Villa de San Clemente"
+		data-lang={lang}
+		aria-label={es
+			? 'Mapa del circuito urbano de la Carrera Nocturna Villa de San Clemente'
+			: 'Map of the town-centre circuit of the 10K Night Race Villa de San Clemente'}
 	></div>
 
 	<div class="border-t border-slate-200 bg-white px-4 py-3">
@@ -17,7 +26,7 @@ import { TRACKS } from '../lib/tracks';
 				download
 				class="inline-flex items-center gap-1.5 rounded-md bg-nocturno px-4 py-2 text-xs font-bold text-white transition hover:bg-nocturno-700"
 			>
-				Descargar GPX
+				{es ? 'Descargar GPX' : 'Download GPX'}
 			</a>
 			{TRACKS.wikilocUrl && (
 				<a
@@ -26,7 +35,7 @@ import { TRACKS } from '../lib/tracks';
 					rel="noreferrer noopener"
 					class="inline-flex items-center gap-1.5 rounded-md border border-slate-300 px-4 py-2 text-xs font-bold text-nocturno transition hover:border-albero-600 hover:text-nocturno-600"
 				>
-					Ver en Wikiloc
+					{es ? 'Ver en Wikiloc' : 'View on Wikiloc'}
 				</a>
 			)}
 			{TRACKS.stravaUrl && (
@@ -36,19 +45,23 @@ import { TRACKS } from '../lib/tracks';
 					rel="noreferrer noopener"
 					class="inline-flex items-center gap-1.5 rounded-md border border-slate-300 px-4 py-2 text-xs font-bold text-nocturno transition hover:border-albero-600 hover:text-nocturno-600"
 				>
-					Ver en Strava
+					{es ? 'Ver en Strava' : 'View on Strava'}
 				</a>
 			)}
 		</div>
 	</div>
 
 	<div class="border-t border-slate-200 bg-hueso px-4 py-4">
-		<p class="text-[11px] font-semibold uppercase tracking-wider text-tinta/70">Perfil del recorrido</p>
+		<p class="text-[11px] font-semibold uppercase tracking-wider text-tinta/70">
+			{es ? 'Perfil del recorrido' : 'Course profile'}
+		</p>
 		<svg
 			viewBox="0 0 600 96"
 			class="mt-2 h-20 w-full"
 			role="img"
-			aria-label="Perfil del recorrido de la 10K Nocturna: circuito urbano prácticamente llano"
+			aria-label={es
+				? 'Perfil del recorrido de la 10K Nocturna: circuito urbano prácticamente llano'
+				: 'Course profile of the 10K Night Race: an almost flat town-centre circuit'}
 		>
 			<line x1="0" y1="78" x2="600" y2="78" stroke="#1f2430" stroke-opacity="0.2" stroke-width="1" />
 			<line x1="0" y1="30" x2="600" y2="30" stroke="#8d99ae" stroke-opacity="0.3" stroke-width="1" stroke-dasharray="3 4" />
@@ -69,13 +82,14 @@ import { TRACKS } from '../lib/tracks';
 				stroke-dasharray="4 4"
 				opacity="0.45"
 			/>
-			<text x="6" y="88" fill="#1f2430" fill-opacity="0.6" font-size="10" font-family="Inter, sans-serif">Salida/Meta</text>
+			<text x="6" y="88" fill="#1f2430" fill-opacity="0.6" font-size="10" font-family="Inter, sans-serif">{es ? 'Salida/Meta' : 'Start/Finish'}</text>
 			<text x="282" y="88" fill="#1f2430" fill-opacity="0.6" font-size="10" font-family="Inter, sans-serif">5K</text>
 			<text x="586" y="88" fill="#1f2430" fill-opacity="0.6" font-size="10" font-family="Inter, sans-serif" text-anchor="end">10K</text>
 		</svg>
 		<p class="mt-2 text-[11px] leading-relaxed text-tinta/70">
-			Circuito urbano prácticamente llano. Una vuelta = 5K (5K de iniciación); la 10K consta de dos
-			vueltas. Perfil orientativo.
+			{es
+				? 'Circuito urbano prácticamente llano. Una vuelta = 5K (5K de iniciación); la 10K consta de dos vueltas. Perfil orientativo.'
+				: 'An almost flat town-centre circuit. One lap = 5K (introductory 5K); the 10K is two laps. Indicative profile.'}
 		</p>
 	</div>
 </div>
@@ -89,6 +103,7 @@ import { TRACKS } from '../lib/tracks';
 		const container = document.getElementById('mapa-recorrido');
 		if (!container || container.dataset.mapIniciado === 'true') return;
 
+		const es = container.dataset.lang !== 'en';
 		const centro = { lat: 39.4038, lng: -2.42942 };
 
 		const recorrido: FeatureCollection = {
@@ -98,9 +113,11 @@ import { TRACKS } from '../lib/tracks';
 					type: 'Feature',
 					properties: {
 						id: 'start-finish',
-						name: 'Salida y Meta',
+						name: es ? 'Salida y Meta' : 'Start and finish',
 						category: 'milestone',
-						description: 'Plaza Mayor de San Clemente frente al Ayuntamiento',
+						description: es
+							? 'Plaza Mayor de San Clemente frente al Ayuntamiento'
+							: 'Plaza Mayor of San Clemente, in front of the town hall',
 					},
 					geometry: {
 						type: 'Point',
@@ -111,10 +128,10 @@ import { TRACKS } from '../lib/tracks';
 					type: 'Feature',
 					properties: {
 						id: 'race-track',
-						name: 'Circuito Urbano 5K / 10K',
-						category: 'track',
-						description:
-							'Recorrido circular por el casco histórico y principales vías urbanas de San Clemente',
+						name: es ? 'Circuito Urbano 5K / 10K' : 'Town-centre 5K / 10K circuit',
+						category: 'track',							description: es
+								? 'Recorrido circular por el casco histórico y principales vías urbanas de San Clemente'
+								: 'A circular route through the old town and main streets of San Clemente',
 					},
 					geometry: {
 						type: 'LineString',
@@ -136,10 +153,9 @@ import { TRACKS } from '../lib/tracks';
 				'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
 		}).addTo(mapa);
 
-		const etiquetaCategoria: Record<string, string> = {
-			milestone: 'Salida y Meta',
-			track: 'Recorrido',
-		};
+		const etiquetaCategoria: Record<string, string> = es
+			? { milestone: 'Salida y Meta', track: 'Recorrido' }
+			: { milestone: 'Start and finish', track: 'Course' };
 
 		const contenidoPopup = (propiedades: {
 			category?: string;

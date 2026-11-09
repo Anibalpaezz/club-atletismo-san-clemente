@@ -2,18 +2,21 @@
 import type { Noticia } from '../lib/supabase';
 import { formatFecha } from '../lib/formato';
 import Icon from './Icon.astro';
+import { idiomaDe, t } from '../i18n/ui';
+import { ruta } from '../i18n/rutas';
 
 interface Props {
 	noticia: Noticia;
 	imagenFallback?: string;
 }
 const { noticia, imagenFallback } = Astro.props;
+const lang = idiomaDe(Astro.originPathname ?? Astro.url.pathname);
 const imagen = noticia.imagen_url ?? imagenFallback;
-const fecha = formatFecha(noticia.fecha_publicacion ?? noticia.created_at);
+const fecha = formatFecha(noticia.fecha_publicacion ?? noticia.created_at, lang);
 ---
 
 <a
-	href={`/noticias/${noticia.slug ?? noticia.id}/`}
+	href={ruta(lang, `/noticias/${noticia.slug ?? noticia.id}/`)}
 	class="group flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
 >
 	<div class="aspect-[16/9] overflow-hidden bg-hueso">
@@ -37,7 +40,7 @@ const fecha = formatFecha(noticia.fecha_publicacion ?? noticia.created_at);
 		</h3>
 		{noticia.resumen && <p class="line-clamp-3 text-sm leading-relaxed text-tinta/70">{noticia.resumen}</p>}
 		<span class="mt-auto inline-flex items-center gap-1.5 pt-2 text-sm font-semibold text-albero-600">
-			Leer más
+			{t(lang, 'comun.leerMas')}
 			<Icon name="arrow-right" class="h-4 w-4 transition group-hover:translate-x-0.5" />
 		</span>
 	</div>

@@ -3,15 +3,24 @@ import { NAV, SITE } from '../lib/site';
 import Logo from './Logo.astro';
 import MobileMenu from './MobileMenu';
 import { getCarreraConfig } from '../lib/db';
+import { idiomaDe, otroIdioma, t } from '../i18n/ui';
+import { ruta, rutaAlterna } from '../i18n/rutas';
+
+const path = Astro.originPathname ?? Astro.url.pathname;
+const lang = idiomaDe(path);
+const alterno = otroIdioma(lang);
 
 const carrera = await getCarreraConfig();
-const ctaHref = carrera?.enlace_inscripcion ?? '/carrera/';
-const ctaLabel = carrera?.texto_cta ?? 'Inscríbete a la 10K Nocturna';
+const ctaHref = ruta(lang, carrera?.enlace_inscripcion ?? '/carrera/');
+const ctaLabel = t(lang, 'header.cta');
+
+const nav = NAV.map((item) => ({ href: ruta(lang, item.href), label: t(lang, `nav.${item.clave}`) }));
+const altHref = rutaAlterna(lang, path);
 ---
 
 <header class="sticky top-0 z-40 border-b border-white/10 bg-nocturno/95 backdrop-blur">
 	<div class="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8 xl:px-12">
-		<a href="/" class="flex min-w-0 items-center gap-2.5" aria-label={`Inicio — ${SITE.name}`}>
+		<a href={ruta(lang, '/')} class="flex min-w-0 items-center gap-2.5" aria-label={`${t(lang, 'nav.inicio')} — ${SITE.name}`}>
 			<Logo class="h-10 w-10 shrink-0 text-albero" />
 			<span class="hidden min-w-0 flex-col leading-tight sm:flex">
 				<span class="truncate text-sm font-bold text-white">Club Atletismo</span>
@@ -21,8 +30,8 @@ const ctaLabel = carrera?.texto_cta ?? 'Inscríbete a la 10K Nocturna';
 			</span>
 		</a>
 
-		<nav class="hidden items-center gap-1 md:flex" aria-label="Principal">
-			{NAV.map((item) => (
+		<nav class="hidden items-center gap-1 md:flex" aria-label={lang === 'es' ? 'Principal' : 'Main'}>
+			{nav.map((item) => (
 				<a
 					href={item.href}
 					class="rounded-md px-3 py-2 text-sm font-medium text-white/80 transition hover:bg-white/10 hover:text-white"
@@ -32,17 +41,59 @@ const ctaLabel = carrera?.texto_cta ?? 'Inscríbete a la 10K Nocturna';
 			))}
 		</nav>
 
-		<div class="hidden md:block">
+		<div class="hidden items-center gap-3 md:flex">
+			<div
+				class="flex items-center gap-0.5 rounded-md border border-white/15 p-0.5"
+				role="group"
+				aria-label={lang === 'es' ? 'Idioma' : 'Language'}
+			>
+				<a
+					href={rutaAlterna('en', path)}
+					hreflang="es"
+					lang="es"
+					aria-current={lang === 'es' ? 'true' : undefined}
+					aria-label={t(lang, 'header.idioma.es')}
+					class:list={[
+						'rounded px-2 py-1 text-xs font-bold transition',
+						lang === 'es' ? 'bg-white/15 text-white' : 'text-white/60 hover:text-white',
+					]}
+				>
+					ES
+				</a>
+				<a
+					href={rutaAlterna('es', path)}
+					hreflang="en"
+					lang="en"
+					aria-current={lang === 'en' ? 'true' : undefined}
+					aria-label={t(lang, 'header.idioma.en')}
+					class:list={[
+						'rounded px-2 py-1 text-xs font-bold transition',
+						lang === 'en' ? 'bg-white/15 text-white' : 'text-white/60 hover:text-white',
+					]}
+				>
+					EN
+				</a>
+			</div>
+
 			<a
 				href={ctaHref}
 				target={ctaHref.startsWith('http') ? '_blank' : undefined}
 				rel={ctaHref.startsWith('http') ? 'noreferrer noopener' : undefined}
-				class="inline-flex items-center gap-1.5 rounded-md bg-albero px-4 py-2 text-sm font-semibold text-nocturno transition hover:bg-albero-100"
+				class="inline-flex items-center rounded-md bg-albero px-4 py-2 text-sm font-semibold text-nocturno transition hover:bg-albero-100"
 			>
 				{ctaLabel}
 			</a>
 		</div>
 
-		<MobileMenu client:load items={NAV} ctaHref={ctaHref} ctaLabel={ctaLabel} />
+		<MobileMenu
+			client:load
+			items={nav}
+			ctaHref={ctaHref}
+			ctaLabel={ctaLabel}
+			lang={lang}
+			altHref={altHref}
+			altLabel={alterno.toUpperCase()}
+			altAria={t(lang, alterno === 'es' ? 'header.idioma.es' : 'header.idioma.en')}
+		/>
 	</div>
 </header>
