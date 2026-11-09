@@ -2,12 +2,11 @@
 import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
 import SectionHeading from '../components/SectionHeading.astro';
-import CarreraBanner from '../components/CarreraBanner.astro';
 import ConsejosTrucos from '../components/ConsejosTrucos.astro';
 import NoticiaCard from '../components/NoticiaCard.astro';
 import Icon from '../components/Icon.astro';
 import Establecimientos from '../components/Establecimientos.astro';
-import { getCarreraConfig, getNoticiasPublicadas, getPatrocinadores } from '../lib/db';
+import { getNoticiasPublicadas, getPatrocinadores } from '../lib/db';
 import { ESTABLECIMIENTOS } from '../lib/comercios';
 import { SITE } from '../lib/site';
 import { fotosAleatorias } from '../lib/fotosActas';
@@ -15,7 +14,6 @@ import { fotosAleatorias } from '../lib/fotosActas';
 export const prerender = false;
 export const revalidate = 60;
 
-const carrera = await getCarreraConfig();
 const noticias = await getNoticiasPublicadas(3);
 const patrocinadores = await getPatrocinadores();
 const fotosNoticias = fotosAleatorias(noticias.length);
@@ -94,23 +92,6 @@ const lugaresRuta = [
 
 	<section class="bg-nocturno py-20 text-white">
 		<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 xl:px-12">
-			<SectionHeading
-				tone="dark"
-				eyebrow="La Carrera"
-				title="10K Nocturna Villa de San Clemente"
-				description="Una carrera nocturna única por el casco histórico iluminado, puntuable para el Circuito Provincial de Carreras Populares de la Diputación de Cuenca."
-			/>
-			<div class="mt-12">
-				{carrera ? (
-					<CarreraBanner carrera={carrera} />
-				) : (
-					<p class="text-center text-white/70">
-						La información de la edición se publicará próximamente. Escríbenos a {SITE.email} para
-						consultas.
-					</p>
-				)}
-			</div>
-
 			<ConsejosTrucos />
 		</div>
 	</section>
