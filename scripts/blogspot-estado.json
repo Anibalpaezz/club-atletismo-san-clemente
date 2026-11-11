@@ -1,4 +1,11 @@
 {
+  "1413004656675716442": {
+    "archivo": "blogspot-2021-08-01-cancelacion-corro-con-mecha.md",
+    "hash": "9d854d7d",
+    "fecha": "2021-08-01T00:00:00.000Z",
+    "titulo": "CANCELACION CORRO CON MECHA",
+    "sincronizado_en": "2026-11-11T23:49:05.292Z"
+  },
   "1803749390733122109": {
     "archivo": "blogspot-2024-12-01-carrera-de-navidad-solidaria-carrera-no-competitiva-san-clemente-2-024.md",
     "hash": "a7e2c29c",
@@ -20,12 +27,26 @@
     "titulo": "Joaquín Mesas Esteso: 60 años corriendo sin detenerse",
     "sincronizado_en": "2026-11-11T13:08:38.233Z"
   },
+  "2596255490831958060": {
+    "archivo": "blogspot-2021-12-01-cancelacion-carrera-de-navidad.md",
+    "hash": "87a81d9b",
+    "fecha": "2021-12-01T00:00:00.000Z",
+    "titulo": "Cancelación carrera de Navidad",
+    "sincronizado_en": "2026-11-11T23:49:05.292Z"
+  },
   "2933394637148409422": {
     "archivo": "blogspot-2026-01-29-acta-de-la-asamblea-ordinaria-de-socios-y-socias-del-club-de-atletismo.md",
     "hash": "7ee2ad1f",
     "fecha": "2026-01-29T20:00:00.000Z",
     "titulo": "Acta de la Asamblea ordinaria de socios y socias del Club de Atletismo San Clemente",
     "sincronizado_en": "2026-11-11T13:08:38.233Z"
+  },
+  "3630553112985431480": {
+    "archivo": "blogspot-2021-07-01-corre-con-mecha.md",
+    "hash": "443c0581",
+    "fecha": "2021-07-01T00:00:00.000Z",
+    "titulo": "CORRE CON MECHA",
+    "sincronizado_en": "2026-11-11T23:49:05.292Z"
   },
   "3890135911083034386": {
     "archivo": "blogspot-2025-10-01-cronica-de-un-buen-corredor-generoso-amigo-y-excelente-persona-vicente.md",
@@ -55,6 +76,27 @@
     "titulo": "REGLAMENTO DE LA DECIMOCTAVA CARRERA NOCTURNA 10K. VILLA DE SAN CLEMENTE",
     "sincronizado_en": "2026-11-11T13:08:38.233Z"
   },
+  "5159789629089013030": {
+    "archivo": "blogspot-2021-12-01-xxii-carrera-popular-de-navidad.md",
+    "hash": "d4e75151",
+    "fecha": "2021-12-01T00:00:00.000Z",
+    "titulo": "XXII CARRERA POPULAR DE NAVIDAD",
+    "sincronizado_en": "2026-11-11T23:49:05.292Z"
+  },
+  "5403965365992849611": {
+    "archivo": "blogspot-2022-01-01-la-galeria-completa-de-videos-y-fotos.md",
+    "hash": "372fb5f3",
+    "fecha": "2022-01-01T00:00:00.000Z",
+    "titulo": "LA GALERIA COMPLETA DE VIDEOS Y FOTOS.",
+    "sincronizado_en": "2026-11-11T23:49:05.292Z"
+  },
+  "6169444339391639012": {
+    "archivo": "blogspot-2024-01-01-carrera-solidaria-de-navidad-2023.md",
+    "hash": "85519aca",
+    "fecha": "2024-01-01T00:00:00.000Z",
+    "titulo": "CARRERA SOLIDARIA DE NAVIDAD 2023",
+    "sincronizado_en": "2026-11-11T23:49:05.292Z"
+  },
   "7596291011869029736": {
     "archivo": "blogspot-2025-01-01-cronica-de-la-san-silvestre-navidena-de-san-clemente-2024-carrera-soli.md",
     "hash": "ec3abd21",
@@ -62,11 +104,39 @@
     "titulo": "CRONICA de la San Silvestre Navideña de San Clemente 2024 CARRERA SOLIDARIA",
     "sincronizado_en": "2026-11-11T13:08:38.233Z"
   },
+  "7986155215470270328": {
+    "archivo": "blogspot-2022-02-01-corro-con-mecha.md",
+    "hash": "3d8f6449",
+    "fecha": "2022-02-01T00:00:00.000Z",
+    "titulo": "CORRO CON MECHA",
+    "sincronizado_en": "2026-11-11T23:49:05.292Z"
+  },
+  "8047239276212367391": {
+    "archivo": "blogspot-2021-05-01-novena-a-la-patrona-de-san-clemente.md",
+    "hash": "32f08635",
+    "fecha": "2021-05-01T00:00:00.000Z",
+    "titulo": "NOVENA A LA PATRONA DE SAN CLEMENTE",
+    "sincronizado_en": "2026-11-11T23:49:05.292Z"
+  },
+  "8186647407756823059": {
+    "archivo": "blogspot-2022-01-01-la-corta-e-intensa-vida-de-mantas-milasius.md",
+    "hash": "e23ad630",
+    "fecha": "2022-01-01T00:00:00.000Z",
+    "titulo": "LA CORTA E INTENSA VIDA DE MANTAS MILASIUS",
+    "sincronizado_en": "2026-11-11T23:49:05.292Z"
+  },
   "8555134547372380403": {
     "archivo": "blogspot-2025-05-01-decimoseptima-carrera-popular-10k-villa-de-san-clemente.md",
     "hash": "789a72d5",
     "fecha": "2025-05-01T00:00:00.000Z",
     "titulo": "DECIMOSEPTIMA CARRERA POPULAR 10K VILLA DE SAN CLEMENTE",
     "sincronizado_en": "2026-11-11T13:08:38.233Z"
+  },
+  "8887113998074436452": {
+    "archivo": "blogspot-2023-12-01-carrera-de-navidad-2023.md",
+    "hash": "84dcb398",
+    "fecha": "2023-12-01T00:00:00.000Z",
+    "titulo": "CARRERA DE NAVIDAD 2023",
+    "sincronizado_en": "2026-11-11T23:49:05.292Z"
   }
 }
