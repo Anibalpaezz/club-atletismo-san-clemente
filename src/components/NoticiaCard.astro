@@ -17,6 +17,8 @@ const fecha = formatFecha(noticia.fecha_publicacion ?? noticia.created_at, lang)
 
 <a
 	href={ruta(lang, `/noticias/${noticia.slug ?? noticia.id}/`)}
+	data-abrir-noticia
+	aria-haspopup="dialog"
 	class="group flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
 >
 	<div class="aspect-[16/9] overflow-hidden bg-hueso">

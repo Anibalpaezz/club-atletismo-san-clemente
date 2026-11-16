@@ -37,7 +37,7 @@ const TEXTOS: Record<Lang, Record<string, string>> = {
 		'footer.contacto': 'Contacto',
 		'footer.blog': 'Nuestro blog histórico',
 		'footer.siguenos': 'Síguenos',
-		'footer.desarrollado': 'Desarrollado por',
+		'footer.desarrollado': 'Desarrollado y diseñado por',
 
 		'hero.alt': 'Plaza Mayor de San Clemente de noche, escenario de la 10K Nocturna',
 		'hero.badge': 'Club de atletismo popular · San Clemente (Cuenca)',
@@ -57,6 +57,7 @@ const TEXTOS: Record<Lang, Record<string, string>> = {
 			'Un correo basta para resolver dudas, apuntarte al club o colaborar con la 10K Nocturna.',
 		'contacto.correoTitulo': 'Correo oficial',
 		'contacto.correoCta': 'Escribir un correo',
+		'contacto.telefonoTitulo': 'Teléfono',
 		'contacto.redesTitulo': 'Redes sociales',
 		'contacto.socioTitulo': 'Hazte socio',
 		'contacto.socioLinea1': 'Abierto a todos los niveles',
@@ -126,6 +127,8 @@ const TEXTOS: Record<Lang, Record<string, string>> = {
 			'En cuanto el club publique sus primeras noticias, aparecerán aquí.',
 		'noticias.volver': 'Todas las noticias',
 		'noticias.recientes': 'Noticias recientes',
+		'noticias.cargando': 'Cargando la noticia…',
+		'noticias.cerrar': 'Cerrar la noticia',
 
 		'home.titulo': 'Club Atletismo San Clemente | Escuela y Entrenamientos en San Clemente',
 		'home.descripcion':
@@ -196,7 +199,7 @@ const TEXTOS: Record<Lang, Record<string, string>> = {
 		'footer.contacto': 'Contact',
 		'footer.blog': 'Our historic blog',
 		'footer.siguenos': 'Follow us',
-		'footer.desarrollado': 'Developed by',
+		'footer.desarrollado': 'Developed and designed by',
 
 		'hero.alt': "San Clemente's Plaza Mayor at night, the setting of the 10K Night Race",
 		'hero.badge': 'Grassroots athletics club · San Clemente (Cuenca)',
@@ -216,6 +219,7 @@ const TEXTOS: Record<Lang, Record<string, string>> = {
 			'One email is enough to answer your questions, join the club or support the 10K Night Race.',
 		'contacto.correoTitulo': 'Official email',
 		'contacto.correoCta': 'Write an email',
+		'contacto.telefonoTitulo': 'Phone',
 		'contacto.redesTitulo': 'Social media',
 		'contacto.socioTitulo': 'Join the club',
 		'contacto.socioLinea1': 'Open to all levels',
@@ -282,6 +286,8 @@ const TEXTOS: Record<Lang, Record<string, string>> = {
 		'noticias.vacioTexto': 'Club news will appear here as soon as it is published.',
 		'noticias.volver': 'All news',
 		'noticias.recientes': 'Recent news',
+		'noticias.cargando': 'Loading the story…',
+		'noticias.cerrar': 'Close the story',
 
 		'home.titulo': 'Club Atletismo San Clemente | School and Training in San Clemente',
 		'home.descripcion':

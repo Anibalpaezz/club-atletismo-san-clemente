@@ -1,0 +1,16 @@
+---
+// Las versiones inglesas viven en /en/… pero se sirven con las mismas páginas
+// que en español: aquí se reescribe a la ruta española y cada página deduce el
+// idioma de Astro.originPathname.
+//
+// Este archivo tiene que existir aunque no pinte nada: el adaptador de Vercel
+// genera las reglas de enrutado a partir del manifiesto de Astro, y cualquier
+// URL que no esté en él (por ejemplo /en/el-club/) cae en la regla comodín
+// `{"src":"^/.*$","status":404}`. Sin esta ruta, Vercel forzaba el estado 404
+// en todas las páginas inglesas aunque el HTML se renderizase bien, así que
+// Google las daba por no encontradas y descartaba sus hreflang.
+export const prerender = false;
+export const revalidate = 60;
+
+return Astro.rewrite(`/${Astro.params.ruta ?? ''}${Astro.url.search}`);
+---

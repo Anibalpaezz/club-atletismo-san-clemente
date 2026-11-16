@@ -2,6 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import PageHeader from '../../components/PageHeader.astro';
 import NoticiaCard from '../../components/NoticiaCard.astro';
+import ModalNoticia from '../../components/ModalNoticia.astro';
 import { getNoticiasPublicadas } from '../../lib/db';
 import { fotosAleatorias } from '../../lib/fotosActas';
 import { idiomaDe, t } from '../../i18n/ui';
@@ -37,4 +38,6 @@ const fotos = fotosAleatorias(noticias.length);
 			)}
 		</div>
 	</section>
+
+	<ModalNoticia />
 </Layout>

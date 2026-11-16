@@ -23,7 +23,7 @@ export default function MobileMenu({
 	const [open, setOpen] = useState(false);
 
 	return (
-		<div className="md:hidden">
+		<div className="xl:hidden">
 			<button
 				type="button"
 				aria-label={open ? t(lang, 'header.menu.cerrar') : t(lang, 'header.menu.abrir')}
@@ -43,7 +43,7 @@ export default function MobileMenu({
 			</button>
 
 			{open && (
-				<div className="absolute inset-x-0 top-full z-50 border-t border-white/10 bg-nocturno shadow-xl md:hidden">
+				<div className="absolute inset-x-0 top-full z-50 border-t border-white/10 bg-nocturno shadow-xl xl:hidden">
 					<nav
 						className="mx-auto flex max-w-7xl flex-col px-4 py-4 lg:px-8 xl:px-12"
 						aria-label={lang === 'es' ? 'Menú móvil' : 'Mobile menu'}

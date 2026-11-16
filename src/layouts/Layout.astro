@@ -4,42 +4,125 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import Instituciones from '../components/Instituciones.astro';
 import SpeedInsights from '@vercel/speed-insights/astro';
-import { SITE } from '../lib/site';
+import { SITE, REDES } from '../lib/site';
 import { idiomaDe, t } from '../i18n/ui';
-import { rutaAlterna } from '../i18n/rutas';
+import { ruta, rutaAlterna } from '../i18n/rutas';
 
 interface Props {
 	title?: string;
 	description?: string;
 	image?: string;
+	/** Nombre de la página en las migas cuando la ruta no está en el mapa (por ejemplo, una noticia). */
+	migaActual?: string;
 }
-const { title = SITE.name, description = SITE.descripcion, image = '/images/logo-nuevo.avif' } = Astro.props;
+const {
+	title = SITE.name,
+	description = SITE.descripcion,
+	image = '/images/logo-nuevo.avif',
+	migaActual,
+} = Astro.props;
 
 // El idioma sale de la ruta original: el middleware reescribe /en/… a la misma página.
 const lang = idiomaDe(Astro.originPathname ?? Astro.url.pathname);
 const pathname = Astro.originPathname ?? Astro.url.pathname;
 const pageTitle = title === SITE.name || title.includes(SITE.name) ? title : `${title} · ${SITE.name}`;
 const canonical = new URL(pathname, SITE.url).toString();
-const alterno = new URL(rutaAlterna(lang, pathname), SITE.url).toString();
 const esUrl = new URL(lang === 'es' ? pathname : rutaAlterna(lang, pathname), SITE.url).toString();
 const enUrl = new URL(lang === 'en' ? pathname : rutaAlterna(lang, pathname), SITE.url).toString();
 const ogImage = new URL(image, SITE.url).toString();
 
+const idClub = `${SITE.url}/#club`;
+
 const estructuraClub = {
-	'@context': 'https://schema.org',
 	'@type': 'SportsClub',
-	name: SITE.name,
+	'@id': idClub,
+	name: SITE.nombreCorto,
+	alternateName: SITE.name.replace(/\s+/g, ' '),
 	url: `${SITE.url}/`,
 	description: lang === 'es' ? SITE.descripcion : t('en', 'home.descripcion'),
 	email: SITE.email,
 	sport: 'Atletismo',
+	logo: ogImage,
 	image: ogImage,
+	sameAs: REDES.map((red) => red.href),
 	address: {
 		'@type': 'PostalAddress',
 		addressLocality: 'San Clemente',
 		addressRegion: 'Cuenca',
 		addressCountry: 'ES',
 	},
+	areaServed: {
+		'@type': 'City',
+		name: 'San Clemente',
+		containedInPlace: { '@type': 'AdministrativeArea', name: 'Cuenca' },
+	},
+};
+
+const estructuraWeb = {
+	'@type': 'WebSite',
+	'@id': `${SITE.url}/#web`,
+	url: `${SITE.url}/`,
+	name: SITE.nombreCorto,
+	inLanguage: lang === 'es' ? 'es-ES' : 'en',
+	publisher: { '@id': idClub },
+};
+
+// Migas de pan: se publican solo como dato estructurado (no se pintan en la
+// página, así que no cambian nada visual). La jerarquía se deduce de la ruta.
+const ETIQUETAS_MIGAS: Record<string, { es: string; en: string }> = {
+	'/el-club/': { es: 'El Club', en: 'The Club' },
+	'/hazte-socio/': { es: 'Hazte socio', en: 'Join the club' },
+	'/carrera/': { es: 'La Carrera', en: 'The Race' },
+	'/carrera/reglamento/': { es: 'Bases y reglamento', en: 'Rules and regulations' },
+	'/ruta/': { es: 'San Clemente en Ruta', en: 'San Clemente on the Route' },
+	'/noticias/': { es: 'Noticias', en: 'News' },
+	'/contacto/': { es: 'Contacto', en: 'Contact' },
+};
+
+const pathEs = (() => {
+	const limpio = pathname.replace(/^\/en(?=\/|$)/, '');
+	if (!limpio || limpio === '/') return '/';
+	return limpio.endsWith('/') ? limpio : `${limpio}/`;
+})();
+
+const migas =
+	pathEs === '/'
+		? []
+		: [
+				{ nombre: lang === 'es' ? 'Inicio' : 'Home', ruta: '/' },
+				...pathEs
+					.split('/')
+					.filter(Boolean)
+					.map((_, i, trozos) => `/${trozos.slice(0, i + 1).join('/')}/`)
+					.map((rutaParcial) => ({
+						ruta: rutaParcial,
+						nombre:
+							ETIQUETAS_MIGAS[rutaParcial]?.[lang] ??
+							(rutaParcial === pathEs && migaActual
+								? migaActual
+								: (rutaParcial.split('/').filter(Boolean).pop() ?? '').replace(/-/g, ' ')),
+					})),
+			];
+
+const datosEstructurados = {
+	'@context': 'https://schema.org',
+	'@graph': [
+		estructuraClub,
+		estructuraWeb,
+		...(migas.length > 0
+			? [
+					{
+						'@type': 'BreadcrumbList',
+						itemListElement: migas.map((miga, i) => ({
+							'@type': 'ListItem',
+							position: i + 1,
+							name: miga.nombre,
+							item: new URL(ruta(lang, miga.ruta), SITE.url).toString(),
+						})),
+					},
+				]
+			: []),
+	],
 };
 ---
 
@@ -59,7 +142,6 @@ const estructuraClub = {
 		<link rel="alternate" hreflang="es" href={esUrl} />
 		<link rel="alternate" hreflang="en" href={enUrl} />
 		<link rel="alternate" hreflang="x-default" href={esUrl} />
-		{lang === 'en' && <link rel="alternate" href={alterno} hreflang="es" />}
 		<meta property="og:title" content={pageTitle} />
 		<meta property="og:description" content={description} />
 		<meta property="og:type" content="website" />
@@ -70,7 +152,7 @@ const estructuraClub = {
 		<meta name="theme-color" content="#0A1F44" />
 		<meta name="google-site-verification" content="TG7qZke2Lnh04ZYZeTjkXLEDmksOBJ-qmaN6FL6wBfo" />
 		<link rel="icon" href="/favicon.ico" sizes="any" />
-		<script type="application/ld+json" is:inline set:html={JSON.stringify(estructuraClub)}></script>
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(datosEstructurados)}></script>
 	</head>
 	<body class="flex min-h-screen flex-col">
 		<Header />

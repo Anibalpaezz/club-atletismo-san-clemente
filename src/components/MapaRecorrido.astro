@@ -9,10 +9,10 @@ const { lang = 'es' } = Astro.props;
 const es = lang !== 'en';
 ---
 
-<div class="h-full w-full">
+<div class="flex w-full flex-1 flex-col">
 	<div
 		id="mapa-recorrido"
-		class="h-80 w-full bg-amber-50 sm:h-96 lg:h-[28rem]"
+		class="min-h-80 w-full flex-1 bg-amber-50 sm:min-h-96 lg:min-h-[28rem]"
 		data-lang={lang}
 		aria-label={es
 			? 'Mapa del circuito urbano de la Carrera Nocturna Villa de San Clemente'

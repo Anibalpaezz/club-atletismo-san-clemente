@@ -11,7 +11,7 @@ const controlClases =
 	'rounded-md border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-nocturno focus:border-albero focus:outline-none focus:ring-2 focus:ring-albero/40';
 
 const FILAS_INICIALES = 25;
-const INCREMENTO = 25;
+const OPCIONES_FILAS = [25, 50, 100, 250];
 
 export default function TablaResultados({ filas, lang = 'es' }: Props) {
 	const es = lang !== 'en';
@@ -49,12 +49,12 @@ export default function TablaResultados({ filas, lang = 'es' }: Props) {
 
 	const cambiarFiltro = (setter: (v: string) => void, valor: string) => {
 		setter(valor);
-		setLimite(FILAS_INICIALES);
 	};
 
 	return (
 		<div className="rounded-2xl border border-slate-200 bg-white shadow-sm">
-			<div className="border-b border-slate-200 px-6 py-5">
+			<div className="flex flex-wrap items-start justify-between gap-4 border-b border-slate-200 px-6 py-5">
+				<div>
 				<p className="text-xs font-bold uppercase tracking-widest text-albero-600">
 					{es ? 'Resultados de la carrera' : 'Race results'}
 				</p>
@@ -71,6 +71,25 @@ export default function TablaResultados({ filas, lang = 'es' }: Props) {
 						</>
 					)}
 				</p>
+				</div>
+
+				<label className="flex items-center gap-2">
+					<span className="text-[11px] font-semibold uppercase tracking-wider text-tinta/60">
+						{es ? 'Mostrar' : 'Show'}
+					</span>
+					<select
+						value={limite}
+						onChange={(e) => setLimite(Number(e.target.value))}
+						aria-label={es ? 'Registros a mostrar' : 'Rows to show'}
+						className={controlClases}
+					>
+						{OPCIONES_FILAS.map((opcion) => (
+							<option key={opcion} value={opcion}>
+								{opcion}
+							</option>
+						))}
+					</select>
+				</label>
 			</div>
 
 			<div className="grid gap-3 border-b border-slate-200 bg-hueso/50 p-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -220,13 +239,6 @@ export default function TablaResultados({ filas, lang = 'es' }: Props) {
 						{es ? 'de' : 'of'} {visibles.length.toLocaleString(locale)}{' '}
 						{es ? 'clasificados.' : 'finishers.'}
 					</p>
-					<button
-						type="button"
-						onClick={() => setLimite((l) => l + INCREMENTO)}
-						className="inline-flex items-center gap-2 rounded-md bg-nocturno px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-nocturno-700"
-					>
-						{es ? 'Cargar más' : 'Load more'} ({Math.min(restantes, INCREMENTO).toLocaleString(locale)})
-					</button>
 				</div>
 			)}
 		</div>

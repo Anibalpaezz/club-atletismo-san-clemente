@@ -12,17 +12,25 @@ const lang = idiomaDe(Astro.originPathname ?? Astro.url.pathname);
 const asuntoAlta = lang === 'es' ? 'Alta de socio Club Atletismo San Clemente' : 'Club membership — Club Atletismo San Clemente';
 const asuntoColab = lang === 'es' ? 'Colaboración con el Club Atletismo San Clemente' : 'Partnership with Club Atletismo San Clemente';
 
-const tarjetas = [
+type Tarjeta =
+	| { tipo: 'enlace'; icono: 'mail' | 'users'; titulo: string; lineas: string[]; href: string; cta: string }
+	| { tipo: 'redes'; icono: 'users'; titulo: string }
+	| { tipo: 'telefonos'; icono: 'phone'; titulo: string };
+
+const tarjetas: Tarjeta[] = [
 	{
-		icono: 'mail' as const,
+		tipo: 'enlace',
+		icono: 'mail',
 		titulo: t(lang, 'contacto.correoTitulo'),
 		lineas: [SITE.email],
 		href: `mailto:${SITE.email}`,
 		cta: t(lang, 'contacto.correoCta'),
 	},
-	{ redes: true, icono: 'users' as const, titulo: t(lang, 'contacto.redesTitulo') },
+	{ tipo: 'telefonos', icono: 'phone', titulo: t(lang, 'contacto.telefonoTitulo') },
+	{ tipo: 'redes', icono: 'users', titulo: t(lang, 'contacto.redesTitulo') },
 	{
-		icono: 'users' as const,
+		tipo: 'enlace',
+		icono: 'users',
 		titulo: t(lang, 'contacto.socioTitulo'),
 		lineas: [t(lang, 'contacto.socioLinea1'), t(lang, 'contacto.socioLinea2')],
 		href: `mailto:${SITE.email}?subject=${encodeURIComponent(asuntoAlta)}`,
@@ -40,9 +48,27 @@ const tarjetas = [
 
 	<section class="bg-hueso py-20">
 		<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 xl:px-12">
-			<div class="grid gap-6 md:grid-cols-3">
+			<div class="grid gap-6 break-words md:grid-cols-2 lg:grid-cols-4 [&>*]:min-w-0">
 				{tarjetas.map((tarjeta) =>
-					tarjeta.redes ? (
+					tarjeta.tipo === 'telefonos' ? (
+						<div class="rounded-xl border border-slate-200 bg-white p-8 shadow-sm">
+							<span class="flex h-12 w-12 items-center justify-center rounded-full bg-nocturno/5 text-nocturno-600">
+								<Icon name="phone" class="h-6 w-6" />
+							</span>
+							<h2 class="mt-5 font-display text-xl font-bold text-nocturno">{tarjeta.titulo}</h2>
+							<div class="mt-4 space-y-2">
+								{SITE.telefonos.map((telefono) => (
+									<a
+										href={`tel:${telefono.tel}`}
+										class="flex items-center gap-3 rounded-md border border-slate-200 px-4 py-3 text-sm font-semibold text-nocturno transition hover:border-nocturno hover:bg-nocturno/5"
+									>
+										<Icon name="phone" class="h-5 w-5 text-albero-600" />
+										{telefono.numero}
+									</a>
+								))}
+							</div>
+						</div>
+					) : tarjeta.tipo === 'redes' ? (
 						<div class="rounded-xl border border-slate-200 bg-white p-8 shadow-sm">
 							<span class="flex h-12 w-12 items-center justify-center rounded-full bg-nocturno/5 text-nocturno-600">
 								<Icon name={tarjeta.icono} class="h-6 w-6" />

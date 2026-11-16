@@ -4,6 +4,10 @@ export const SITE = {
 	lema: 'Corriendo por la Joya del Renacimiento Manchego',
 	url: 'https://club-atletismo-san-clemente.vercel.app',
 	email: 'losquevanacorrertesaludan@hotmail.com',
+	telefonos: [
+		{ numero: '969 300 835', tel: '+34969300835' },
+		{ numero: '653 896 391', tel: '+34653896391' },
+	],
 	inscripcionUrl: 'https://timingsys.com/',
 	blogspot: 'https://clubatletismosanclemente.blogspot.com',
 	municipio: 'San Clemente (Cuenca)',

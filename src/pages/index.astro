@@ -4,6 +4,7 @@ import Hero from '../components/Hero.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import ConsejosTrucos from '../components/ConsejosTrucos.astro';
 import NoticiaCard from '../components/NoticiaCard.astro';
+import ModalNoticia from '../components/ModalNoticia.astro';
 import Icon from '../components/Icon.astro';
 import Establecimientos from '../components/Establecimientos.astro';
 import { getNoticiasPublicadas, getPatrocinadores } from '../lib/db';
@@ -139,6 +140,8 @@ const lugaresRuta = [1, 2, 3];
 			)}
 		</div>
 	</section>
+
+	<ModalNoticia />
 
 	<Establecimientos establecimientos={ESTABLECIMIENTOS} lang={lang} />
 
