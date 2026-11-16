@@ -62,6 +62,15 @@ body {
 	}
 }
 
+/* 4K (3840x2160): el texto base sube de 16px a 18px y, como las medidas de
+   Tailwind van en rem, todo el ritmo crece con él: el contenedor pasa a 1800px
+   en lugar de quedarse en 1600px rodeado de vacío. */
+@media (min-width: 3200px) {
+	html {
+		font-size: 18px;
+	}
+}
+
 /* Oculta la barra de desplazamiento de la página sin perder el scroll:
    la rueda, el teclado, el tacto y los enlaces con ancla siguen funcionando. */
 html,
